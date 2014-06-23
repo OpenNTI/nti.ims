@@ -113,8 +113,8 @@ class IntegerOrVariableRefAttribute(TextLineAttribute):
 	A :class: to mark XML an attribute element for either an Int or a variable ref (string)
 	"""
 	def _validate(self, value):
-		if 	not (isinstance(value, six.string_types) or \
-			isinstance(value, numbers.Integral)):
+		if not (isinstance(value, six.string_types) or \
+				isinstance(value, numbers.Integral)):
 			raise schema_interfaces.WrongType(value)
 
 		if not self.constraint(value):
@@ -139,8 +139,8 @@ class FloatOrVariableRefAttribute(TextLineAttribute):
 	A :class: to mark XML attribute element for either a Float or a variable ref (string)
 	"""
 	def _validate(self, value):
-		if 	not (isinstance(value, six.string_types) or \
-			isinstance(value, (numbers.Integral, numbers.Real))):
+		if not (isinstance(value, six.string_types) or \
+				isinstance(value, (numbers.Integral, numbers.Real))):
 			raise schema_interfaces.WrongType(value)
 
 		if not self.constraint(value):
