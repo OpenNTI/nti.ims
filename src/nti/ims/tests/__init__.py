@@ -49,10 +49,10 @@ class SharedConfiguringTestLayer(ZopeComponentLayer,
 
 import unittest
 
-class AsyncTestCase(unittest.TestCase):
+class IMSTestCase(unittest.TestCase):
     layer = SharedConfiguringTestLayer
 
-class AsyncApplicationTestLayer(ApplicationTestLayer):
+class IMSApplicationTestLayer(ApplicationTestLayer):
 
     @classmethod
     def setUp(cls):
