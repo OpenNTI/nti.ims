@@ -7,11 +7,11 @@ entry_points = {
 }
 
 setup(
-    name='nti.async',
+    name='nti.ims',
     version=VERSION,
     author='Jason Madden',
     author_email='jason@nextthought.com',
-    description="NTI Async",
+    description="NTI IMS Integration",
     long_description=codecs.open('README.rst', encoding='utf-8').read(),
     license='Proprietary',
     keywords='ZODB',
@@ -29,6 +29,7 @@ setup(
 	namespace_packages=['nti'],
 	install_requires=[
 		'setuptools',
+        'ims_lti_py'
 	],
 	entry_points=entry_points
 )
