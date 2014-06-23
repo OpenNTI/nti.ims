@@ -24,13 +24,13 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.3',
         ],
-	packages=find_packages('src'),
-	package_dir={'': 'src'},
-	namespace_packages=['nti'],
+    packages=find_packages('src'),
+    package_dir={'': 'src'},
+    namespace_packages=['nti'],
 	install_requires=[
 		'setuptools',
-        'ims_lti_py',
-        'nti.schema'
+        'nti.schema',
+        'ims_lti_py'
 	],
 	entry_points=entry_points
 )
