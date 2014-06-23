@@ -4,19 +4,27 @@ QIT schema field types
 
 $Id$
 """
-from __future__ import print_function, unicode_literals, absolute_import
+from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
+
+logger = __import__('logging').getLogger(__name__)
 
 import re
 import six
 import numbers
 from collections import Iterable
 
-from zope import schema
 from zope import interface
+
+from zope.schema import URI
 from zope.schema import interfaces as schema_interfaces
 
-from nti.utils import schema as nti_schema
+from nti.schema.field import Int
+from nti.schema.field import Bool
+from nti.schema.field import List
+from nti.schema.field import Float
+from nti.schema.field import Choice
+from nti.schema.field import ValidTextLine
 
 class IQTIAttribute(interface.Interface):
 	"""
@@ -38,35 +46,35 @@ class BaseQTIAttribute(object):
 	def toUnicode(self, value):
 		return unicode(value) if value is not None else None
 	
-class TextLineAttribute(BaseQTIAttribute, nti_schema.ValidTextLine):
+class TextLineAttribute(BaseQTIAttribute, ValidTextLine):
 	"""
-	A :class:`schema.TextLine` type that to mark XML attribute elements
+	A :class:`TextLine` type that to mark XML attribute elements
 	"""
 	
-class URIAttribute(BaseQTIAttribute, schema.URI):
+class URIAttribute(BaseQTIAttribute, URI):
 	"""
-	A :class:`schema.URI` type that to mark XML attribute elements
+	A :class:`URI` type that to mark XML attribute elements
 	"""
 
 @interface.implementer(schema_interfaces.IFromUnicode)
-class BoolAttribute(BaseQTIAttribute, schema.Bool):
+class BoolAttribute(BaseQTIAttribute, Bool):
 	"""
-	A :class:`schema.Bool` type that to mark XML attribute elements
+	A :class:`Bool` type that to mark XML attribute elements
 	"""
 	
-class IntAttribute(BaseQTIAttribute, schema.Int):
+class IntAttribute(BaseQTIAttribute, Int):
 	"""
-	A :class:`schema.Int` type that to mark XML attribute elements
-	"""
-
-class FloatAttribute(BaseQTIAttribute, schema.Float):
-	"""
-	A :class:`schema.Float` type that to mark XML attribute elements
+	A :class:`Int` type that to mark XML attribute elements
 	"""
 
-class ChoiceAttribute(BaseQTIAttribute, schema.Choice):
+class FloatAttribute(BaseQTIAttribute, Float):
 	"""
-	A :class:`schema.Choice` type that to mark XML attribute elements
+	A :class:`Float` type that to mark XML attribute elements
+	"""
+
+class ChoiceAttribute(BaseQTIAttribute, Choice):
+	"""
+	A :class:`Choice` type that to mark XML attribute elements
 	"""
 	
 class MimeTypeAttribute(TextLineAttribute):
@@ -75,9 +83,9 @@ class MimeTypeAttribute(TextLineAttribute):
 	"""
 
 @interface.implementer(schema_interfaces.IFromUnicode)
-class ListAttribute(BaseQTIAttribute, schema.List):
+class ListAttribute(BaseQTIAttribute, List):
 	"""
-	A :class:`schema.List` type that to mark XML attribute elements
+	A :class:`List` type that to mark XML attribute elements
 	"""
 	
 	pattern = re.compile("[^\s]+")
@@ -102,10 +110,11 @@ class ListAttribute(BaseQTIAttribute, schema.List):
 class IntegerOrVariableRefAttribute(TextLineAttribute):
 	
 	"""
-	A :class: to mark XML an attribute element for either an schema.Int or a variable ref (string)
+	A :class: to mark XML an attribute element for either an Int or a variable ref (string)
 	"""
 	def _validate(self, value):
-		if not (isinstance(value, six.string_types) or isinstance(value, numbers.Integral)):
+		if 	not (isinstance(value, six.string_types) or \
+			isinstance(value, numbers.Integral)):
 			raise schema_interfaces.WrongType(value)
 
 		if not self.constraint(value):
@@ -127,10 +136,11 @@ class IntegerOrVariableRefAttribute(TextLineAttribute):
 	
 class FloatOrVariableRefAttribute(TextLineAttribute):
 	"""
-	A :class: to mark XML attribute element for either a schema.Float or a variable ref (string)
+	A :class: to mark XML attribute element for either a Float or a variable ref (string)
 	"""
 	def _validate(self, value):
-		if not (isinstance(value, six.string_types) or isinstance(value, (numbers.Integral, numbers.Real))):
+		if 	not (isinstance(value, six.string_types) or \
+			isinstance(value, (numbers.Integral, numbers.Real))):
 			raise schema_interfaces.WrongType(value)
 
 		if not self.constraint(value):
