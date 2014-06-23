@@ -8,13 +8,4 @@
 	<include package="zope.component" />
 	<include package="zope.security" />
 
-	<adapter factory=".job.Job"
-			 for="types.FunctionType"
-			 provides=".interfaces.IJob" />
-             
-	<adapter factory=".job.Job"
-			 for="types.MethodType"
-			 provides=".interfaces.IJob" />
-			 
-	<configure zcml:condition="have devmode" />
 </configure>

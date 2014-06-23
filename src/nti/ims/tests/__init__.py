@@ -28,7 +28,7 @@ class SharedConfiguringTestLayer(ZopeComponentLayer,
                                  ConfiguringLayerMixin,
                                  DSInjectorMixin):
 
-    set_up_packages = ('nti.dataserver', 'nti.async')
+    set_up_packages = ('nti.dataserver', 'nti.ims')
 
     @classmethod
     def setUp(cls):

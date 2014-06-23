@@ -14,7 +14,7 @@ setup(
     description="NTI IMS Integration",
     long_description=codecs.open('README.rst', encoding='utf-8').read(),
     license='Proprietary',
-    keywords='ZODB',
+    keywords='IMS, LTI, QTI',
     classifiers=[
         'Intended Audience :: Developers',
         'Natural Language :: English',
