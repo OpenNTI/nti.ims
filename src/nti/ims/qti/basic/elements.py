@@ -99,12 +99,18 @@ def _make_sequence(cls, attr):
 class QTIMetaType(type):
 
 	def __new__(cls, name, bases, attrs):
+		t = type.__new__(cls, name, bases, attrs)
+		clazzname = getattr(cls, '__external_class_name__', name)
+		t.mime_type = t.mimeType = 'application/vnd.nextthought.qti.%s' % clazzname.lower()
+		t.parameters = dict()
 		
 		implemented = getattr(cls, '__implemented__', None)
 		implemented = list(implemented.flattened()) if implemented else ()
 		if not qti_interfaces.IConcrete in implemented:
-			return super(QTIMetaType, cls).__new__(cls, name, bases, attrs)
+			t.__external_can_create__ = False
+			return t
 		
+		t.__external_can_create__ = True
 		is_finite_sequence = False
 	
 		attributes = {}
@@ -126,19 +132,19 @@ class QTIMetaType(type):
 		is_finite_sequence = is_finite_sequence and len(definitions) == 1
 		if is_finite_sequence:
 			key =  list(definitions.keys())[0]
-			_make_sequence(cls, key)
+			_make_sequence(t, key)
 			
 		# volatile attributes
-		setattr(cls, '_v_definitions', definitions)
-		setattr(cls, '_v_attributes', attributes)
-		setattr(cls, "_v_is_finite_sequence", is_finite_sequence)
+		setattr(t, '_v_attributes', attributes)
+		setattr(t, '_v_definitions', definitions)
+		setattr(t, "_v_is_finite_sequence", is_finite_sequence)
 	
 		# helper method
-		setattr(cls, "get_children", _get_children)
-		setattr(cls, "set_attribute", _set_attribute)
-		setattr(cls, "get_attributes", _get_attributes)
+		setattr(t, "get_children", _get_children)
+		setattr(t, "set_attribute", _set_attribute)
+		setattr(t, "get_attributes", _get_attributes)
 		
-		return super(QTIMetaType, cls).__new__(cls, name, bases, attrs)
+		return t
 
 @WithRepr
 @interface.implementer(qti_interfaces.IQTIElement)

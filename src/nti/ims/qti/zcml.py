@@ -13,6 +13,7 @@ import inspect
 
 from zope import interface
 from zope.configuration import fields
+from zope.dottedname.resolve import resolve
 
 from nti.externalization.zcml import autoPackageExternalization
 
@@ -32,6 +33,7 @@ class IRegisterQTIElementsDirective(interface.Interface):
 def registerQTIElements(_context, module):
 	for name, item in inspect.getmembers(module, _item_predicate):
 		__traceback_info__ = name, item
-		module = item.__module__
+		module = resolve(item.__module__)
 		io_interface = list(item.__implemented__.flattened())[0]
 		autoPackageExternalization(_context, (io_interface,), (module,))
+
