@@ -9,4 +9,16 @@
 	<include package="zope.component" />
 	<include package="zope.security" />
 	
+	<include package="." file="meta.zcml" />	
+	<qti:registerQTIElements module=".assessments.elements" />
+	<qti:registerQTIElements module=".content.elements" />
+	<qti:registerQTIElements module=".feedback.elements" />
+	<qti:registerQTIElements module=".fragments.elements" />
+	<qti:registerQTIElements module=".interaction.elements" />
+	<qti:registerQTIElements module=".items.elements" />
+	<qti:registerQTIElements module=".outcome.elements" />
+	<qti:registerQTIElements module=".preconditions.elements" />
+	<qti:registerQTIElements module=".response.elements" />
+	<qti:registerQTIElements module=".template.elements" />
+	<qti:registerQTIElements module=".variables.elements" />
 </configure>
