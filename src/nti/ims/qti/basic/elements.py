@@ -18,4 +18,18 @@ from nti.schema.field import SchemaConfigured
 @WithRepr
 @interface.implementer(an_interfaces.IAttributeAnnotatable)
 class QTIElement(SchemaConfigured, zcontained.Contained):
-	pass
+	
+	_text = None
+	_tail = None
+
+	def get_text(self):
+		return self._text
+
+	def get_tail(self):
+		return self._tail
+
+	@property
+	def content(self):
+		result = self._text or u''
+		result = result+self._tail if self._tail else result
+		return result if result else None
