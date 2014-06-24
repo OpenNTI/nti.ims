@@ -2,23 +2,24 @@
 """
 Defines QTI precondition elements
 
-$Id$
+.. $Id$
 """
-from __future__ import unicode_literals, print_function, absolute_import
+from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
+
+logger = __import__('logging').getLogger(__name__)
 
 from zope import interface
 
+from nti.schema.fieldproperty import createFieldProperties
+
 from ..basic.elements import QTIElement
-from ..basic.elements import qti_creator
 from . import interfaces as pre_interfaces
 
-@qti_creator
 @interface.implementer(pre_interfaces.IpreCondition)
 class PreCondition(QTIElement):
-	pass
+	createFieldProperties(pre_interfaces.IpreCondition)
 
-@qti_creator
 @interface.implementer(pre_interfaces.IbranchRule)
 class BranchRule(QTIElement):
-	pass
+	createFieldProperties(pre_interfaces.IbranchRule)

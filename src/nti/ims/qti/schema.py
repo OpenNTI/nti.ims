@@ -2,7 +2,7 @@
 """
 QIT schema field types
 
-$Id$
+.. $Id$
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
@@ -26,15 +26,7 @@ from nti.schema.field import Float
 from nti.schema.field import Choice
 from nti.schema.field import ValidTextLine
 
-class IQTIAttribute(interface.Interface):
-	"""
-	Marker interface for QTI [XML] attributes
-	"""
-	
-	def toUnicode(value):
-		"""
-		Transform the specified value to unicode
-		"""
+from .interfaces import IQTIAttribute
 			
 @interface.implementer(IQTIAttribute)
 class BaseQTIAttribute(object):

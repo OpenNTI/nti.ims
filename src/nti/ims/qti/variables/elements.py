@@ -2,78 +2,68 @@
 """
 Defines QTI variable elements
 
-$Id$
+.. $Id$
 """
-from __future__ import unicode_literals, print_function, absolute_import
+from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
+
+logger = __import__('logging').getLogger(__name__)
 
 from zope import interface
 
+from nti.schema.fieldproperty import createFieldProperties
+
 from ..basic.elements import QTIElement
-from ..basic.elements import qti_creator
 from . import interfaces as var_interfaces
 
-@qti_creator
 @interface.implementer(var_interfaces.Ivalue)
 class Value(QTIElement):
-	pass
+	createFieldProperties(var_interfaces.Ivalue)
 
-@qti_creator
 @interface.implementer(var_interfaces.IdefaultValue)
 class DefaultValue(QTIElement):
-	pass
+	createFieldProperties(var_interfaces.IdefaultValue)
 
-@qti_creator
 @interface.implementer(var_interfaces.ImapEntry)
 class MapEntry(QTIElement):
-	pass
+	createFieldProperties(var_interfaces.ImapEntry)
 
-@qti_creator
 @interface.implementer(var_interfaces.Imapping)
 class Mapping(QTIElement):
-	pass
+	createFieldProperties(var_interfaces.Imapping)
 
-@qti_creator
 @interface.implementer(var_interfaces.IareaMapEntry)
 class AreaMapEntry(QTIElement):
-	pass
+	createFieldProperties(var_interfaces.IareaMapEntry)
 
-@qti_creator
 @interface.implementer(var_interfaces.IareaMapping)
 class AreaMapping(QTIElement):
-	pass
+	createFieldProperties(var_interfaces.IareaMapping)
 
-@qti_creator
 @interface.implementer(var_interfaces.IcorrectResponse)
 class CorrectResponse(QTIElement):
-	pass
+	createFieldProperties(var_interfaces.IcorrectResponse)
 
-@qti_creator
 @interface.implementer(var_interfaces.IresponseDeclaration)
 class ResponseDeclaration(QTIElement):
-	pass
+	createFieldProperties(var_interfaces.IresponseDeclaration)
 	
-@qti_creator
 @interface.implementer(var_interfaces.ImatchTableEntry)
 class MatchTableEntry(QTIElement):
-	pass
+	createFieldProperties(var_interfaces.ImatchTableEntry)
 
-@qti_creator
 @interface.implementer(var_interfaces.ImatchTable)
 class MatchTable(QTIElement):
-	pass
+	createFieldProperties(var_interfaces.ImatchTable)
 	
-@qti_creator
 @interface.implementer(var_interfaces.IinterpolationTableEntry)
 class InterpolationTableEntry(QTIElement):
-	pass
+	createFieldProperties(var_interfaces.IinterpolationTableEntry)
 	
-@qti_creator
 @interface.implementer(var_interfaces.IinterpolationTable)
 class InterpolationTable(QTIElement):
-	pass
+	createFieldProperties(var_interfaces.IinterpolationTable)
 	
-@qti_creator
 @interface.implementer(var_interfaces.IoutcomeDeclaration)
 class OutcomeDeclaration(QTIElement):
-	pass
+	createFieldProperties(var_interfaces.IoutcomeDeclaration)

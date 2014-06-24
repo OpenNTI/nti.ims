@@ -2,183 +2,152 @@
 """
 Defines QTI Interaction elements
 
-$Id$
+.. $Id$
 """
-from __future__ import unicode_literals, print_function, absolute_import
+from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
+
+logger = __import__('logging').getLogger(__name__)
 
 from zope import interface
 
+from nti.schema.fieldproperty import createFieldProperties
+
 from ..basic.elements import QTIElement
-from ..basic.elements import qti_creator
 from . import interfaces as int_interfaces
 
-@qti_creator
 @interface.implementer(int_interfaces.IendAttemptInteraction)
 class EndAttemptInteraction(QTIElement):
-	pass
+	createFieldProperties(int_interfaces.IendAttemptInteraction)
 
-@qti_creator
 @interface.implementer(int_interfaces.Iprompt)
 class Prompt(QTIElement):
-	pass
+	createFieldProperties(int_interfaces.Iprompt)
 
-@qti_creator
 @interface.implementer(int_interfaces.IgapText)
 class GapText(QTIElement):
-	pass
+	createFieldProperties(int_interfaces.IgapText)
 
-@qti_creator
 @interface.implementer(int_interfaces.IgapImg)
 class GapImg(QTIElement):
-	pass
+	createFieldProperties(int_interfaces.IgapImg)
 	
-@qti_creator
 @interface.implementer(int_interfaces.Igap)
 class Gap(QTIElement):
-	pass
+	createFieldProperties(int_interfaces.Igap)
 
-@qti_creator
 @interface.implementer(int_interfaces.IsimpleAssociableChoice)
 class SimpleAssociableChoice(QTIElement):
-	pass
+	createFieldProperties(int_interfaces.IsimpleAssociableChoice)
 
-@qti_creator
 @interface.implementer(int_interfaces.IsimpleChoice)
 class SimpleChoice(QTIElement):
-	pass
+	createFieldProperties(int_interfaces.IsimpleChoice)
 
-@qti_creator
 @interface.implementer(int_interfaces.IassociateInteraction)
 class AssociateInteraction(QTIElement):
-	pass
+	createFieldProperties(int_interfaces.IassociateInteraction)
 
-@qti_creator
 @interface.implementer(int_interfaces.IchoiceInteraction)
 class ChoiceInteraction(QTIElement):
-	pass
+	createFieldProperties(int_interfaces.IchoiceInteraction)
 
-@qti_creator
 @interface.implementer(int_interfaces.IorderInteraction)
 class OrderInteraction(QTIElement):
-	pass
+	createFieldProperties(int_interfaces.IorderInteraction)
 
-@qti_creator
 @interface.implementer(int_interfaces.IsimpleMatchSet)
 class SimpleMatchSet(QTIElement):
-	pass
+	createFieldProperties(int_interfaces.IsimpleMatchSet)
 
-@qti_creator
 @interface.implementer(int_interfaces.ImatchInteraction)
 class MatchInteraction(QTIElement):
-	pass
+	createFieldProperties(int_interfaces.ImatchInteraction)
 
-@qti_creator
 @interface.implementer(int_interfaces.IgapMatchInteraction)
 class GapMatchInteraction(QTIElement):
-	pass
+	createFieldProperties(int_interfaces.IgapMatchInteraction)
 
-@qti_creator
 @interface.implementer(int_interfaces.IinlineChoice)
 class InlineChoice(QTIElement):
-	pass
+	createFieldProperties(int_interfaces.IinlineChoice)
 
-@qti_creator
 @interface.implementer(int_interfaces.IinlineChoiceInteraction)
 class InlineChoiceInteraction(QTIElement):
-	pass
+	createFieldProperties(int_interfaces.IinlineChoiceInteraction)
 
-@qti_creator
 @interface.implementer(int_interfaces.ItextEntryInteraction)
 class TextEntryInteraction(QTIElement):
-	pass
+	createFieldProperties(int_interfaces.ItextEntryInteraction)
 
-@qti_creator
 @interface.implementer(int_interfaces.IextendedTextInteraction)
 class ExtendedTextInteraction(QTIElement):
-	pass
+	createFieldProperties(int_interfaces.IextendedTextInteraction)
 
-@qti_creator
 @interface.implementer(int_interfaces.IhottextInteraction)
 class HottextInteraction(QTIElement):
-	pass
+	createFieldProperties(int_interfaces.IhottextInteraction)
 
-@qti_creator
 @interface.implementer(int_interfaces.Ihottext)
 class Hottext(QTIElement):
-	pass
+	createFieldProperties(int_interfaces.Ihottext)
 
-@qti_creator
 @interface.implementer(int_interfaces.IhotspotChoice)
 class HotspotChoice(QTIElement):
-	pass
+	createFieldProperties(int_interfaces.IhotspotChoice)
 
-@qti_creator
 @interface.implementer(int_interfaces.IassociableHotspot)
 class AssociableHotspot(QTIElement):
-	pass
+	createFieldProperties(int_interfaces.IassociableHotspot)
 
-@qti_creator
 @interface.implementer(int_interfaces.IhotspotInteraction)
 class HotspotInteraction(QTIElement):
-	pass
+	createFieldProperties(int_interfaces.IhotspotInteraction)
 
-@qti_creator
 @interface.implementer(int_interfaces.IselectPointInteraction)
 class SelectPointInteraction(QTIElement):
-	pass
+	createFieldProperties(int_interfaces.IselectPointInteraction)
 
-@qti_creator
 @interface.implementer(int_interfaces.IgraphicOrderInteraction)
 class GraphicOrderInteraction(QTIElement):
-	pass
+	createFieldProperties(int_interfaces.IgraphicOrderInteraction)
 
-@qti_creator
 @interface.implementer(int_interfaces.IgraphicAssociateInteraction)
 class GraphicAssociateInteraction(QTIElement):
-	pass
+	createFieldProperties(int_interfaces.IgraphicAssociateInteraction)
 
-@qti_creator
 @interface.implementer(int_interfaces.IgraphicGapMatchInteraction)
 class GraphicGapMatchInteraction(QTIElement):
-	pass
+	createFieldProperties(int_interfaces.IgraphicGapMatchInteraction)
 
-@qti_creator
 @interface.implementer(int_interfaces.IpositionObjectInteraction)
 class PositionObjectInteraction(QTIElement):
-	pass
+	createFieldProperties(int_interfaces.IpositionObjectInteraction)
 
-@qti_creator
 @interface.implementer(int_interfaces.IpositionObjectStage)
 class PositionObjectStage(QTIElement):
-	pass
+	createFieldProperties(int_interfaces.IpositionObjectStage)
 
-@qti_creator
 @interface.implementer(int_interfaces.IsliderInteraction)
 class SliderInteraction(QTIElement):
-	pass
+	createFieldProperties(int_interfaces.IsliderInteraction)
 
-@qti_creator
 @interface.implementer(int_interfaces.ImediaInteraction)
 class MediaInteraction(QTIElement):
-	pass
+	createFieldProperties(int_interfaces.ImediaInteraction)
 
-@qti_creator
 @interface.implementer(int_interfaces.IdrawingInteraction)
 class DrawingInteraction(QTIElement):
-	pass
+	createFieldProperties(int_interfaces.IdrawingInteraction)
 
-@qti_creator
 @interface.implementer(int_interfaces.IuploadInteraction)
 class UploadInteraction(QTIElement):
-	pass
+	createFieldProperties(int_interfaces.IuploadInteraction)
 
-@qti_creator
 @interface.implementer(int_interfaces.IcustomInteraction)
 class CustomInteraction(QTIElement):
-	pass
+	createFieldProperties(int_interfaces.IcustomInteraction)
 
-@qti_creator
 @interface.implementer(int_interfaces.IinfoControl)
 class InfoControl(QTIElement):
-	pass
+	createFieldProperties(int_interfaces.IinfoControl)

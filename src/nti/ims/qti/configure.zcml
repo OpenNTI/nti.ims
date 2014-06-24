@@ -8,18 +8,5 @@
 	<include package="zope.security" file="meta.zcml" />
 	<include package="zope.component" />
 	<include package="zope.security" />
-
-	<include package="." file="meta.zcml" />	
-	<qti:registerQTIFactories module=".assessments.elements" />
-	<qti:registerQTIFactories module=".content.elements" />
-	<qti:registerQTIFactories module=".feedback.elements" />
-	<qti:registerQTIFactories module=".fragments.elements" />
-	<qti:registerQTIFactories module=".interaction.elements" />
-	<qti:registerQTIFactories module=".items.elements" />
-	<qti:registerQTIFactories module=".outcome.elements" />
-	<qti:registerQTIFactories module=".preconditions.elements" />
-	<qti:registerQTIFactories module=".response.elements" />
-	<qti:registerQTIFactories module=".template.elements" />
-	<qti:registerQTIFactories module=".variables.elements" />
 	
 </configure>

@@ -2,330 +2,272 @@
 """
 Defines QTI outcome elements
 
-$Id$
+.. $Id$
 """
-from __future__ import unicode_literals, print_function, absolute_import
+from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
+
+logger = __import__('logging').getLogger(__name__)
 
 from zope import interface
 
+from nti.schema.fieldproperty import createFieldProperties
+
 from ..basic.elements import QTIElement
-from ..basic.elements import qti_creator
 from . import interfaces as exp_interfaces
 
-@qti_creator
 @interface.implementer(exp_interfaces.IbaseValue)
 class BaseValue(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.IbaseValue)
 
-@qti_creator
 @interface.implementer(exp_interfaces.Ivariable)
 class Variable(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.Ivariable)
 
-@qti_creator
 @interface.implementer(exp_interfaces.Idefault)
 class Default(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.Idefault)
 
-@qti_creator
 @interface.implementer(exp_interfaces.Icorrect)
 class Correct(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.Icorrect)
 
-@qti_creator
 @interface.implementer(exp_interfaces.ImapResponse)
 class MapResponse(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.ImapResponse)
 
-@qti_creator
 @interface.implementer(exp_interfaces.ImapResponsePoint)
 class MapResponsePoint(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.ImapResponsePoint)
 
-@qti_creator
 @interface.implementer(exp_interfaces.ImathConstant)
 class MathConstant(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.ImathConstant)
 
-@qti_creator
 @interface.implementer(exp_interfaces.Inull)
 class Null(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.Inull)
 
-@qti_creator
 @interface.implementer(exp_interfaces.IrandomInteger)
 class RandomInteger(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.IrandomInteger)
 
-@qti_creator
 @interface.implementer(exp_interfaces.IrandomFloat)
 class RandomFloat(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.IrandomFloat)
 
-@qti_creator
 @interface.implementer(exp_interfaces.ItestVariables)
 class TestVariables(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.ItestVariables)
 
-@qti_creator
 @interface.implementer(exp_interfaces.IoutcomeMaximum)
 class OutcomeMaximum(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.IoutcomeMaximum)
 
-@qti_creator
 @interface.implementer(exp_interfaces.IoutcomeMinimum)
 class OutcomeMinimum(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.IoutcomeMinimum)
 
-@qti_creator
 @interface.implementer(exp_interfaces.InumberCorrect)
 class NumberCorrect(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.InumberCorrect)
 
-@qti_creator
 @interface.implementer(exp_interfaces.InumberIncorrect)
 class NumberIncorrect(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.InumberIncorrect)
 
-@qti_creator
 @interface.implementer(exp_interfaces.InumberResponded)
 class NumberResponded(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.InumberResponded)
 
-@qti_creator
 @interface.implementer(exp_interfaces.InumberPresented)
 class NumberPresented(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.InumberPresented)
 
-@qti_creator
 @interface.implementer(exp_interfaces.InumberSelected)
 class NumberSelected(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.InumberSelected)
 
-@qti_creator
 @interface.implementer(exp_interfaces.IroundTo)
 class RoundTo(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.IroundTo)
 
-@qti_creator
 @interface.implementer(exp_interfaces.IstatsOperator)
 class StatsOperator(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.IstatsOperator)
 	
-@qti_creator
 @interface.implementer(exp_interfaces.Imax)
 class Max(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.Imax)
 	
-@qti_creator
 @interface.implementer(exp_interfaces.Imin)
 class Min(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.Imin)
 
-@qti_creator
 @interface.implementer(exp_interfaces.ImathOperator)
 class MathOperator(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.ImathOperator)
 
-@qti_creator
 @interface.implementer(exp_interfaces.Igcd)
 class Gcd(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.Igcd)
 
-@qti_creator
 @interface.implementer(exp_interfaces.Ilcm)
 class Lcm(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.Ilcm)
 
-@qti_creator
 @interface.implementer(exp_interfaces.Irepeat)
 class Repeat(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.Irepeat)
 
-@qti_creator
 @interface.implementer(exp_interfaces.Imultiple)
 class Multiple(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.Imultiple)
 
-@qti_creator
 @interface.implementer(exp_interfaces.Iordered)
 class Ordered(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.Iordered)
 
-@qti_creator
 @interface.implementer(exp_interfaces.IcontainerSize)
 class ContainerSize(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.IcontainerSize)
 	
-@qti_creator
 @interface.implementer(exp_interfaces.IisNull)
 class IsNull(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.IisNull)
 
-@qti_creator
 @interface.implementer(exp_interfaces.Iindex)
 class Index(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.Iindex)
 
-@qti_creator
 @interface.implementer(exp_interfaces.IfieldValue)
 class FieldValue(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.IfieldValue)
 
-@qti_creator
 @interface.implementer(exp_interfaces.Irandom)
 class Random(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.Irandom)
 
-@qti_creator
 @interface.implementer(exp_interfaces.Imember)
 class Member(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.Imember)
 
-@qti_creator
 @interface.implementer(exp_interfaces.Idelete)
 class Delete(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.Idelete)
 
-@qti_creator
 @interface.implementer(exp_interfaces.Icontains)
 class Contains(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.Icontains)
 
-@qti_creator
 @interface.implementer(exp_interfaces.Isubstring)
 class Substring(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.Isubstring)
 
-@qti_creator
 @interface.implementer(exp_interfaces.Inot)
 class Not(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.Inot)
 
-@qti_creator
 @interface.implementer(exp_interfaces.Iand)
 class And(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.Iand)
 
-@qti_creator
 @interface.implementer(exp_interfaces.Ior)
 class Or(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.Ior)
 
-@qti_creator
 @interface.implementer(exp_interfaces.IanyN)
 class AnyN(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.IanyN)
 
-@qti_creator
 @interface.implementer(exp_interfaces.Imatch)
 class Match(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.Imatch)
 
-@qti_creator
 @interface.implementer(exp_interfaces.IstringMatch)
 class StringMatch(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.IstringMatch)
 
-@qti_creator
 @interface.implementer(exp_interfaces.IpatternMatch)
 class PatternMatch(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.IpatternMatch)
 
-@qti_creator
 @interface.implementer(exp_interfaces.Iequal)
 class Equal(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.Iequal)
 
-@qti_creator
 @interface.implementer(exp_interfaces.IequalRounded)
 class EqualRounded(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.IequalRounded)
 
-@qti_creator
 @interface.implementer(exp_interfaces.Iinside)
 class Inside(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.Iinside)
 
-@qti_creator
 @interface.implementer(exp_interfaces.Ilt)
 class Lt(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.Ilt)
 
-@qti_creator
 @interface.implementer(exp_interfaces.Igt)
 class Gt(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.Igt)
 
-@qti_creator
 @interface.implementer(exp_interfaces.Ilte)
 class Lte(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.Ilte)
 
-@qti_creator
 @interface.implementer(exp_interfaces.Igte)
 class Gte(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.Igte)
 
-@qti_creator
 @interface.implementer(exp_interfaces.IdurationLT)
 class DurationLT(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.IdurationLT)
 
-@qti_creator
 @interface.implementer(exp_interfaces.IdurationGTE)
 class DurationGTE(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.IdurationGTE)
 
-@qti_creator
 @interface.implementer(exp_interfaces.Isum)
 class Sum(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.Isum)
 
-@qti_creator
 @interface.implementer(exp_interfaces.Iproduct)
 class Product(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.Iproduct)
 
-@qti_creator
 @interface.implementer(exp_interfaces.Isubtract)
 class Subtract(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.Isubtract)
 
-@qti_creator
 @interface.implementer(exp_interfaces.Idivide)
 class Divide(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.Idivide)
 
-@qti_creator
 @interface.implementer(exp_interfaces.Ipower)
 class Power(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.Ipower)
 
-@qti_creator
 @interface.implementer(exp_interfaces.IintegerDivide)
 class IntegerDivide(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.IintegerDivide)
 
-@qti_creator
 @interface.implementer(exp_interfaces.IintegerModulus)
 class IntegerModulus(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.IintegerModulus)
 
-@qti_creator
 @interface.implementer(exp_interfaces.Itruncate)
 class Truncate(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.Itruncate)
 
 @interface.implementer(exp_interfaces.Iround)
 class Round(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.Iround)
 
 @interface.implementer(exp_interfaces.IintegerToFloat)
 class IntegerToFloat(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.IintegerToFloat)
 
 @interface.implementer(exp_interfaces.IcustomOperator)
 class CustomOperator(QTIElement):
-	pass
+	createFieldProperties(exp_interfaces.IcustomOperator)

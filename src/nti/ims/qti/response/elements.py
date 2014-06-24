@@ -2,53 +2,48 @@
 """
 Defines QTI response elements
 
-$Id$
+.. $Id$
 """
-from __future__ import unicode_literals, print_function, absolute_import
+from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
+
+logger = __import__('logging').getLogger(__name__)
 
 from zope import interface
 
+from nti.schema.fieldproperty import createFieldProperties
+
 from ..basic.elements import QTIElement
-from ..basic.elements import qti_creator
 from . import interfaces as rsp_interfaces
 
-@qti_creator
 @interface.implementer(rsp_interfaces.IresponseProcessing)
 class ResponseProcessing(QTIElement):
-	pass
+	createFieldProperties(rsp_interfaces.IresponseProcessing)
 
-@qti_creator
 @interface.implementer(rsp_interfaces.IresponseIf)
 class ResponseIf(QTIElement):
-	pass
+	createFieldProperties(rsp_interfaces.IresponseIf)
 
-@qti_creator
 @interface.implementer(rsp_interfaces.IresponseElseIf)
 class ResponseElseIf(QTIElement):
-	pass
+	createFieldProperties(rsp_interfaces.IresponseElseIf)
 
-@qti_creator
 @interface.implementer(rsp_interfaces.IresponseElse)
 class ResponseElse(QTIElement):
-	pass
+	createFieldProperties(rsp_interfaces.IresponseElse)
 
-@qti_creator
 @interface.implementer(rsp_interfaces.IresponseCondition)
 class ResponseCondition(QTIElement):
-	pass
+	createFieldProperties(rsp_interfaces.IresponseCondition)
 
-@qti_creator
 @interface.implementer(rsp_interfaces.IsetOutcomeValue)
 class SetOutcomeValue(QTIElement):
-	pass
+	createFieldProperties(rsp_interfaces.IsetOutcomeValue)
 
-@qti_creator
 @interface.implementer(rsp_interfaces.IlookupOutcomeValue)
 class LookupOutcomeValue(QTIElement):
-	pass
+	createFieldProperties(rsp_interfaces.IlookupOutcomeValue)
 
-@qti_creator
 @interface.implementer(rsp_interfaces.IexitResponse)
 class ExitResponse(QTIElement):
-	pass
+	createFieldProperties(rsp_interfaces.IexitResponse)

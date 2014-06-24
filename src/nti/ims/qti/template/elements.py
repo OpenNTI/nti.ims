@@ -2,93 +2,80 @@
 """
 Defines QTI template element
 
-$Id$
+.. $Id$
 """
-from __future__ import unicode_literals, print_function, absolute_import
+from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
+
+logger = __import__('logging').getLogger(__name__)
 
 from zope import interface
 
+from nti.schema.fieldproperty import createFieldProperties
+
 from ..basic.elements import QTIElement
-from ..basic.elements import qti_creator
 from . import interfaces as tmp_interfaces
 
-@qti_creator
 @interface.implementer(tmp_interfaces.ItemplateDeclaration)
 class TemplateDeclaration(QTIElement):
-	pass
+	createFieldProperties(tmp_interfaces.ItemplateDeclaration)
 
-@qti_creator
 @interface.implementer(tmp_interfaces.ItemplateBlock)
 class TemplateBlock(QTIElement):
-	pass
+	createFieldProperties(tmp_interfaces.ItemplateBlock)
 
-@qti_creator
 @interface.implementer(tmp_interfaces.ItemplateInline)
 class TemplateInline(QTIElement):
-	pass
+	createFieldProperties(tmp_interfaces.ItemplateInline)
 
-@qti_creator
 @interface.implementer(tmp_interfaces.IintegerOrVariableRef)
 class IntegerOrVariableRef(QTIElement):
-	pass
+	createFieldProperties(tmp_interfaces.IintegerOrVariableRef)
 
-@qti_creator
 @interface.implementer(tmp_interfaces.IfloatOrVariableRef)
 class FloatOrVariableRef(QTIElement):
-	pass
+	createFieldProperties(tmp_interfaces.IfloatOrVariableRef)
 
-@qti_creator
 @interface.implementer(tmp_interfaces.IstringOrVariableRef)
 class StringOrVariableRef(QTIElement):
-	pass
+	createFieldProperties(tmp_interfaces.IstringOrVariableRef)
 
-@qti_creator
 @interface.implementer(tmp_interfaces.ItemplateProcessing)
 class TemplateProcessing(QTIElement):
-	pass
+	createFieldProperties(tmp_interfaces.ItemplateProcessing)
 
-@qti_creator
 @interface.implementer(tmp_interfaces.ItemplateConstraint)
 class TemplateConstraint(QTIElement):
-	pass
+	createFieldProperties(tmp_interfaces.ItemplateConstraint)
 
-@qti_creator
 @interface.implementer(tmp_interfaces.ItemplateIf)
 class TemplateIf(QTIElement):
-	pass
+	createFieldProperties(tmp_interfaces.ItemplateIf)
 	
-@qti_creator
 @interface.implementer(tmp_interfaces.ItemplateElseIf)
 class TemplateElseIf(QTIElement):
-	pass
+	createFieldProperties(tmp_interfaces.ItemplateElseIf)
 
-@qti_creator
 @interface.implementer(tmp_interfaces.ItemplateElse)
 class TemplateElse(QTIElement):
-	pass
+	createFieldProperties(tmp_interfaces.ItemplateElse)
 
-@qti_creator
 @interface.implementer(tmp_interfaces.ItemplateCondition)
 class TemplateCondition(QTIElement):
-	pass
+	createFieldProperties(tmp_interfaces.ItemplateCondition)
 
-@qti_creator
 @interface.implementer(tmp_interfaces.IsetTemplateValue)
 class SetTemplateValue(QTIElement):
-	pass
+	createFieldProperties(tmp_interfaces.IsetTemplateValue)
 	
-@qti_creator
 @interface.implementer(tmp_interfaces.IsetCorrectResponse)
 class SetCorrectResponse(QTIElement):
-	pass
+	createFieldProperties(tmp_interfaces.IsetCorrectResponse)
 
-@qti_creator
 @interface.implementer(tmp_interfaces.IsetDefaultValue)
 class SetDefaultValue(QTIElement):
-	pass
+	createFieldProperties(tmp_interfaces.IsetDefaultValue)
 
-@qti_creator
 @interface.implementer(tmp_interfaces.IexitTemplate)
 class ExitTemplate(QTIElement):
-	pass
+	createFieldProperties(tmp_interfaces.IexitTemplate)

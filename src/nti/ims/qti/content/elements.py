@@ -4,306 +4,250 @@ Defines QTI outcome elements
 
 $Id$
 """
-from __future__ import unicode_literals, print_function, absolute_import
+from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
+
+logger = __import__('logging').getLogger(__name__)
 
 from zope import interface
 
+from nti.schema.fieldproperty import createFieldProperties
+
 from ..basic.elements import QTIElement
-from ..basic.elements import qti_creator
 from . import interfaces as cnt_interfaces
 
-@qti_creator
 @interface.implementer(cnt_interfaces.ItextRun)
 class TextRun(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.ItextRun)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Iabbr)
 class Abbr(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Iabbr)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Iacronym)
 class Acronym(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Iacronym)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Iaddress)
 class Address(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Iaddress)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Iblockquote)
 class Blockquote(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Iblockquote)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Ibr)
 class Br(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Ibr)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Icite)
 class Cite(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Icite)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Icode)
 class Code(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Icode)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Idfn)
 class Dfn(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Idfn)
 	
-@qti_creator
 @interface.implementer(cnt_interfaces.Idiv)
 class Div(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Idiv)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Iem)
 class Em(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Iem)
 	
-@qti_creator
 @interface.implementer(cnt_interfaces.Ih1)
 class H1(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Ih1)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Ih2)
 class H2(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Ih2)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Ih3)
 class H3(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Ih3)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Ih4)
 class H4(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Ih4)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Ih5)
 class H5(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Ih5)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Ih6)
 class H6(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Ih6)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Ikbd)
 class Kbd(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Ikbd)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Ip)
 class Ip(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Ip)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Ipre)
 class Ipre(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Ipre)
 	
-@qti_creator
 @interface.implementer(cnt_interfaces.Iq)
 class Q(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Iq)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Isamp)
 class Samp(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Isamp)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Ispan)
 class Span(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Ispan)
 	
-@qti_creator
 @interface.implementer(cnt_interfaces.Istrong)
 class Strong(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Istrong)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Ivar)
 class Var(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Ivar)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Idl)
 class Dl(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Idl)
 	
-@qti_creator
 @interface.implementer(cnt_interfaces.Idt)
 class Dt(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Idt)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Idd)
 class Dd(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Idd)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Ili)
 class Li(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Ili)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Iol)
 class Ol(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Iol)
 	
-@qti_creator
 @interface.implementer(cnt_interfaces.Iul)
 class Ul(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Iul)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Iobject)
 class Object(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Iobject)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Iparam)
 class Param(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Iparam)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Ib)
 class B(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Ib)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Ibig)
 class Big(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Ibig)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Ihr)
 class Hr(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Ihr)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Ii)
 class I(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Ii)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Ismall)
 class Small(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Ismall)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Isub)
 class Sub(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Isub)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Isup)
 class Sup(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Isup)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Itt)
 class Tt(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Itt)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Icaption)
 class Caption(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Icaption)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Icol)
 class Col(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Icol)
 	
-@qti_creator
 @interface.implementer(cnt_interfaces.Icolgroup)
 class Colgroup(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Icolgroup)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Itd)
 class Td(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Itd)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Ith)
 class Th(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Ith)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Itr)
 class Tr(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Itr)
 	
-@qti_creator
 @interface.implementer(cnt_interfaces.Ithead)
 class Thead(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Ithead)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Itfoot)
 class Tfoot(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Itfoot)
 	
-@qti_creator
 @interface.implementer(cnt_interfaces.Itbody)
 class Tbody(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Itbody)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Itable)
 class Table(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Itable)
 	
-@qti_creator
 @interface.implementer(cnt_interfaces.Iimg)
 class Img(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Iimg)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Ia)
 class A(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Ia)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Imath)
 class Math(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Imath)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.IfeedbackBlock)
 class FeedbackBlock(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.IfeedbackBlock)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.IfeedbackInline)
 class FeedbackInline(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.IfeedbackInline)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.IrubricBlock)
 class RubricBlock(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.IrubricBlock)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.Istylesheet)
 class Stylesheet(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.Istylesheet)
 
-@qti_creator
 @interface.implementer(cnt_interfaces.IitemBody)
 class ItemBody(QTIElement):
-	pass
+	createFieldProperties(cnt_interfaces.IitemBody)

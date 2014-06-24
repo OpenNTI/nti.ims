@@ -9,7 +9,6 @@ logger = __import__('logging').getLogger(__name__)
 
 from zope import interface
 
-from nti.schema.field import SchemaConfigured
 from nti.schema.fieldproperty import createFieldProperties
 
 from ..basic.elements import QTIElement
@@ -17,45 +16,45 @@ from ..basic.elements import QTIElement
 from . import interfaces as ast_interfaces
 
 @interface.implementer(ast_interfaces.Iselection)
-class Selection(SchemaConfigured, QTIElement):
+class Selection(QTIElement):
 	createFieldProperties(ast_interfaces.Iselection)
 	
 @interface.implementer(ast_interfaces.Iordering)
-class Ordering(SchemaConfigured, QTIElement):
+class Ordering(QTIElement):
 	createFieldProperties(ast_interfaces.Iordering)
 
 @interface.implementer(ast_interfaces.ItimeLimits)
-class TimeLimits(SchemaConfigured, QTIElement):
+class TimeLimits(QTIElement):
 	createFieldProperties(ast_interfaces.ItimeLimits)
 
 @interface.implementer(ast_interfaces.IvariableMapping)
-class VariableMapping(SchemaConfigured, QTIElement):
+class VariableMapping(QTIElement):
 	createFieldProperties(ast_interfaces.IvariableMapping)
 
 @interface.implementer(ast_interfaces.ItemplateDefault)
-class TemplateDefault(SchemaConfigured, QTIElement):
+class TemplateDefault(QTIElement):
 	createFieldProperties(ast_interfaces.ItemplateDefault)
 
 @interface.implementer(ast_interfaces.Iweight)
-class Weight(SchemaConfigured, QTIElement):
+class Weight(QTIElement):
 	createFieldProperties(ast_interfaces.Iweight)
 
 @interface.implementer(ast_interfaces.IassessmentSection)
-class AssessmentSection(SchemaConfigured, QTIElement):
+class AssessmentSection(QTIElement):
 	createFieldProperties(ast_interfaces.IassessmentSection)
 
 @interface.implementer(ast_interfaces.IassessmentSectionRef)
-class AssessmentSectionRef(SchemaConfigured, QTIElement):
+class AssessmentSectionRef(QTIElement):
 	createFieldProperties(ast_interfaces.IassessmentSectionRef)
 
 @interface.implementer(ast_interfaces.IassessmentItemRef)
-class AssessmentItemRef(SchemaConfigured, QTIElement):
+class AssessmentItemRef(QTIElement):
 	createFieldProperties(ast_interfaces.IassessmentItemRef)
 	
 @interface.implementer(ast_interfaces.ItestPart)
-class TestPart(SchemaConfigured, QTIElement):
+class TestPart(QTIElement):
 	createFieldProperties(ast_interfaces.ItestPart)
 
 @interface.implementer(ast_interfaces.IassessmentTest)
-class AssessmentTest(SchemaConfigured, QTIElement):
+class AssessmentTest(QTIElement):
 	createFieldProperties(ast_interfaces.IassessmentTest)
