@@ -11,6 +11,7 @@ from zope import interface
 
 from nti.schema.fieldproperty import createFieldProperties
 
+from ..basic.elements import QTI
 from ..basic.elements import QTIElement
 
 from . import interfaces as ast_interfaces
