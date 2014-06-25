@@ -17,9 +17,9 @@ from nti.externalization.externalization import WithRepr
 from nti.schema.field import SchemaConfigured
 
 from ..schema import IQTIAttribute
+from ..interfaces import IConcrete
+from ..interfaces import IQTIElement
 from ..attributes import interfaces as attr_interfaces
-
-from .. import interfaces as qti_interfaces
 
 def get_schema_fields(iface):
 
@@ -96,58 +96,56 @@ def _make_sequence(cls, attr):
 	cls.__setitem__ = _make_setitem(attr)
 	cls.append = _make_append(attr)
 		
-class QTIMetaType(type):
+def QTI(cls):
+	
+	clazzname = getattr(cls, '__external_class_name__', cls.__name__)
+	cls.mime_type = cls.mimeType = 'application/vnd.nextthought.qti.%s' % clazzname.lower()
+	cls.parameters = dict()
+	
+	implemented = getattr(cls, '__implemented__', None)
+	implemented = list(implemented.flattened()) if implemented else ()
+	if IConcrete not in implemented:
+		cls.__external_can_create__ = False
+		return cls
+	
+	cls.__external_can_create__ = True
+	is_finite_sequence = False
 
-	def __new__(cls, name, bases, attrs):
-		t = type.__new__(cls, name, bases, attrs)
-		clazzname = getattr(cls, '__external_class_name__', name)
-		t.mime_type = t.mimeType = 'application/vnd.nextthought.qti.%s' % clazzname.lower()
-		t.parameters = dict()
+	attributes = {}
+	definitions = {}
+
+	for base in implemented:
+		if issubclass(base, IFiniteSequence):
+			is_finite_sequence = True
+
+		if 	issubclass(base, IQTIElement) or \
+			issubclass(base, attr_interfaces.IAttrGroup):
+			r = get_schema_fields(base)
+			for k, v in r.items():
+				if IQTIAttribute.providedBy(v):
+					attributes[k] = v
+				else:
+					definitions[k] = v
+
+	is_finite_sequence = is_finite_sequence and len(definitions) == 1
+	if is_finite_sequence:
+		key =  list(definitions.keys())[0]
+		_make_sequence(cls, key)
 		
-		implemented = getattr(cls, '__implemented__', None)
-		implemented = list(implemented.flattened()) if implemented else ()
-		if not qti_interfaces.IConcrete in implemented:
-			t.__external_can_create__ = False
-			return t
-		
-		t.__external_can_create__ = True
-		is_finite_sequence = False
+	# volatile attributes
+	setattr(cls, '_v_attributes', attributes)
+	setattr(cls, '_v_definitions', definitions)
+	setattr(cls, "_v_is_finite_sequence", is_finite_sequence)
+
+	# helper method
+	setattr(cls, "get_children", _get_children)
+	setattr(cls, "set_attribute", _set_attribute)
+	setattr(cls, "get_attributes", _get_attributes)
 	
-		attributes = {}
-		definitions = {}
-	
-		for base in implemented:
-			if issubclass(base, IFiniteSequence):
-				is_finite_sequence = True
-	
-			if 	issubclass(base, qti_interfaces.IQTIElement) or \
-				issubclass(base, attr_interfaces.IAttrGroup):
-				r = get_schema_fields(base)
-				for k, v in r.items():
-					if IQTIAttribute.providedBy(v):
-						attributes[k] = v
-					else:
-						definitions[k] = v
-	
-		is_finite_sequence = is_finite_sequence and len(definitions) == 1
-		if is_finite_sequence:
-			key =  list(definitions.keys())[0]
-			_make_sequence(t, key)
-			
-		# volatile attributes
-		setattr(t, '_v_attributes', attributes)
-		setattr(t, '_v_definitions', definitions)
-		setattr(t, "_v_is_finite_sequence", is_finite_sequence)
-	
-		# helper method
-		setattr(t, "get_children", _get_children)
-		setattr(t, "set_attribute", _set_attribute)
-		setattr(t, "get_attributes", _get_attributes)
-		
-		return t
+	return cls
 
 @WithRepr
-@interface.implementer(qti_interfaces.IQTIElement)
+@interface.implementer(IQTIElement)
 class QTIElement(SchemaConfigured, zcontained.Contained):
-	__metaclass__ = QTIMetaType
+	pass
 
