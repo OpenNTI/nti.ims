@@ -13,13 +13,16 @@ from zope import interface
 
 from nti.schema.fieldproperty import createFieldProperties
 
+from ..basic.elements import QTI
 from ..basic.elements import QTIElement
 from . import interfaces as itms_interfaces
 
+@QTI
 @interface.implementer(itms_interfaces.IitemSessionControl)
 class ItemSessionControl(QTIElement):
 	createFieldProperties(itms_interfaces.IitemSessionControl)
 
+@QTI
 @interface.implementer(itms_interfaces.IassessmentItem)
 class AssessmentItem(QTIElement):
 	createFieldProperties(itms_interfaces.IassessmentItem)

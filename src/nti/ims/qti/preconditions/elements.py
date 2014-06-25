@@ -13,13 +13,16 @@ from zope import interface
 
 from nti.schema.fieldproperty import createFieldProperties
 
+from ..basic.elements import QTI
 from ..basic.elements import QTIElement
 from . import interfaces as pre_interfaces
 
+@QTI
 @interface.implementer(pre_interfaces.IpreCondition)
 class PreCondition(QTIElement):
 	createFieldProperties(pre_interfaces.IpreCondition)
 
+@QTI
 @interface.implementer(pre_interfaces.IbranchRule)
 class BranchRule(QTIElement):
 	createFieldProperties(pre_interfaces.IbranchRule)

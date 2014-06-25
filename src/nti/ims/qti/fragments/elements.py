@@ -13,17 +13,21 @@ from zope import interface
 
 from nti.schema.fieldproperty import createFieldProperties
 
+from ..basic.elements import QTI
 from ..basic.elements import QTIElement
 from . import interfaces as frg_interfaces
 
+@QTI
 @interface.implementer(frg_interfaces.Iinclude)
 class Include(QTIElement):
 	createFieldProperties(frg_interfaces.Iinclude)
 
+@QTI
 @interface.implementer(frg_interfaces.IresponseProcessingFragment)
 class ResponseProcessingFragment(QTIElement):
 	createFieldProperties(frg_interfaces.IresponseProcessingFragment)
 
+@QTI
 @interface.implementer(frg_interfaces.IoutcomeProcessingFragment)
 class OutcomeProcessingFragment(QTIElement):
 	createFieldProperties(frg_interfaces.IoutcomeProcessingFragment)
