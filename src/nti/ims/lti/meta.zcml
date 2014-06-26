@@ -1,12 +1,6 @@
 <configure	xmlns="http://namespaces.zope.org/zope"
 			xmlns:meta="http://namespaces.zope.org/meta">
 
-	<meta:directives namespace="http://nextthought.com/ntp/ldap">
-		<meta:directive	name="registerLDAP"
-						schema=".zcml.IRegisterLDAP"
-						handler=".zcml.registerLDAP" />
-	</meta:directives>
-
 	<meta:directives namespace="http://nextthought.com/ntp/lti">
 		<meta:directive	name="registerConsumer"
 						schema=".zcml.IRegisterConsumer"
