@@ -16,8 +16,8 @@ from zope import interface
 from zope.configuration import fields
 from zope.component.zcml import utility
 
-from . import consumer
-from . import interfaces
+from .consumer import Consumer
+from .interfaces import IConsumer
 
 class IRegisterConsumer(interface.Interface):
 	"""
@@ -28,5 +28,5 @@ class IRegisterConsumer(interface.Interface):
 	secret = fields.TextLine(title="Consumer secret", required=True)
 
 def registerConsumer(_context, key, secret, name=u''):
-	factory = functools.partial(consumer.Consumer, key=key, secret=secret)
-	utility(_context, provides=interfaces.IConsumer, factory=factory, name=name)
+	factory = functools.partial(Consumer, key=key, secret=secret)
+	utility(_context, provides=IConsumer, factory=factory, name=name)

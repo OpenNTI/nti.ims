@@ -21,4 +21,5 @@
 	<qti:registerQTIElements module=".response.elements" />
 	<qti:registerQTIElements module=".template.elements" />
 	<qti:registerQTIElements module=".variables.elements" />
+
 </configure>

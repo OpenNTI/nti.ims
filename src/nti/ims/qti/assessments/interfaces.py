@@ -9,45 +9,63 @@ __docformat__ = "restructuredtext en"
 from nti.schema.field import Object
 from nti.schema.field import ListOrTuple
 
-from .. import interfaces as qti_interfaces
+from ..interfaces import IConcrete
 
-from ..content import interfaces as cnt_interfaces
-from ..outcome import interfaces as out_interfaces
-from ..items import interfaces as items_interfaces
-from ..variables import interfaces as var_interfaces
-from ..expression import interfaces as exp_interfaces
-from ..attributes import interfaces as attr_interfaces
-from ..preconditions import interfaces as pre_interfaces
-from ..feedback import interfaces as feedback_interfaces
+from ..attributes.interfaces import IweightAttrGroup
+from ..attributes.interfaces import IorderingAttrGroup
+from ..attributes.interfaces import IselectionAttrGroup
+from ..attributes.interfaces import ItimeLimitsAttrGroup
+from ..attributes.interfaces import IsectionPartAttrGroup
+from ..attributes.interfaces import IassessmentTestAttrGroup
+from ..attributes.interfaces import IvariableMappingAttrGroup
+from ..attributes.interfaces import IassessmentItemRefAttrGroup
+from ..attributes.interfaces import IassessmentSectionAttrGroup
+from ..attributes.interfaces import IassessmentSectionRefAttrGroup
 
-class Iselection(attr_interfaces.IselectionAttrGroup, qti_interfaces.IConcrete):
+from ..expression.interfaces import Iexpression
+
+from ..content.interfaces import IrubricBlock
+
+from ..feedback.interfaces import ItestFeedback
+
+from ..items.interfaces import IitemSessionControl
+
+from ..outcome.interfaces import IoutcomeProcessing
+
+from ..preconditions.interfaces import IbranchRule
+from ..preconditions.interfaces import IpreCondition
+
+from ..variables.interfaces import IoutcomeDeclaration
+
+class Iselection(IselectionAttrGroup, IConcrete):
 	pass
 	
-class Iordering(attr_interfaces.IorderingAttrGroup, qti_interfaces.IConcrete):
+class Iordering(IorderingAttrGroup, IConcrete):
 	pass
 
-class ItimeLimits(attr_interfaces.ItimeLimitsAttrGroup, qti_interfaces.IConcrete):
+class ItimeLimits(ItimeLimitsAttrGroup, IConcrete):
 	pass
 	
-class IvariableMapping(attr_interfaces.IvariableMappingAttrGroup, qti_interfaces.IConcrete):
+class IvariableMapping(IvariableMappingAttrGroup, IConcrete):
 	pass
 
-class ItemplateDefault(qti_interfaces.IConcrete):
-	expression = Object(exp_interfaces.Iexpression , description="An expression", required=True)
+class ItemplateDefault(IConcrete):
+	expression = Object(Iexpression , description="An expression", required=True)
 
-class Iweight(attr_interfaces.IweightAttrGroup, qti_interfaces.IConcrete):
+class Iweight(IweightAttrGroup, IConcrete):
 	pass
 	
-class IsectionPart(attr_interfaces.IsectionPartAttrGroup):
-	preCondition = ListOrTuple(Object(pre_interfaces.IpreCondition),
+class IsectionPart(IsectionPartAttrGroup):
+
+	preCondition = ListOrTuple(Object(IpreCondition),
 							   description="An optional ordered set of conditions evaluated during the test",
 							   min_length=0)
 
-	branchRule = ListOrTuple(Object(pre_interfaces.IbranchRule),
+	branchRule = ListOrTuple(Object(IbranchRule),
 							 description="An optional ordered set of rules evaluated during the test",
 							 min_length=0)
 
-	itemSessionControl = Object(items_interfaces.IitemSessionControl,
+	itemSessionControl = Object(IitemSessionControl,
 							 	description="Parameters used to control the allowable states of each item session in this part",
 							 	required=False)
 
@@ -55,9 +73,10 @@ class IsectionPart(attr_interfaces.IsectionPartAttrGroup):
 						description="Optionally controls the amount of time a candidate is allowed for this part of the test",
 						required=False)
 
-class IassessmentSection(attr_interfaces.IassessmentSectionAttrGroup,
+class IassessmentSection(IassessmentSectionAttrGroup,
 						 IsectionPart,
-						 qti_interfaces.IConcrete):
+						 IConcrete):
+
 	selection = Object(Iselection,
 					   description="The rules used to select which children of the section are to be used for each instance of the test",
 					   required=False)
@@ -66,7 +85,7 @@ class IassessmentSection(attr_interfaces.IassessmentSectionAttrGroup,
 					  description="The rules used to determine the order in which the children of the section are to be arranged",
 					  required=False)
 
-	rubricBlock = ListOrTuple(Object(cnt_interfaces.IrubricBlock),
+	rubricBlock = ListOrTuple(Object(IrubricBlock),
 							  description="Section rubric is presented to the candidate with each item contained by the section",
 							  min_length=0)
 
@@ -74,14 +93,14 @@ class IassessmentSection(attr_interfaces.IassessmentSectionAttrGroup,
 							  description="The ordered list of section parts",
 							  min_length=0)
 
-class IassessmentSectionRef(attr_interfaces.IassessmentSectionRefAttrGroup,
+class IassessmentSectionRef(IassessmentSectionRefAttrGroup,
 							IsectionPart,
-							qti_interfaces.IConcrete):
+							IConcrete):
 	pass
 
-class IassessmentItemRef(attr_interfaces.IassessmentItemRefAttrGroup,
+class IassessmentItemRef(IassessmentItemRefAttrGroup,
 						 IsectionPart,
-						 qti_interfaces.IConcrete):
+						 IConcrete):
 
 	variableMapping = ListOrTuple(Object(IvariableMapping),
 								  description="Variable mappings are used to alter the name of an item outcome for the purposes of this test",
@@ -95,16 +114,17 @@ class IassessmentItemRef(attr_interfaces.IassessmentItemRefAttrGroup,
 								  description="WA template default is used to alter the default value",
 								  min_length=0)
 	
-class ItestPart(attr_interfaces.ItimeLimitsAttrGroup, qti_interfaces.IConcrete):
-	preCondition = ListOrTuple(Object(pre_interfaces.IpreCondition),
+class ItestPart(ItimeLimitsAttrGroup, IConcrete):
+
+	preCondition = ListOrTuple(Object(IpreCondition),
 							   description="An optional ordered set of conditions evaluated during the test",
 							   min_length=0)
 
-	branchRule = ListOrTuple(Object(pre_interfaces.IbranchRule),
+	branchRule = ListOrTuple(Object(IbranchRule),
 									description="An optional ordered set of rules evaluated during the test",
 									min_length=0)
 
-	itemSessionControl = Object(items_interfaces.IitemSessionControl,
+	itemSessionControl = Object(IitemSessionControl,
 								description="Parameters used to control the allowable states of each item session in this part",
 								required=False)
 
@@ -116,13 +136,13 @@ class ItestPart(attr_interfaces.ItimeLimitsAttrGroup, qti_interfaces.IConcrete):
 									description="The items contained in each testPart are arranged into sections and sub-sections",
 									min_length=1)
 
-	testFeedback = ListOrTuple(Object(feedback_interfaces.ItestFeedback),
+	testFeedback = ListOrTuple(Object(ItestFeedback),
 							   description="Test-level feedback specific to this part of the test",
 							   min_length=0)
 
-class IassessmentTest(attr_interfaces.IassessmentTestAttrGroup, qti_interfaces.IConcrete):
+class IassessmentTest(IassessmentTestAttrGroup, IConcrete):
 
-	outcomeDeclaration = ListOrTuple(Object(var_interfaces.IoutcomeDeclaration),
+	outcomeDeclaration = ListOrTuple(Object(IoutcomeDeclaration),
 									 description="Each test has an associated set of outcomes",
 									 min_length=0)
 
@@ -134,10 +154,10 @@ class IassessmentTest(attr_interfaces.IassessmentTestAttrGroup, qti_interfaces.I
 						   description="Order list of test parts (sections, sub-sections and so on)",
 						   min_length=1)
 
-	outcomeProcessing = Object(out_interfaces.IoutcomeProcessing,
+	outcomeProcessing = Object(IoutcomeProcessing,
 							   description="The set of rules used for calculating the values of the test outcomes",
 							   required=False)
 
-	testFeedback = ListOrTuple(Object(feedback_interfaces.ItestFeedback),
+	testFeedback = ListOrTuple(Object(ItestFeedback),
 							   description="The ordered test-level feedback controlled by the test outcomes.",
 							   min_length=0)

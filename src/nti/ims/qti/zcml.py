@@ -19,13 +19,13 @@ from nti.externalization.zcml import autoPackageExternalization
 
 from .basic.elements import QTIElement
 
-from . import interfaces as qti_interfaces
+from .interfaces import IConcrete
 
 def _item_predicate(item):
 	implemented = getattr(item, '__implemented__', None)
 	implemented = implemented.flattened() if implemented else ()
 	return  inspect.isclass(item) and issubclass(item, QTIElement) and \
-			item != QTIElement and qti_interfaces.IConcrete in implemented
+			item != QTIElement and IConcrete in implemented
 
 class IRegisterQTIElementsDirective(interface.Interface):
 	module = fields.GlobalObject(title="Module to scan for QTI elements to add", 

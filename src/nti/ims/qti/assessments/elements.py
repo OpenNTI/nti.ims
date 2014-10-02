@@ -15,59 +15,69 @@ from nti.schema.fieldproperty import createFieldProperties
 from ..basic.elements import QTI
 from ..basic.elements import QTIElement
 
-from . import interfaces as ast_interfaces
+from .interfaces import Iweight
+from .interfaces import ItestPart
+from .interfaces import Iordering
+from .interfaces import Iselection
+from .interfaces import ItimeLimits
+from .interfaces import IassessmentTest
+from .interfaces import IvariableMapping
+from .interfaces import ItemplateDefault
+from .interfaces import IassessmentSection
+from .interfaces import IassessmentItemRef
+from .interfaces import IassessmentSectionRef
 
 @QTI
-@interface.implementer(ast_interfaces.Iselection)
+@interface.implementer(Iselection)
 class Selection(QTIElement):
-	createFieldProperties(ast_interfaces.Iselection)
+	createFieldProperties(Iselection)
 	
 @QTI
-@interface.implementer(ast_interfaces.Iordering)
+@interface.implementer(Iordering)
 class Ordering(QTIElement):
-	createFieldProperties(ast_interfaces.Iordering)
+	createFieldProperties(Iordering)
 
 @QTI
-@interface.implementer(ast_interfaces.ItimeLimits)
+@interface.implementer(ItimeLimits)
 class TimeLimits(QTIElement):
-	createFieldProperties(ast_interfaces.ItimeLimits)
+	createFieldProperties(ItimeLimits)
 
 @QTI
-@interface.implementer(ast_interfaces.IvariableMapping)
+@interface.implementer(IvariableMapping)
 class VariableMapping(QTIElement):
-	createFieldProperties(ast_interfaces.IvariableMapping)
+	createFieldProperties(IvariableMapping)
 
 @QTI
-@interface.implementer(ast_interfaces.ItemplateDefault)
+@interface.implementer(ItemplateDefault)
 class TemplateDefault(QTIElement):
-	createFieldProperties(ast_interfaces.ItemplateDefault)
+	createFieldProperties(ItemplateDefault)
 
 @QTI
-@interface.implementer(ast_interfaces.Iweight)
+@interface.implementer(Iweight)
 class Weight(QTIElement):
-	createFieldProperties(ast_interfaces.Iweight)
+	createFieldProperties(Iweight)
 
 @QTI
-@interface.implementer(ast_interfaces.IassessmentSection)
+@interface.implementer(IassessmentSection)
 class AssessmentSection(QTIElement):
-	createFieldProperties(ast_interfaces.IassessmentSection)
+	createFieldProperties(IassessmentSection)
 
 @QTI
-@interface.implementer(ast_interfaces.IassessmentSectionRef)
+@interface.implementer(IassessmentSectionRef)
 class AssessmentSectionRef(QTIElement):
-	createFieldProperties(ast_interfaces.IassessmentSectionRef)
+	createFieldProperties(IassessmentSectionRef)
 
 @QTI
-@interface.implementer(ast_interfaces.IassessmentItemRef)
+@interface.implementer(IassessmentItemRef)
 class AssessmentItemRef(QTIElement):
-	createFieldProperties(ast_interfaces.IassessmentItemRef)
+	createFieldProperties(IassessmentItemRef)
 	
 @QTI
-@interface.implementer(ast_interfaces.ItestPart)
+@interface.implementer(ItestPart)
 class TestPart(QTIElement):
-	createFieldProperties(ast_interfaces.ItestPart)
+	createFieldProperties(ItestPart)
 
 @QTI
-@interface.implementer(ast_interfaces.IassessmentTest)
+@interface.implementer(IassessmentTest)
 class AssessmentTest(QTIElement):
-	createFieldProperties(ast_interfaces.IassessmentTest)
+	createFieldProperties(IassessmentTest)

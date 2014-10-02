@@ -16,10 +16,10 @@ from nti.schema.schema import EqHash
 from nti.schema.schema import SchemaConfigured
 from nti.schema.fieldproperty import createDirectFieldProperties
 
-from . import interfaces
+from .interfaces import IConsumer
 
 @WithRepr
 @EqHash('key', 'secret')
-@interface.implementer(interfaces.IConsumer)
+@interface.implementer(IConsumer)
 class Consumer(SchemaConfigured):
-	createDirectFieldProperties(interfaces.IConsumer)
+	createDirectFieldProperties(IConsumer)

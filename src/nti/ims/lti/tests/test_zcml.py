@@ -14,7 +14,7 @@ from hamcrest import has_property
 
 from zope import component
 
-from nti.ims.lti import interfaces
+from nti.ims.lti.interfaces import IConsumer
 
 import nti.testing.base
 
@@ -39,7 +39,7 @@ class TestZcml(nti.testing.base.ConfiguringTestBase):
 
 	def test_registration(self):
 		self.configure_string(ZCML_STRING)
-		consumer = component.queryUtility(interfaces.IConsumer)
+		consumer = component.queryUtility(IConsumer)
 		assert_that(consumer, is_not(none()))
 		assert_that(consumer, has_property('key', 'jisc.ac.uk'))
 		assert_that(consumer, has_property('secret', 'secret'))
