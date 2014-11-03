@@ -13,7 +13,7 @@ logger = __import__('logging').getLogger(__name__)
 import inspect
 
 from zope import interface
-from zope.configuration import fields
+from zope.configuration.fields import GlobalObject
 
 from nti.externalization.zcml import autoPackageExternalization
 
@@ -24,12 +24,13 @@ from .interfaces import IConcrete
 def _item_predicate(item):
 	implemented = getattr(item, '__implemented__', None)
 	implemented = implemented.flattened() if implemented else ()
-	return  inspect.isclass(item) and issubclass(item, QTIElement) and \
-			item != QTIElement and IConcrete in implemented
+	result = bool(inspect.isclass(item) and issubclass(item, QTIElement) and \
+				  item != QTIElement and IConcrete in implemented)
+	return result
 
 class IRegisterQTIElementsDirective(interface.Interface):
-	module = fields.GlobalObject(title="Module to scan for QTI elements to add", 
-								 required=True)
+	module = GlobalObject(title="Module to scan for QTI elements to add", 
+						  required=True)
 
 def registerQTIElements(_context, module):
 	root_interfaces = []

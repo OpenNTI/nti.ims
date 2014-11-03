@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-QTI writer
-
 .. $Id$
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
@@ -59,4 +57,3 @@ def write(item, target=None):
 		tree = etree.ElementTree(result)
 		tree.write(target)
 	return result
-

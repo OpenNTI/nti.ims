@@ -9,7 +9,8 @@
 	<include package="zope.component" />
 	<include package="zope.security" />
 	
-	<include package="." file="meta.zcml" />	
+	<include package="." file="meta.zcml" />
+	
 	<qti:registerQTIElements module=".assessments.elements" />
 	<qti:registerQTIElements module=".content.elements" />
 	<qti:registerQTIElements module=".feedback.elements" />

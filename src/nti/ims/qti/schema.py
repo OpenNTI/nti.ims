@@ -18,7 +18,9 @@ from collections import Iterable
 from zope import interface
 
 from zope.schema import URI
-from zope.schema import interfaces as schema_interfaces
+from zope.schema.interfaces import WrongType
+from zope.schema.interfaces import IFromUnicode
+from zope.schema.interfaces import ConstraintNotSatisfied
 
 from nti.schema.field import Int
 from nti.schema.field import Bool
@@ -49,7 +51,7 @@ class URIAttribute(BaseQTIAttribute, URI):
 	A :class:`URI` type that to mark XML attribute elements
 	"""
 
-@interface.implementer(schema_interfaces.IFromUnicode)
+@interface.implementer(IFromUnicode)
 class BoolAttribute(BaseQTIAttribute, Bool):
 	"""
 	A :class:`Bool` type that to mark XML attribute elements
@@ -75,7 +77,7 @@ class MimeTypeAttribute(TextLineAttribute):
 	A :class: for mimetype attributes
 	"""
 
-@interface.implementer(schema_interfaces.IFromUnicode)
+@interface.implementer(IFromUnicode)
 class ListAttribute(BaseQTIAttribute, List):
 	"""
 	A :class:`List` type that to mark XML attribute elements
@@ -93,7 +95,10 @@ class ListAttribute(BaseQTIAttribute, List):
 		if isinstance(value, six.string_types):
 			result = unicode(value)
 		elif isinstance(value, Iterable):
-			func = unicode if not IQTIAttribute.providedBy(self.value_type) else self.value_type.toUnicode
+			if not IQTIAttribute.providedBy(self.value_type):
+				func = unicode 
+			else:
+				func = self.value_type.toUnicode
 			result = [func(x) for x in value]
 			result = ' '.join(result)
 		else:
@@ -108,10 +113,10 @@ class IntegerOrVariableRefAttribute(TextLineAttribute):
 	def _validate(self, value):
 		if not (isinstance(value, six.string_types) or \
 				isinstance(value, numbers.Integral)):
-			raise schema_interfaces.WrongType(value)
+			raise WrongType(value)
 
 		if not self.constraint(value):
-			raise schema_interfaces.ConstraintNotSatisfied(value)
+			raise ConstraintNotSatisfied(value)
 		
 	def fromUnicode(self, value):
 		result = super(IntegerOrVariableRefAttribute, self).fromUnicode(value)
@@ -134,10 +139,10 @@ class FloatOrVariableRefAttribute(TextLineAttribute):
 	def _validate(self, value):
 		if not (isinstance(value, six.string_types) or \
 				isinstance(value, (numbers.Integral, numbers.Real))):
-			raise schema_interfaces.WrongType(value)
+			raise WrongType(value)
 
 		if not self.constraint(value):
-			raise schema_interfaces.ConstraintNotSatisfied(value)
+			raise ConstraintNotSatisfied(value)
 		
 	def fromUnicode(self, value):
 		result = super(FloatOrVariableRefAttribute, self).fromUnicode(value)

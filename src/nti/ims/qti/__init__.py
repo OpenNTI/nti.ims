@@ -16,6 +16,7 @@ import importlib
 from zope import interface
 
 from .basic.elements import QTIElement
+
 from . import interfaces as qti_interfaces
 
 class _ElementFinder(object):
@@ -75,8 +76,10 @@ class _IConcreteFinder(_ElementFinder):
 		return name[1:]
 	
 	def _item_predicate(self, item):
-		return 	type(item) == interface.interface.InterfaceClass and issubclass(item, qti_interfaces.IConcrete) and \
-				item != qti_interfaces.IConcrete
+		result = bool(type(item) == interface.interface.InterfaceClass and \
+					  issubclass(item, qti_interfaces.IConcrete) and \
+					  item != qti_interfaces.IConcrete)
+		return result
 	
 	def _filename_predicate(self, name, ext):
 		return name.endswith("interfaces") and ext == ".py"
@@ -96,8 +99,11 @@ class _QTIFinder(_ElementFinder):
 	def _item_predicate(self, item):
 		implemented = getattr(item, '__implemented__', None)
 		implemented = implemented.flattened() if implemented else ()
-		return 	inspect.isclass(item) and issubclass(item, QTIElement) and item != QTIElement and \
-				qti_interfaces.IConcrete in implemented
+		result = bool(inspect.isclass(item) and \
+					  issubclass(item, QTIElement) and \
+					  item != QTIElement and \
+					   qti_interfaces.IConcrete in implemented)
+		return result
 	
 	def _filename_predicate(self, name, ext):
 		return name.endswith("elements") and ext == ".py"
@@ -115,4 +121,3 @@ def find_concrete_classes(path=None):
 	"""
 	result = _QTIFinder()(path)
 	return result
-
