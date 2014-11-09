@@ -19,6 +19,7 @@ from nti.externalization.datetime import datetime_from_string
 
 from nti.schema.schema import EqHash
 from nti.schema.field import SchemaConfigured
+from nti.schema.interfaces import InvalidValue
 from nti.schema.fieldproperty import createDirectFieldProperties
 
 from nti.utils.property import alias
@@ -45,7 +46,7 @@ class TimeFrame(SchemaConfigured):
 		if value:
 			try:
 				datetime = datetime_from_string(value)
-			except ValueError:
+			except (InvalidValue, ValueError):
 				datetime = isodate.parse_date(value)
 			return time.mktime(datetime.timetuple())
 
