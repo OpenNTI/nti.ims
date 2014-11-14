@@ -90,6 +90,7 @@ class TestEnterprise(unittest.TestCase):
 		enterprise = Enterprise.parseFile(path)
 		members = sorted(list(enterprise.get_all_members()))
 		assert_that(members, has_length(2))
+		assert_that(members[0], has_property('CourseID', has_property('id', is_('18161.201120'))))
 		assert_that(members[0], has_property('course_id', has_property('id', is_('18161.201120'))))
 		assert_that(members[0], has_property('role', has_property('status', is_(0))))
 		assert_that(members[1], has_property('course_id', has_property('id', is_('18161.201121'))))
