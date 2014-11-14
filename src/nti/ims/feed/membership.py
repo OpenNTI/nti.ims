@@ -158,6 +158,8 @@ class _MemberProxy(ProxyBase):
 						lambda s: s.__dict__.get('_course_id'),
 						lambda s, v: s.__dict__.__setitem__('_course_id', v))
 		
+	CourseID = alias('course_id')
+	
 	def __new__(cls, base, course_id):
 		return ProxyBase.__new__(cls, base)
 
