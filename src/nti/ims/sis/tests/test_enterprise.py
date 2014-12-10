@@ -17,8 +17,8 @@ from hamcrest import has_property
 import os
 import unittest
 
-from nti.ims.feed.sourcedid import SourcedID
-from nti.ims.feed.enterprise import Enterprise
+from nti.ims.sis.sourcedid import SourcedID
+from nti.ims.sis.enterprise import Enterprise
 
 class TestEnterprise(unittest.TestCase):
 
