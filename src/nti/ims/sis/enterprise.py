@@ -43,7 +43,11 @@ class Enterprise(object):
 
 	def add_membership(self, membership):
 		if membership is not None:
-			self.memberships[membership.sourcedid] = membership
+			if membership.sourcedid in self.memberships:
+				current = self.memberships[membership.sourcedid]
+				current += membership # merge
+			else:
+				self.memberships[membership.sourcedid] = membership
 
 	def get_membership(self, groupid):
 		result = self.memberships.get(groupid)

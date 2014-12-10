@@ -3,11 +3,13 @@
 """
 .. $Id$
 """
+
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 from zope import interface
 from zope.annotation.interfaces import IAnnotatable
+from zope.interface.common.sequence import IFiniteSequence
 
 from dolmen.builtins import IDict
 from dolmen.builtins import IIterable
@@ -17,6 +19,7 @@ from nti.schema.field import Dict
 from nti.schema.field import Float
 from nti.schema.field import Object
 from nti.schema.field import ValidTextLine
+from nti.schema.field import IndexedIterable
 
 STUDENT_ROLE = "01"
 INSTRUCTOR_ROLE = "02"
@@ -81,20 +84,26 @@ class IMember(IAnnotatable, IElementCreatable):
 	idtype = Int(title='Id type', required=False, default=1)
 	role = Object(IRole, title='Source id', required=True)
 
-class IMembership(IAnnotatable, IElementCreatable, IIterable):
+class IMembership(IAnnotatable, IElementCreatable, IIterable, IFiniteSequence):
 	sourcedid = Object(ISourcedID, title='source id', required=True)
-	members = Dict(key_type=Object(ISourcedID), value_type=Object(IMember))
+	members = IndexedIterable(title="The members.",
+							  value_type=Object(IMember, title="A member" ))
 	
 	def add(member):
 		"""
 		add a member
 		"""
 		
-	def get(sourcedid):
+	def index(member):
 		"""
-		return the IMemeber with the specified id
+		return the storage index for the specified member
 		"""
-
+		
+	def __iadd__(other):
+		"""
+		merge with another membership
+		"""
+		
 class IEnterprise(IAnnotatable, IElementCreatable):
 	persons = Object(IPersons)
 	groups = Dict(key_type=Object(ISourcedID), value_type=Object(IGroup))

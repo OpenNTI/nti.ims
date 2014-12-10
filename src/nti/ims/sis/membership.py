@@ -5,15 +5,18 @@ Define membership objects.
 
 .. $Id$
 """
+
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+from collections import OrderedDict
 from functools import total_ordering
 
 from zope import interface
 from zope.proxy import ProxyBase
+from zope.proxy import removeAllProxies
 from zope.container.contained import Contained
 
 from nti.externalization.representation import WithRepr
@@ -194,6 +197,20 @@ class Membership(object):
 			member.__parent__ = self
 			self.members.append(member)
 
+	def __iadd__(self, other):
+		assert IMembership.providedBy(other)
+		assert not other.sourcedid or other.sourcedid == self.sourcedid
+		
+		current = OrderedDict({m.sourcedid:m for m in self.members})
+		for member in other.members:
+			member = removeAllProxies(member)
+			if member.sourcedid not in current:
+				member.__parent__ = self # take ownership
+				current[member.sourcedid] = member
+		
+		self.members = list(current.values())
+		return self
+		
 	def __iter__(self):
 		for member in self.members:
 			yield _MemberProxy(member, self.sourcedid)

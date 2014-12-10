@@ -21,8 +21,8 @@ from nti.ims.sis.enterprise import Enterprise
 
 class TestOSU(unittest.TestCase):
 		
-	def test_parse(self):
-		path = os.path.join(os.path.dirname(__file__), 'osu.xml')
+	def _parse(self, source):
+		path = source
 		enterprise = Enterprise.parseFile(path)
 		assert_that(enterprise, is_not(none()))
 		assert_that(enterprise, has_property("persons", has_length(2)))
@@ -74,3 +74,11 @@ class TestOSU(unittest.TestCase):
 		assert_that(member, has_property('role', has_property('roletype', is_('02'))))
 		assert_that(member, has_property('role', has_property('status', is_(1))))
 		assert_that(member, has_property('role', has_property('userid', is_('jobs'))))
+
+	def test_parse_1(self):
+		path = os.path.join(os.path.dirname(__file__), 'osu_1.xml')
+		self._parse(path)
+		
+	def test_parse_2(self):
+		path = os.path.join(os.path.dirname(__file__), 'osu_2.xml')
+		self._parse(path)
