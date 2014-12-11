@@ -11,7 +11,6 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-from collections import OrderedDict
 from functools import total_ordering
 
 from zope import interface
@@ -189,6 +188,7 @@ class Membership(object):
 
 	def __init__(self):
 		self.members = []
+		self._v_cache = set()
 
 	id = alias('sourcedid')
 
@@ -196,19 +196,17 @@ class Membership(object):
 		if member is not None:
 			member.__parent__ = self
 			self.members.append(member)
+			self._v_cache.add(member)
 
 	def __iadd__(self, other):
 		assert IMembership.providedBy(other)
 		assert not other.sourcedid or other.sourcedid == self.sourcedid
-		
-		current = OrderedDict({m.sourcedid:m for m in self.members})
+	
 		for member in other.members:
 			member = removeAllProxies(member)
-			if member.sourcedid not in current:
-				member.__parent__ = self # take ownership
-				current[member.sourcedid] = member
-		
-		self.members = list(current.values())
+			if member not in self._v_cache:
+				self.add(member)
+
 		return self
 		
 	def __iter__(self):
@@ -223,10 +221,12 @@ class Membership(object):
 		return _MemberProxy(result, self.sourcedid)
 	
 	def __delitem__(self, index):
+		member = self.members[index]
+		self._v_cache.remove(member)
 		del self.members[index]
 
 	def __contains__(self, member):
-		return member in self.members
+		return member in self._v_cache
 	
 	def index(self, member):
 		return self.members.index(member)
