@@ -91,11 +91,7 @@ class Enterprise(object):
 				if p is not None:
 					m.role.userid = p.userid
 				else:
-					logger.warn("removing invalid membership record %s", m)
-					membership = m.membership
-					idx = membership.index(m)
-					del membership[idx]
-					
+					logger.warn("incomplete membership record %s", m)					
 		return enterprise
 	
 	@classmethod
