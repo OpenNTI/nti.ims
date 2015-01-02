@@ -60,12 +60,12 @@ class TestOSU(unittest.TestCase):
 		assert_that(memberships, has_length(1))
 		membership = enterprise.get_membership(memberships[0].sourcedid)
 		assert_that(membership, is_not(none()))
-		assert_that(membership, has_length(2))
+		assert_that(membership, has_length(3))
 		assert_that(membership, has_property('sourcedid', has_property('source', is_('SIS'))))
 		assert_that(membership, has_property('sourcedid', has_property('id', is_('G_BIOL1311LAB_WH3_146'))))
 
 		members = list(membership)
-		assert_that(members, has_length(2))
+		assert_that(members, has_length(3))
 		member = membership[0]
 		assert_that(member, is_not(none()))
 		assert_that(member, has_property('membership', is_(membership)))

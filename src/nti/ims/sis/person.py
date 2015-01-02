@@ -74,7 +74,7 @@ class Person(SchemaConfigured):
 				else:
 					name = u''
 		if not name:
-			logger.warn("No name specified for person %s", userid)
+			logger.warn("No name specified for person %s", sid)
 			
 		email = element.find('email')
 		email = get_text(email)
@@ -85,11 +85,14 @@ class Person(SchemaConfigured):
 			userrole = get_text(extension.find('userrole'))
 			userrole = to_legacy_role(userrole)
 			
-		result = Person(sourcedid=sid, userid=userid,
-						name=name, email=email, userrole=userrole) \
-				 if sid is not None and userid else None
+		if sid is not None:
+			result = Person(sourcedid=sid, 
+							userid=userid,
+							name=name, 
+							email=email, 
+							userrole=userrole)
 		if result is None:
-			logger.debug('Skipping person node %r (%s, %s)', element, sid, userid)
+			logger.debug('Skipping person node %r (%s, %s)', element, sid)
 		return result
 
 @interface.implementer(IPersons)
