@@ -36,6 +36,7 @@ from .interfaces import IMember
 from .interfaces import IMembership
 from .interfaces import STUDENT_ROLE
 from .interfaces import ACTIVE_STATUS
+from .interfaces import INACTIVE_STATUS
 from .interfaces import INSTRUCTOR_ROLE
 
 DEFAULT_ID_TYPE = IMember['idtype'].default
@@ -105,23 +106,27 @@ class Member(Contained, SchemaConfigured):
 		
 	@property
 	def is_student(self):
-		return self.role.is_student
+		return self.role.is_student if self.role is not None else False
 
 	@property
 	def is_instructor(self):
-		return self.role.is_instructor
+		return self.role.is_instructor if self.role is not None else False
 	
 	@property
 	def status(self):
-		return self.role.status
+		return self.role.status if self.role is not None else INACTIVE_STATUS
+	
+	@property
+	def roletype(self):
+		return self.role.roletype if self.role is not None else None
 	
 	@property
 	def is_active(self):
-		return self.role.status == ACTIVE_STATUS
+		return self.role.status == ACTIVE_STATUS if self.role is not None else False
 	
 	@property
 	def userid(self):
-		return self.role.userid
+		return self.role.userid if self.role is not None else None
 
 	def __lt__(self, other):
 		try:
