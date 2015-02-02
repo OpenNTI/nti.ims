@@ -29,8 +29,9 @@ setup(
     namespace_packages=['nti'],
 	install_requires=[
 		'setuptools',
-        'nti.schema',
-        'ims_lti_py'
+        'dolmen.builtins',
+        'ims_lti_py',
+        'nti.schema'
 	],
 	entry_points=entry_points
 )

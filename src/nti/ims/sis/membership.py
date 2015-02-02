@@ -42,8 +42,8 @@ from .interfaces import INSTRUCTOR_ROLE
 DEFAULT_ID_TYPE = IMember['idtype'].default
 
 @total_ordering
-@interface.implementer(IRole)
 @WithRepr
+@interface.implementer(IRole)
 @EqHash('status', 'roletype', 'userid')
 class Role(SchemaConfigured):
 	status = None
@@ -89,9 +89,9 @@ class Role(SchemaConfigured):
 		return result
 
 @total_ordering
+@WithRepr
 @interface.implementer(IMember)
 @EqHash('sourcedid', 'idtype', 'role')
-@WithRepr
 class Member(Contained, SchemaConfigured):
 	role = None
 	idtype = None

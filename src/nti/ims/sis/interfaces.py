@@ -8,7 +8,6 @@ from __future__ import print_function, unicode_literals, absolute_import, divisi
 __docformat__ = "restructuredtext en"
 
 from zope import interface
-from zope.annotation.interfaces import IAnnotatable
 from zope.interface.common.sequence import IFiniteSequence
 
 from dolmen.builtins import IDict
@@ -39,29 +38,29 @@ class IElementCreatable(interface.Interface):
 		return a instance of this object from an Element object
 		"""
 
-class ISourcedID(IAnnotatable, IElementCreatable):
+class ISourcedID(IElementCreatable):
 	id = ValidTextLine(title='Identifier', required=True)
 	source = ValidTextLine(title='Source', required=False, default='SIS')
 	
-class ITimeFrame(IAnnotatable, IElementCreatable):
+class ITimeFrame(IElementCreatable):
 	start = Float(title='start time', required=False)
 	end = Float(title='end time', required=False)
 
-class IGroup(IAnnotatable, IElementCreatable):
+class IGroup(IElementCreatable):
 	sourcedid = Object(ISourcedID, title='Source id', required=True)
 	timeframe = Object(ITimeFrame, title='Time frame', required=False)
 	description = ValidTextLine(title='Group description', required=False)
 	type = ValidTextLine(title='Group type', required=False)
 	level = ValidTextLine(title='Group level', required=False)
 
-class IPerson(IAnnotatable, IElementCreatable):
+class IPerson(IElementCreatable):
 	sourcedid = Object(ISourcedID, title='Source id', required=True)
 	userid = ValidTextLine(title='user id', required=False)
 	name = ValidTextLine(title='person name', required=False)
 	email = ValidTextLine(title='person email', required=False)
 	userrole = ValidTextLine(title='user role type', required=False)
 	
-class IPersons(IAnnotatable, IDict):
+class IPersons(IDict):
 
 	def add(person):
 		"""
@@ -73,18 +72,19 @@ class IPersons(IAnnotatable, IDict):
 		return a IPerson w/ the specified userid
 		"""
 
-class IRole(IAnnotatable, IElementCreatable):
+class IRole(IElementCreatable):
 	userid = ValidTextLine(title='User id', required=False)
 	datasource = ValidTextLine(title='Data source', required=False)
 	status = Int(title='Status id', required=True, default=ACTIVE_STATUS)
 	roletype = ValidTextLine(title='role type', required=True, default=STUDENT_ROLE)
 
-class IMember(IAnnotatable, IElementCreatable):
+class IMember( IElementCreatable):
 	sourcedid = Object(ISourcedID, title='source id', required=True)
 	idtype = Int(title='Id type', required=False, default=1)
 	role = Object(IRole, title='Source id', required=True)
 
-class IMembership(IAnnotatable, IElementCreatable, IIterable, IFiniteSequence):
+class IMembership(IElementCreatable, IIterable, IFiniteSequence):
+	
 	sourcedid = Object(ISourcedID, title='source id', required=True)
 	members = IndexedIterable(title="The members.",
 							  value_type=Object(IMember, title="A member" ))
@@ -104,7 +104,8 @@ class IMembership(IAnnotatable, IElementCreatable, IIterable, IFiniteSequence):
 		merge with another membership
 		"""
 		
-class IEnterprise(IAnnotatable, IElementCreatable):
+class IEnterprise(IElementCreatable):
+	
 	persons = Object(IPersons)
 	groups = Dict(key_type=Object(ISourcedID), value_type=Object(IGroup))
 	membership = Dict(key_type=Object(ISourcedID), value_type=Object(IMembership))

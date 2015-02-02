@@ -3,12 +3,14 @@
 """
 .. $Id$
 """
+
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-from itertools import ifilter, tee
+from itertools import tee
+from itertools import ifilter
 
 from .utils import get_text
 from .utils import get_fileobj

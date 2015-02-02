@@ -3,6 +3,7 @@
 """
 .. $Id$
 """
+
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
 
@@ -31,9 +32,9 @@ from .sourcedid import SourcedID
 from .interfaces import IGroup
 from .interfaces import ITimeFrame
 
-@interface.implementer(ITimeFrame)
-@EqHash('start', 'end')
 @WithRepr
+@EqHash('start', 'end')
+@interface.implementer(ITimeFrame)
 class TimeFrame(SchemaConfigured):
 	end = None
 	start = None
@@ -62,9 +63,9 @@ class TimeFrame(SchemaConfigured):
 		return None
 
 @total_ordering
-@interface.implementer(IGroup)
-@EqHash('sourcedid')
 @WithRepr
+@EqHash('sourcedid')
+@interface.implementer(IGroup)
 class Group(SchemaConfigured):
 	sourcedid = None
 	createDirectFieldProperties(IGroup)

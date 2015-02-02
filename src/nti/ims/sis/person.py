@@ -3,6 +3,7 @@
 """
 .. $Id$
 """
+
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
 
@@ -29,9 +30,9 @@ from .interfaces import IPersons
 from .sourcedid import SourcedID
 
 @total_ordering
-@interface.implementer(IPerson)
-@EqHash('sourcedid')
 @WithRepr
+@EqHash('sourcedid')
+@interface.implementer(IPerson)
 class Person(SchemaConfigured):
 	userid = None
 	userrole = None
