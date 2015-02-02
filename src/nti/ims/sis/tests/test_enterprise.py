@@ -63,6 +63,8 @@ class TestEnterprise(unittest.TestCase):
 		assert_that(membership, has_length(1))
 		assert_that(membership, has_property('sourcedid', has_property('source', is_('SIS'))))
 		assert_that(membership, has_property('sourcedid', has_property('id', is_('18161.201120'))))
+		assert_that(membership, has_property('sourcedid', has_property('Term', is_('201120'))))
+		assert_that(membership, has_property('sourcedid', has_property('CRN', is_('18161'))))
 
 		members = list(membership)
 		assert_that(members, has_length(1))
@@ -70,6 +72,8 @@ class TestEnterprise(unittest.TestCase):
 		assert_that(member, is_not(none()))
 		assert_that(member, has_property('sourcedid', has_property('source', is_('SIS'))))
 		assert_that(member, has_property('sourcedid', has_property('id', is_('112133307'))))
+		assert_that(member, has_property('sourcedid', has_property('Term', is_(none()))))
+		assert_that(member, has_property('sourcedid', has_property('CRN', is_(none()))))
 		assert_that(member, has_property('role', has_property('roletype', is_('01'))))
 		assert_that(member, has_property('role', has_property('status', is_(1))))
 		assert_that(member, has_property('role', has_property('userid', is_('cald3307'))))
