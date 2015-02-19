@@ -27,6 +27,3 @@ class TestLTI(unittest.TestCase):
 		result = outcome.post_read_result()
 		assert_that(result, has_property('severity', is_('status')))
 		assert_that(result, has_property('code_major', is_('failure')))
-		
-if __name__ == '__main__':
-	unittest.main()

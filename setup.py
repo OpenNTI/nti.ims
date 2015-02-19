@@ -6,6 +6,19 @@ VERSION = '0.0.0'
 entry_points = {
 }
 
+TESTS_REQUIRE = [
+    'fudge',
+    'nose',
+    'nose-timer',
+    'nose-pudb',
+    'nose-progressive',
+    'nose2[coverage_plugin]',
+    'pyhamcrest',
+    'zope.testing',
+    'nti.testing',
+    'nti.nose_traceback_info',
+]
+
 setup(
     name='nti.ims',
     version=VERSION,
@@ -23,15 +36,24 @@ setup(
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.3',
-        ],
+    ],
     packages=find_packages('src'),
     package_dir={'': 'src'},
     namespace_packages=['nti'],
-	install_requires=[
-		'setuptools',
+    tests_require=TESTS_REQUIRE,
+    install_requires=[
+        'setuptools',
         'dolmen.builtins',
+        'lxml',
         'ims_lti_py',
         'nti.schema'
-	],
-	entry_points=entry_points
+    ],
+    extras_require={
+        'test': TESTS_REQUIRE,
+    },
+    dependency_links=[
+        'git+https://github.com/NextThought/nti.schema.git#egg=nti.schema',
+        'git+https://github.com/NextThought/nti.nose_traceback_info.git#egg=nti.nose_traceback_info'
+    ],
+    entry_points=entry_points
 )

@@ -3,6 +3,7 @@
 """
 .. $Id$
 """
+
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
 
@@ -22,9 +23,9 @@ from . import interfaces as qti_interfaces
 class _ElementFinder(object):
 	
 	def __init__(self):
-		self.qti_path = os.path.split(qti_interfaces.__file__)[0]
+		self.qti_path = os.path.split(__file__)[0]
 		package = getattr(qti_interfaces, '__package__')
-		self.path_length = len(self.qti_path)-len(package or 'nti.assessment.qti')
+		self.path_length = len(self.qti_path)-len(package or 'nti.ims.qti')
 		
 	def _load_module(self, path, name):
 		part = path[self.path_length:]
