@@ -164,4 +164,3 @@ class StringOrVariableRefAttribute(TextLineAttribute):
 
 class IdentifierRefAttribute(TextLineAttribute):
 	pass
-

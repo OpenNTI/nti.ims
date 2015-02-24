@@ -5,6 +5,7 @@ Defines QTI Interaction elements
 
 .. $Id$
 """
+
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
 
@@ -16,6 +17,7 @@ from nti.schema.fieldproperty import createFieldProperties
 
 from ..basic.elements import QTI
 from ..basic.elements import QTIElement
+
 from . import interfaces as int_interfaces
 
 @QTI

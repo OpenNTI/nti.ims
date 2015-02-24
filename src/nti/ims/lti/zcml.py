@@ -11,7 +11,7 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-import functools
+from functools import partial
 
 from zope import interface
 from zope.configuration import fields
@@ -29,5 +29,5 @@ class IRegisterConsumer(interface.Interface):
 	secret = fields.TextLine(title="Consumer secret", required=True)
 
 def registerConsumer(_context, key, secret, name=u''):
-	factory = functools.partial(Consumer, key=key, secret=secret)
+	factory = partial(Consumer, key=key, secret=secret)
 	utility(_context, provides=IConsumer, factory=factory, name=name)

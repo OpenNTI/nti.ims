@@ -13,6 +13,9 @@ from lxml import etree
 
 ns_map = {'xmlns':"http://www.imsglobal.org/xsd/imsqti_v2p0"}
 		
+etree_Element = getattr(etree, 'Element')
+etree_ElementTree = getattr(etree, 'ElementTree')
+
 def _write_attribs(element, a_map):
 	for k,v in a_map.items():
 		if k and v is not None:
@@ -23,9 +26,9 @@ def write(item, target=None):
 	def _process_element(item, write_ns=False):
 		name = item._name
 		if write_ns:
-			element = etree.Element(name, nsmap=ns_map)
+			element = etree_Element(name, nsmap=ns_map)
 		else:
-			element = etree.Element(name)
+			element = etree_Element(name)
 
 		attribs = item.get_attributes()
 		_write_attribs(element, attribs)
@@ -55,6 +58,6 @@ def write(item, target=None):
 
 	result = _process_element(item, True)
 	if target is not None:
-		tree = etree.ElementTree(result)
+		tree = etree_ElementTree(result)
 		tree.write(target)
 	return result

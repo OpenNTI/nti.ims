@@ -9,8 +9,7 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-from itertools import tee
-from itertools import ifilter
+from nti.common.iterables import isorted
 
 from .utils import get_text
 from .utils import get_fileobj
@@ -19,27 +18,6 @@ from .interfaces import STUDENT
 from .interfaces import INSTRUCTOR
 from .interfaces import STUDENT_ROLE
 from .interfaces import INSTRUCTOR_ROLE
-
-def isorted(iterable, comparator=None):
-    """
-    generator-based quicksort.
-
-    http://code.activestate.com/recipes/280501-lazy-sorting/
-    """
-    iterable = iter(iterable)
-    try:
-        pivot = iterable.next()
-    except:
-        return
-
-    comparator = comparator if comparator else lambda x, y: x < y
-
-    a, b = tee(iterable)
-    for x in isorted(ifilter(lambda x: comparator(x, pivot), a), comparator):
-        yield x
-    yield pivot
-    for x in isorted(ifilter(lambda x: not comparator(x, pivot), b), comparator):
-        yield x
 
 def to_legacy_role(role):
     if role:

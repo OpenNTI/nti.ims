@@ -11,7 +11,6 @@ __docformat__ = "restructuredtext en"
 
 from zope import interface
 from zope.schema import vocabulary
-from zope.annotation.interfaces import IAttributeAnnotatable
 
 from nti.schema.field import ValidText
 
@@ -101,7 +100,7 @@ DATA_TYPES_VOCABULARY = \
 
 # interfaces
 
-class IQTIElement(IAttributeAnnotatable):
+class IQTIElement(interface.Interface):
 	"""
 	Marker interface for QTI classes
 	"""

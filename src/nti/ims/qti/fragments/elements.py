@@ -5,6 +5,7 @@ Defines QTI fragment elements
 
 .. $Id$
 """
+
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
 
@@ -16,19 +17,22 @@ from nti.schema.fieldproperty import createFieldProperties
 
 from ..basic.elements import QTI
 from ..basic.elements import QTIElement
-from . import interfaces as frg_interfaces
+
+from .interfaces import Iinclude
+from .interfaces import IoutcomeProcessingFragment
+from .interfaces import IresponseProcessingFragment
 
 @QTI
-@interface.implementer(frg_interfaces.Iinclude)
+@interface.implementer(Iinclude)
 class Include(QTIElement):
-	createFieldProperties(frg_interfaces.Iinclude)
+	createFieldProperties(Iinclude)
 
 @QTI
-@interface.implementer(frg_interfaces.IresponseProcessingFragment)
+@interface.implementer(IresponseProcessingFragment)
 class ResponseProcessingFragment(QTIElement):
-	createFieldProperties(frg_interfaces.IresponseProcessingFragment)
+	createFieldProperties(IresponseProcessingFragment)
 
 @QTI
-@interface.implementer(frg_interfaces.IoutcomeProcessingFragment)
+@interface.implementer(IoutcomeProcessingFragment)
 class OutcomeProcessingFragment(QTIElement):
-	createFieldProperties(frg_interfaces.IoutcomeProcessingFragment)
+	createFieldProperties(IoutcomeProcessingFragment)

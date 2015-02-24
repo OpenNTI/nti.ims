@@ -18,6 +18,7 @@ from zope import interface
 
 from .basic.elements import QTIElement
 
+from .interfaces import IConcrete
 from . import interfaces as qti_interfaces
 
 class _ElementFinder(object):
@@ -78,8 +79,8 @@ class _IConcreteFinder(_ElementFinder):
 	
 	def _item_predicate(self, item):
 		result = bool(type(item) == interface.interface.InterfaceClass and \
-					  issubclass(item, qti_interfaces.IConcrete) and \
-					  item != qti_interfaces.IConcrete)
+					  issubclass(item, IConcrete) and \
+					  item != IConcrete)
 		return result
 	
 	def _filename_predicate(self, name, ext):
@@ -103,7 +104,7 @@ class _QTIFinder(_ElementFinder):
 		result = bool(inspect.isclass(item) and \
 					  issubclass(item, QTIElement) and \
 					  item != QTIElement and \
-					   qti_interfaces.IConcrete in implemented)
+					  IConcrete in implemented)
 		return result
 	
 	def _filename_predicate(self, name, ext):

@@ -13,7 +13,7 @@ from zope import interface
 from zope.container import contained as zcontained
 from zope.interface.common.sequence import IFiniteSequence
 
-from nti.externalization.representation import WithRepr
+from nti.common.representation import WithRepr
 
 from nti.schema.field import SchemaConfigured
 
@@ -149,4 +149,3 @@ def QTI(cls):
 @interface.implementer(IQTIElement)
 class QTIElement(SchemaConfigured, zcontained.Contained):
 	pass
-
