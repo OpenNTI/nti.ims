@@ -38,6 +38,7 @@ class Person(SchemaConfigured):
 	sourcedid = None
 	
 	createDirectFieldProperties(IPerson)
+
 	id = alias('sourcedid')
 
 	def __lt__(self, other):

@@ -23,6 +23,8 @@ from .person import Persons
 from .membership import Membership
 from .interfaces import IEnterprise
 
+etree_parse = getattr(etree, 'parse')
+
 @interface.implementer(IEnterprise)
 class Enterprise(object):
 
@@ -99,7 +101,7 @@ class Enterprise(object):
 	def parse(cls, source):
 		if not hasattr(source, 'read'):
 			source = BytesIO(source)
-		tree = etree.parse(source)
+		tree = etree_parse(source)
 		root = tree.getroot()
 		result = cls.createFromElement(root)
 		return cls._check(result) if result is not None else None
