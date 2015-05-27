@@ -19,9 +19,9 @@ from nti.schema.schema import EqHash
 from nti.schema.field import SchemaConfigured
 from nti.schema.fieldproperty import createDirectFieldProperties
 
-from . import get_text
-
 from .interfaces import ISourcedID
+
+from . import get_text
 
 DEFAULT_SOURCE = ISourcedID['source'].default
 CRN_TERM_PATTERN = re.compile(r"(.*)\.(.*)", re.UNICODE | re.IGNORECASE) 

@@ -20,13 +20,15 @@ from nti.schema.schema import EqHash
 from nti.schema.field import SchemaConfigured
 from nti.schema.fieldproperty import createDirectFieldProperties
 
-from . import get_text
-from . import to_legacy_role
-
 from .interfaces import IPerson
 from .interfaces import IPersons
 
 from .sourcedid import SourcedID
+
+from . import get_text
+from . import to_legacy_role
+
+DEFAULT_ROLE = IPerson['userrole'].default
 
 @total_ordering
 @WithRepr
@@ -36,7 +38,7 @@ class Person(SchemaConfigured):
 	userid = None
 	userrole = None
 	sourcedid = None
-	
+
 	createDirectFieldProperties(IPerson)
 
 	id = alias('sourcedid')
@@ -76,7 +78,7 @@ class Person(SchemaConfigured):
 					name = u''
 		if not name:
 			logger.warn("No name specified for person %s", sid)
-			
+
 		email = element.find('email')
 		email = get_text(email)
 
@@ -85,12 +87,14 @@ class Person(SchemaConfigured):
 		if extension is not None:
 			userrole = get_text(extension.find('userrole'))
 			userrole = to_legacy_role(userrole)
-			
+		else:
+			userrole = DEFAULT_ROLE
+
 		if sid is not None:
-			result = Person(sourcedid=sid, 
+			result = Person(sourcedid=sid,
 							userid=userid,
-							name=name, 
-							email=email, 
+							name=name,
+							email=email,
 							userrole=userrole)
 		if result is None:
 			logger.debug('Skipping person node %r (%s, %s)', element, sid)

@@ -25,12 +25,12 @@ from nti.schema.field import SchemaConfigured
 from nti.schema.interfaces import InvalidValue
 from nti.schema.fieldproperty import createDirectFieldProperties
 
-from . import get_text
-
 from .sourcedid import SourcedID
 
 from .interfaces import IGroup
 from .interfaces import ITimeFrame
+
+from . import get_text
 
 @WithRepr
 @EqHash('start', 'end')
@@ -83,7 +83,7 @@ class Group(SchemaConfigured):
 			return self.sourcedid > other.sourcedid
 		except AttributeError:  # pragma: no cover
 			return NotImplemented
-		
+
 	@classmethod
 	def createFromElement(cls, element):
 		sid = element.find('sourcedid')
@@ -95,7 +95,7 @@ class Group(SchemaConfigured):
 			short_desc = get_text(description.find('short'))
 			description = long_desc if long_desc else short_desc
 
-		type_= level = None
+		type_ = level = None
 		grouptype = element.find('grouptype')
 		if grouptype is not None:
 			typevalue = grouptype.find('typevalue')

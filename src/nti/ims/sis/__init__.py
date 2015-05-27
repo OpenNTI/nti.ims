@@ -20,10 +20,10 @@ from .interfaces import STUDENT_ROLE
 from .interfaces import INSTRUCTOR_ROLE
 
 def to_legacy_role(role):
-    if role:
-        role = role.upper()
-        if role == STUDENT:
-            role = STUDENT_ROLE
-        elif role == INSTRUCTOR:
-            role = INSTRUCTOR_ROLE
-    return role
+	if role:
+		role = role.upper()
+		if role == STUDENT:
+			role = STUDENT_ROLE
+		elif role == INSTRUCTOR:
+			role = INSTRUCTOR_ROLE
+	return role

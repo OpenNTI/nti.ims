@@ -58,7 +58,7 @@ class IPerson(IElementCreatable):
 	userid = ValidTextLine(title='user id', required=False)
 	name = ValidTextLine(title='person name', required=False)
 	email = ValidTextLine(title='person email', required=False)
-	userrole = ValidTextLine(title='user role type', required=False)
+	userrole = ValidTextLine(title='user role type', required=False, default=STUDENT_ROLE)
 	
 class IPersons(IDict):
 

@@ -29,9 +29,6 @@ from nti.schema.fieldproperty import createDirectFieldProperties
 
 from .sourcedid import SourcedID
 
-from . import get_text
-from . import to_legacy_role
-
 from .interfaces import IRole
 from .interfaces import IMember
 from .interfaces import IMembership
@@ -39,6 +36,9 @@ from .interfaces import STUDENT_ROLE
 from .interfaces import ACTIVE_STATUS
 from .interfaces import INACTIVE_STATUS
 from .interfaces import INSTRUCTOR_ROLE
+
+from . import get_text
+from . import to_legacy_role
 
 DEFAULT_ID_TYPE = IMember['idtype'].default
 
@@ -50,6 +50,7 @@ class Role(SchemaConfigured):
 	status = None
 	userid = None
 	roletype = None
+
 	createDirectFieldProperties(IRole)
 
 	@property
@@ -59,13 +60,13 @@ class Role(SchemaConfigured):
 	@property
 	def is_instructor(self):
 		return self.roletype == INSTRUCTOR_ROLE
-	
+
 	def __lt__(self, other):
 		try:
 			return (self.userid, self.status) < (other.userid, other.status)
 		except AttributeError:  # pragma: no cover
 			return NotImplemented
-		
+
 	def __gt__(self, other):
 		try:
 			return (self.userid, self.status) > (other.userid, other.status)
@@ -85,7 +86,7 @@ class Role(SchemaConfigured):
 		datasource = element.find('datasource')
 		datasource = get_text(datasource)
 
-		result = Role(roletype=roletype, userid=userid, status=status, 
+		result = Role(roletype=roletype, userid=userid, status=status,
 					  datasource=datasource)
 		return result
 
@@ -104,7 +105,7 @@ class Member(Contained, SchemaConfigured):
 	@property
 	def membership(self):
 		return self.__parent__
-		
+
 	@property
 	def is_student(self):
 		return self.role.is_student if self.role is not None else False
@@ -112,19 +113,19 @@ class Member(Contained, SchemaConfigured):
 	@property
 	def is_instructor(self):
 		return self.role.is_instructor if self.role is not None else False
-	
+
 	@property
 	def status(self):
 		return self.role.status if self.role is not None else INACTIVE_STATUS
-	
+
 	@property
 	def roletype(self):
 		return self.role.roletype if self.role is not None else None
-	
+
 	@property
 	def is_active(self):
 		return self.role.status == ACTIVE_STATUS if self.role is not None else False
-	
+
 	@property
 	def userid(self):
 		return self.role.userid if self.role is not None else None
@@ -165,9 +166,9 @@ class _MemberProxy(ProxyBase):
 	course_id = property(
 						lambda s: s.__dict__.get('_course_id'),
 						lambda s, v: s.__dict__.__setitem__('_course_id', v))
-		
+
 	CourseID = alias('course_id')
-	
+
 	def __new__(cls, base, course_id):
 		return ProxyBase.__new__(cls, base)
 
@@ -207,14 +208,14 @@ class Membership(object):
 	def __iadd__(self, other):
 		assert IMembership.providedBy(other)
 		assert not other.sourcedid or other.sourcedid == self.sourcedid
-	
+
 		for member in other.members:
 			member = removeAllProxies(member)
 			if member not in self._v_cache:
 				self.add(member)
 
 		return self
-		
+
 	def __iter__(self):
 		for member in self.members:
 			yield _MemberProxy(member, self.sourcedid)
@@ -225,7 +226,7 @@ class Membership(object):
 	def __getitem__(self, index):
 		result = self.members[index]
 		return _MemberProxy(result, self.sourcedid)
-	
+
 	def __delitem__(self, index):
 		member = self.members[index]
 		self._v_cache.remove(member)
@@ -233,15 +234,15 @@ class Membership(object):
 
 	def __contains__(self, member):
 		return member in self._v_cache
-	
+
 	def index(self, member):
 		return self.members.index(member)
-	
+
 	@classmethod
 	def createFromElement(cls, element):
 		result = Membership()
 		for e in element.iterchildren():
-			if e.tag =="sourcedid":
+			if e.tag == "sourcedid":
 				sid = SourcedID.createFromElement(e)
 				result.sourcedid = sid
 			elif e.tag == "member":
