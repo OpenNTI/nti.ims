@@ -8,6 +8,7 @@ from __future__ import print_function, unicode_literals, absolute_import, divisi
 __docformat__ = "restructuredtext en"
 
 from zope import interface
+
 from zope.interface.common.sequence import IFiniteSequence
 
 from dolmen.builtins import IDict
@@ -41,7 +42,7 @@ class IElementCreatable(interface.Interface):
 class ISourcedID(IElementCreatable):
 	id = ValidTextLine(title='Identifier', required=True)
 	source = ValidTextLine(title='Source', required=False, default='SIS')
-	
+
 class ITimeFrame(IElementCreatable):
 	start = Float(title='start time', required=False)
 	end = Float(title='end time', required=False)
@@ -59,7 +60,7 @@ class IPerson(IElementCreatable):
 	name = ValidTextLine(title='person name', required=False)
 	email = ValidTextLine(title='person email', required=False)
 	userrole = ValidTextLine(title='user role type', required=False, default=STUDENT_ROLE)
-	
+
 class IPersons(IDict):
 
 	def add(person):
@@ -78,34 +79,34 @@ class IRole(IElementCreatable):
 	status = Int(title='Status id', required=True, default=ACTIVE_STATUS)
 	roletype = ValidTextLine(title='role type', required=True, default=STUDENT_ROLE)
 
-class IMember( IElementCreatable):
+class IMember(IElementCreatable):
 	sourcedid = Object(ISourcedID, title='source id', required=True)
 	idtype = Int(title='Id type', required=False, default=1)
 	role = Object(IRole, title='Source id', required=True)
 
 class IMembership(IElementCreatable, IIterable, IFiniteSequence):
-	
+
 	sourcedid = Object(ISourcedID, title='source id', required=True)
 	members = IndexedIterable(title="The members.",
-							  value_type=Object(IMember, title="A member" ))
-	
+							  value_type=Object(IMember, title="A member"))
+
 	def add(member):
 		"""
 		add a member
 		"""
-		
+
 	def index(member):
 		"""
 		return the storage index for the specified member
 		"""
-		
+
 	def __iadd__(other):
 		"""
 		merge with another membership
 		"""
-		
+
 class IEnterprise(IElementCreatable):
-	
+
 	persons = Object(IPersons)
 	groups = Dict(key_type=Object(ISourcedID), value_type=Object(IGroup))
 	membership = Dict(key_type=Object(ISourcedID), value_type=Object(IMembership))

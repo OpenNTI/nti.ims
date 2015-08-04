@@ -48,7 +48,7 @@ class Enterprise(object):
 		if membership is not None:
 			if membership.sourcedid in self.memberships:
 				current = self.memberships[membership.sourcedid]
-				current += membership # merge
+				current += membership  # merge
 			else:
 				self.memberships[membership.sourcedid] = membership
 
@@ -94,9 +94,9 @@ class Enterprise(object):
 				if p is not None:
 					m.role.userid = p.userid
 				else:
-					logger.warn("incomplete membership record %s", m)					
+					logger.warn("incomplete membership record %s", m)
 		return enterprise
-	
+
 	@classmethod
 	def parse(cls, source):
 		if not hasattr(source, 'read'):

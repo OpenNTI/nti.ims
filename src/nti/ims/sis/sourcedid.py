@@ -13,6 +13,7 @@ import re
 from functools import total_ordering
 
 from zope import interface
+
 from nti.common.representation import WithRepr
 
 from nti.schema.schema import EqHash
@@ -24,7 +25,7 @@ from .interfaces import ISourcedID
 from . import get_text
 
 DEFAULT_SOURCE = ISourcedID['source'].default
-CRN_TERM_PATTERN = re.compile(r"(.*)\.(.*)", re.UNICODE | re.IGNORECASE) 
+CRN_TERM_PATTERN = re.compile(r"(.*)\.(.*)", re.UNICODE | re.IGNORECASE)
 
 @total_ordering
 @WithRepr
@@ -41,25 +42,25 @@ class SourcedID(SchemaConfigured):
 		m = CRN_TERM_PATTERN.match(self.id or u'')
 		groups = m.groups() if m is not None else ()
 		return groups[0] if groups else None
-	
+
 	@property
 	def Term(self):
 		m = CRN_TERM_PATTERN.match(self.id or u'')
 		groups = m.groups() if m is not None else ()
 		return groups[1] if groups else None
-	
+
 	def __lt__(self, other):
 		try:
 			return (self.source, self.id) < (other.source, other.id)
-		except AttributeError: # pragma: no cover
+		except AttributeError:  # pragma: no cover
 			return NotImplemented
 
 	def __gt__(self, other):
 		try:
 			return (self.source, self.id) > (other.source, other.id)
-		except AttributeError: # pragma: no cover
+		except AttributeError:  # pragma: no cover
 			return NotImplemented
-		
+
 	@classmethod
 	def createFromElement(cls, element):
 		source = element.find('source')
