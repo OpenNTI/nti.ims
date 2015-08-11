@@ -96,8 +96,11 @@ class Person(SchemaConfigured):
 							name=name,
 							email=email,
 							userrole=userrole)
+		else:
+			result = None
+
 		if result is None:
-			logger.debug('Skipping person node %r (%s, %s)', element, sid)
+			logger.debug('Skipping person node %r (%s)', element, sid)
 		return result
 
 @interface.implementer(IPersons)
