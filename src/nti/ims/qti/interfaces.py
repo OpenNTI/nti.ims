@@ -9,7 +9,10 @@ QTI Base interfaces
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
 
+logger = __import__('logging').getLogger(__name__)
+
 from zope import interface
+
 from zope.schema import vocabulary
 
 from nti.schema.field import ValidText
@@ -44,7 +47,7 @@ SHAPE_TYPES = (u'default', u'rect', u'circle', u'poly', u'ellipse')
 SHAPE_TYPES_VOCABULARY = \
 	vocabulary.SimpleVocabulary([vocabulary.SimpleTerm(_x) for _x in SHAPE_TYPES])
 
-VALUE_TYPES = (	u'identifier', u'boolean', u'integer', u'float', u'string', u'point', u'pair', u'directedPair', u'duration',
+VALUE_TYPES = (u'identifier', u'boolean', u'integer', u'float', u'string', u'point', u'pair', u'directedPair', u'duration',
 				u'file', u'uri', u'intOrIdentifier')
 VALUE_TYPES_VOCABULARY = \
 	vocabulary.SimpleVocabulary([vocabulary.SimpleTerm(_x) for _x in VALUE_TYPES])
@@ -104,13 +107,13 @@ class IQTIElement(interface.Interface):
 	"""
 	Marker interface for QTI classes
 	"""
-	
+
 class IConcrete(IQTIElement):
 	"""
 	Marker interface for concrete QTI classes
 	"""
 	content = ValidText(title='element content', required=False)
-	
+
 class IQTIAttribute(interface.Interface):
 	"""
 	Marker interface for QTI [XML] attributes

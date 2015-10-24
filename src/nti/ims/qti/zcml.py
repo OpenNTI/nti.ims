@@ -30,7 +30,7 @@ def _item_predicate(item):
 	return result
 
 class IRegisterQTIElementsDirective(interface.Interface):
-	module = GlobalObject(title="Module to scan for QTI elements to add", 
+	module = GlobalObject(title="Module to scan for QTI elements to add",
 						  required=True)
 
 def registerQTIElements(_context, module):

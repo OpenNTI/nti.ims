@@ -14,11 +14,12 @@ import sys
 import inspect
 import importlib
 
-from zope import interface
+from zope.interface.interface import InterfaceClass
 
 from .basic.elements import QTIElement
 
 from .interfaces import IConcrete
+
 from . import interfaces as qti_interfaces
 
 class _ElementFinder(object):
@@ -78,7 +79,7 @@ class _IConcreteFinder(_ElementFinder):
 		return name[1:]
 	
 	def _item_predicate(self, item):
-		result = bool(type(item) == interface.interface.InterfaceClass and \
+		result = bool(type(item) == InterfaceClass and \
 					  issubclass(item, IConcrete) and \
 					  item != IConcrete)
 		return result

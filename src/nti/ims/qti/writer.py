@@ -12,15 +12,15 @@ logger = __import__('logging').getLogger(__name__)
 from lxml import etree
 
 ns_map = {'xmlns':"http://www.imsglobal.org/xsd/imsqti_v2p0"}
-		
+
 etree_Element = getattr(etree, 'Element')
 etree_ElementTree = getattr(etree, 'ElementTree')
 
 def _write_attribs(element, a_map):
-	for k,v in a_map.items():
+	for k, v in a_map.items():
 		if k and v is not None:
-			element.set(unicode(k),unicode(v))
-					
+			element.set(unicode(k), unicode(v))
+
 def write(item, target=None):
 
 	def _process_element(item, write_ns=False):
