@@ -14,8 +14,10 @@ logger = __import__('logging').getLogger(__name__)
 from functools import partial
 
 from zope import interface
-from zope.configuration import fields
+
 from zope.component.zcml import utility
+
+from zope.configuration import fields
 
 from .consumer import Consumer
 from .interfaces import IConsumer

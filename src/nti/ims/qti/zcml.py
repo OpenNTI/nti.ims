@@ -14,13 +14,13 @@ logger = __import__('logging').getLogger(__name__)
 import inspect
 
 from zope import interface
+
 from zope.configuration.fields import GlobalObject
 
 from nti.externalization.zcml import autoPackageExternalization
 
-from .basic.elements import QTIElement
-
-from .interfaces import IConcrete
+from nti.ims.qti.interfaces import IConcrete
+from nti.ims.qti.basic.elements import QTIElement
 
 def _item_predicate(item):
 	implemented = getattr(item, '__implemented__', None)
