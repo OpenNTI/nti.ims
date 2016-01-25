@@ -21,15 +21,25 @@ from nti.schema.field import Object
 from nti.schema.field import ValidTextLine
 from nti.schema.field import IndexedIterable
 
+#: Student role code
 STUDENT_ROLE = "01"
+
+#: Instructor role code
 INSTRUCTOR_ROLE = "02"
 
+#: Student
 STUDENT = 'STUDENT'
+
+#: Instructor
 FACULTY = INSTRUCTOR = 'FACULTY'
 
+#: Active enrollment status
 ACTIVE_STATUS = 1
+
+#: Inactive enrollment status
 INACTIVE_STATUS = 0
 
+#: Classes
 CLASSES = 'CLASSES'
 
 class IElementCreatable(interface.Interface):

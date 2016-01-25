@@ -16,19 +16,19 @@ from zope import interface
 
 from nti.common.representation import WithRepr
 
-from nti.schema.schema import EqHash
+from nti.ims.sis import get_text
+from nti.ims.sis.interfaces import ISourcedID
+
 from nti.schema.field import SchemaConfigured
 from nti.schema.fieldproperty import createDirectFieldProperties
 
-from .interfaces import ISourcedID
-
-from . import get_text
+from nti.schema.schema import EqHash
 
 DEFAULT_SOURCE = ISourcedID['source'].default
 CRN_TERM_PATTERN = re.compile(r"(.*)\.(.*)", re.UNICODE | re.IGNORECASE)
 
-@total_ordering
 @WithRepr
+@total_ordering
 @EqHash('source', 'id')
 @interface.implementer(ISourcedID)
 class SourcedID(SchemaConfigured):

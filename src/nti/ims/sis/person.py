@@ -16,22 +16,22 @@ from zope import interface
 from nti.common.property import alias
 from nti.common.representation import WithRepr
 
+from nti.ims.sis import get_text
+from nti.ims.sis import to_legacy_role
+
+from nti.ims.sis.interfaces import IPerson
+from nti.ims.sis.interfaces import IPersons
+
+from nti.ims.sis.sourcedid import SourcedID
+
 from nti.schema.schema import EqHash
 from nti.schema.field import SchemaConfigured
 from nti.schema.fieldproperty import createDirectFieldProperties
 
-from .interfaces import IPerson
-from .interfaces import IPersons
-
-from .sourcedid import SourcedID
-
-from . import get_text
-from . import to_legacy_role
-
 DEFAULT_ROLE = IPerson['userrole'].default
 
-@total_ordering
 @WithRepr
+@total_ordering
 @EqHash('sourcedid')
 @interface.implementer(IPerson)
 class Person(SchemaConfigured):

@@ -11,13 +11,13 @@ logger = __import__('logging').getLogger(__name__)
 
 from nti.common.iterables import isorted
 
-from .utils import get_text
-from .utils import get_fileobj
+from nti.ims.sis.interfaces import STUDENT
+from nti.ims.sis.interfaces import INSTRUCTOR
+from nti.ims.sis.interfaces import STUDENT_ROLE
+from nti.ims.sis.interfaces import INSTRUCTOR_ROLE
 
-from .interfaces import STUDENT
-from .interfaces import INSTRUCTOR
-from .interfaces import STUDENT_ROLE
-from .interfaces import INSTRUCTOR_ROLE
+from nti.ims.sis.utils import get_text
+from nti.ims.sis.utils import get_fileobj
 
 def to_legacy_role(role):
 	if role:

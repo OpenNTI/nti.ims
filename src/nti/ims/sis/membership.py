@@ -18,32 +18,33 @@ from zope import interface
 from zope.container.contained import Contained
 
 from zope.proxy import ProxyBase
-from zope.proxy import removeAllProxies
 
 from nti.common.property import alias
+from nti.common.proxy import removeAllProxies
 from nti.common.representation import WithRepr
 
-from nti.schema.schema import EqHash
+from nti.ims.sis import get_text
+from nti.ims.sis import to_legacy_role
+
+from nti.ims.sis.interfaces import IRole
+from nti.ims.sis.interfaces import IMember
+from nti.ims.sis.interfaces import IMembership
+from nti.ims.sis.interfaces import STUDENT_ROLE
+from nti.ims.sis.interfaces import ACTIVE_STATUS
+from nti.ims.sis.interfaces import INACTIVE_STATUS
+from nti.ims.sis.interfaces import INSTRUCTOR_ROLE
+
+from nti.ims.sis.sourcedid import SourcedID
+
 from nti.schema.field import SchemaConfigured
 from nti.schema.fieldproperty import createDirectFieldProperties
 
-from .sourcedid import SourcedID
-
-from .interfaces import IRole
-from .interfaces import IMember
-from .interfaces import IMembership
-from .interfaces import STUDENT_ROLE
-from .interfaces import ACTIVE_STATUS
-from .interfaces import INACTIVE_STATUS
-from .interfaces import INSTRUCTOR_ROLE
-
-from . import get_text
-from . import to_legacy_role
+from nti.schema.schema import EqHash
 
 DEFAULT_ID_TYPE = IMember['idtype'].default
 
-@total_ordering
 @WithRepr
+@total_ordering
 @interface.implementer(IRole)
 @EqHash('status', 'roletype', 'userid')
 class Role(SchemaConfigured):
@@ -90,8 +91,8 @@ class Role(SchemaConfigured):
 					  datasource=datasource)
 		return result
 
-@total_ordering
 @WithRepr
+@total_ordering
 @interface.implementer(IMember)
 @EqHash('sourcedid', 'idtype', 'role')
 class Member(Contained, SchemaConfigured):
@@ -164,8 +165,8 @@ class Member(Contained, SchemaConfigured):
 class _MemberProxy(ProxyBase):
 
 	course_id = property(
-						lambda s: s.__dict__.get('_course_id'),
-						lambda s, v: s.__dict__.__setitem__('_course_id', v))
+					lambda s: s.__dict__.get('_course_id'),
+					lambda s, v: s.__dict__.__setitem__('_course_id', v))
 
 	CourseID = alias('course_id')
 

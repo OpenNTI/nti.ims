@@ -20,17 +20,19 @@ from nti.common.representation import WithRepr
 
 from nti.externalization.datetime import datetime_from_string
 
-from nti.schema.schema import EqHash
+from nti.ims.sis import get_text
+
+from nti.ims.sis.interfaces import IGroup
+from nti.ims.sis.interfaces import ITimeFrame
+
+from nti.ims.sis.sourcedid import SourcedID
+
 from nti.schema.field import SchemaConfigured
-from nti.schema.interfaces import InvalidValue
 from nti.schema.fieldproperty import createDirectFieldProperties
 
-from .sourcedid import SourcedID
+from nti.schema.interfaces import InvalidValue
 
-from .interfaces import IGroup
-from .interfaces import ITimeFrame
-
-from . import get_text
+from nti.schema.schema import EqHash
 
 @WithRepr
 @EqHash('start', 'end')
@@ -58,12 +60,11 @@ class TimeFrame(SchemaConfigured):
 		if start is not None or end is not None:
 			result = TimeFrame(start=start, end=end)
 			return result
-
 		logger.debug('Skipping timeframe node %r (%s, %s)', element, start, end)
 		return None
 
-@total_ordering
 @WithRepr
+@total_ordering
 @EqHash('sourcedid')
 @interface.implementer(IGroup)
 class Group(SchemaConfigured):

@@ -15,13 +15,16 @@ from lxml import etree
 
 from zope import interface
 
-from .group import Group
-from .person import Person
-from .person import Persons
-from .membership import Membership
-from .interfaces import IEnterprise
+from nti.ims.sis.group import Group
 
-from . import get_fileobj
+from nti.ims.sis.interfaces import IEnterprise
+
+from nti.ims.sis.membership import Membership
+
+from nti.ims.sis.person import Person
+from nti.ims.sis.person import Persons
+
+from nti.ims.sis import get_fileobj
 
 etree_parse = getattr(etree, 'parse')
 
