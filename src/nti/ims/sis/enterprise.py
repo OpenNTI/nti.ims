@@ -64,7 +64,8 @@ class Enterprise(object):
 			for member in membership:
 				if transform is not None:
 					yield transform(member)
-				yield member
+				else:
+					yield member
 
 	def get_memberships(self):
 		return self.memberships.itervalues()
