@@ -14,11 +14,13 @@ import six
 import gzip
 import mimetypes
 
+from nti.common.string import safestr
+
 def get_text(node):
 	if node is not None and node.text:
 		text = node.text
-		text = text.decode("utf-8") if text and isinstance(text, bytes) else text
-		return unicode(text) if text else text
+		text = safestr(text)
+		return text
 	return None
 
 def get_fileobj(source):
