@@ -57,11 +57,13 @@ class Role(SchemaConfigured):
 	@property
 	def is_student(self):
 		return self.roletype == STUDENT_ROLE
-
+	isStudent = is_student
+	
 	@property
 	def is_instructor(self):
 		return self.roletype == INSTRUCTOR_ROLE
-
+	isInstructor = is_instructor
+	
 	def __lt__(self, other):
 		try:
 			return (self.userid, self.status) < (other.userid, other.status)
@@ -110,11 +112,13 @@ class Member(Contained, SchemaConfigured):
 	@property
 	def is_student(self):
 		return self.role.is_student if self.role is not None else False
-
+	isStudent = is_student
+	
 	@property
 	def is_instructor(self):
 		return self.role.is_instructor if self.role is not None else False
-
+	isInstructor = is_instructor
+	
 	@property
 	def status(self):
 		return self.role.status if self.role is not None else INACTIVE_STATUS
@@ -126,11 +130,13 @@ class Member(Contained, SchemaConfigured):
 	@property
 	def is_active(self):
 		return self.role.status == ACTIVE_STATUS if self.role is not None else False
-
+	isActive = is_active
+	
 	@property
 	def userid(self):
 		return self.role.userid if self.role is not None else None
-
+	userId = userid
+	
 	def __lt__(self, other):
 		try:
 			return (self.sourcedid, self.status) < (other.sourcedid, other.status)
@@ -205,6 +211,7 @@ class Membership(object):
 			member.__parent__ = self
 			self.members.append(member)
 			self._v_cache.add(member)
+	append = add
 
 	def __iadd__(self, other):
 		assert IMembership.providedBy(other)
