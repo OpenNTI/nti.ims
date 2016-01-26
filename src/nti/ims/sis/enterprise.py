@@ -59,9 +59,11 @@ class Enterprise(object):
 		result = self.memberships.get(groupid)
 		return result
 
-	def get_all_members(self):
+	def get_all_members(self, transform=None):
 		for membership in self.memberships.values():
 			for member in membership:
+				if transform is not None:
+					yield transform(member)
 				yield member
 
 	def get_memberships(self):
