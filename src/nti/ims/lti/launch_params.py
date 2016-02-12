@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id: launch_params.py 60147 2015-02-24 22:31:22Z carlos.sanchez $
-this module adapted from https://github.com/tophatmonocle/ims_lti_py
+Adapted from https://github.com/tophatmonocle/ims_lti_py
+
+.. $Id$
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
@@ -11,10 +12,8 @@ __docformat__ = "restructuredtext en"
 logger = __import__('logging').getLogger(__name__)
 
 from collections import defaultdict
-import sys
 
-def to_unicode(s, enc='utf-8', err='strict'):
-	return s.decode(enc, err) if isinstance(s, bytes) else unicode(s)
+from nti.common.string import to_unicode
 
 LAUNCH_DATA_PARAMS = [
 	'lti_message_type',
@@ -52,7 +51,7 @@ LAUNCH_DATA_PARAMS = [
 	'tool_consumer_instance_description',
 	'tool_consumer_instance_url',
 	'tool_consumer_instance_contact_email'
-	]
+]
 
 OAUTH_PARAMS = [
 	'oauth_consumer_key',
@@ -71,16 +70,14 @@ REQUIRED_PARAMS = [
 ]
 
 class LaunchParamsMixin(object):
+
 	def __init__(self):
-		super(LaunchParamsMixin, self).__init__()
-
 		self.launch_params = LAUNCH_DATA_PARAMS + OAUTH_PARAMS
-
 		for param in self.launch_params:
 			setattr(self, param, None)
 
-		self.custom_params = defaultdict(lambda: None)
 		self.ext_params = defaultdict(lambda: None)
+		self.custom_params = defaultdict(lambda: None)
 
 	def process_params(self, params):
 		"""
@@ -89,7 +86,7 @@ class LaunchParamsMixin(object):
 		for key, val in params.items():
 			if key in self.launch_params and val is not None:
 				if key == 'roles':
-					if isinstance(val, list):
+					if isinstance(val, (tuple, list)):
 						self.roles = list(val)
 					else:
 						self.roles = val.split(',')
@@ -113,9 +110,3 @@ class LaunchParamsMixin(object):
 		ext_params = dict(self.ext_params)
 		params.update(ext_params)
 		return params
-
-
-
-
-
-

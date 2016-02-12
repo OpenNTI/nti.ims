@@ -43,4 +43,3 @@ class TestZcml(nti.testing.base.ConfiguringTestBase):
 		assert_that(consumer, is_not(none()))
 		assert_that(consumer, has_property('key', 'jisc.ac.uk'))
 		assert_that(consumer, has_property('secret', 'secret'))
-		

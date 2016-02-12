@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id: utils.py 60147 2015-02-24 22:31:22Z carlos.sanchez $
+.. $Id$
 """
 
 from uuid import uuid1

@@ -19,8 +19,8 @@ from zope.component.zcml import utility
 
 from zope.configuration import fields
 
-from .consumer import Consumer
-from .interfaces import IConsumer
+from nti.ims.lti.consumer import Consumer
+from nti.ims.lti.interfaces import IConsumer
 
 class IRegisterConsumer(interface.Interface):
 	"""

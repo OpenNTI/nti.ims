@@ -6,17 +6,18 @@ __docformat__ = "restructuredtext en"
 
 # disable: accessing protected members, too many methods
 # pylint: disable=W0212,R0904
-import unittest
-from hamcrest import assert_that
+
 from hamcrest import has_item
+from hamcrest import assert_that
+
+import unittest
 
 from nti.ims.lti.tool_consumer import ToolConsumer
-
 
 def create_params():
 	return {
 		'lti_message_type'  : 'basic-lti-launch-request',
-		'lti_version'       : 'LTI-1p0',
+		'lti_version'	   : 'LTI-1p0',
 		'resource_link_id'	: '88391-e1919-bb3456',
 		'resource_link_title' : 'My Weekly Wiki',
 		'resource_link_description' : 'A weekly blog.',
@@ -54,13 +55,13 @@ def create_params():
 	}
 
 class TestToolConsumer(unittest.TestCase):
-	
+
 	def test_launch_data(self):
 		params = create_params()
 		consumer_key = '123456'
 		consumer_secret = 'secret_123456'
 
-		#The launch_url contains the URL to which the LTI Launch is to be sent
+		# The launch_url contains the URL to which the LTI Launch is to be sent
 		launch_url = 'http://dr-chuck.com/ims/php-simple/tool.php'
 
 		tc = ToolConsumer(consumer_key, consumer_secret, launch_url, params)
@@ -74,5 +75,3 @@ class TestToolConsumer(unittest.TestCase):
 		assert_that(launch_data, has_item('oauth_callback'))
 		assert_that(launch_data, has_item('lti_version'))
 		assert_that(launch_data, has_item('lti_message_type'))
-
-		

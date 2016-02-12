@@ -13,11 +13,12 @@ from zope import interface
 
 from nti.common.representation import WithRepr
 
-from nti.schema.schema import EqHash
-from nti.schema.schema import SchemaConfigured
+from nti.ims.lti.interfaces import IConsumer
+
 from nti.schema.fieldproperty import createDirectFieldProperties
 
-from .interfaces import IConsumer
+from nti.schema.schema import EqHash
+from nti.schema.schema import SchemaConfigured
 
 @WithRepr
 @EqHash('key', 'secret')
