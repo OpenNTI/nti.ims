@@ -14,7 +14,10 @@ from uuid import uuid1
 def generate_identifier():
 	return str(uuid1())
 
-class InvalidLTIConfigError(Exception):
+class LTIException(Exception):
+	pass
+
+class InvalidLTIConfigError(LTIException):
 
 	def __init__(self, value):
 		self.value = value
@@ -22,7 +25,7 @@ class InvalidLTIConfigError(Exception):
 	def __str__(self):
 		return repr(self.value)
 
-class InvalidLTIRequestError(Exception):
+class InvalidLTIRequestError(LTIException):
 
 	def __init__(self, value):
 		self.value = value
