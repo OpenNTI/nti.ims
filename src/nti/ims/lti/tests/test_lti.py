@@ -20,10 +20,10 @@ class TestLTI(unittest.TestCase):
 	def test_outcome_request(self):	
 		params= {
 			'lis_result_sourcedid':u'98913544378c4022bc938edb57fe79a2:::dyJ86SiwwA9',
-			 'consumer_key':'jisc.ac.uk',
-			 'consumer_secret':'secret',
-			 'message_identifier': u'53ac7390b65e5',
-			 'lis_outcome_service_url': 'http://ltiapps.net/test/tc-outcomes.php'
+			'consumer_key':'jisc.ac.uk',
+			'consumer_secret':'secret',
+			'message_identifier': u'53ac7390b65e5',
+			'lis_outcome_service_url': 'http://ltiapps.net/test/tc-outcomes.php'
 		}	
 		outcome = OutcomeRequest(opts=params)
 		result = outcome.post_read_result()
