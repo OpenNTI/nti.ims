@@ -22,9 +22,9 @@ from nti.ims.lti.launch_params import LaunchParamsMixin
 
 from nti.ims.lti.utils import generate_identifier
 
-class ToolConsumer(LaunchParamsMixin, object):
+class ToolConsumer(LaunchParamsMixin):
 
-	def __init__(self, consumer_key, consumer_secret, launch_url, params={}):
+	def __init__(self, consumer_key, consumer_secret, launch_url, params=()):
 		super(ToolConsumer, self).__init__()
 		self.process_params(params)
 		self.launch_url = launch_url

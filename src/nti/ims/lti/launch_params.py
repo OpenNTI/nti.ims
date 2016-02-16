@@ -75,7 +75,6 @@ class LaunchParamsMixin(object):
 		self.launch_params = LAUNCH_DATA_PARAMS + OAUTH_PARAMS
 		for param in self.launch_params:
 			setattr(self, param, None)
-
 		self.ext_params = defaultdict(lambda: None)
 		self.custom_params = defaultdict(lambda: None)
 
@@ -83,7 +82,8 @@ class LaunchParamsMixin(object):
 		"""
 		populate launch parameters from params dictionary
 		"""
-		for key, val in params.items():
+		items = params.items() if hasattr(params, "items") else ()
+		for key, val in items:
 			if key in self.launch_params and val is not None:
 				if key == 'roles':
 					if isinstance(val, (tuple, list)):
