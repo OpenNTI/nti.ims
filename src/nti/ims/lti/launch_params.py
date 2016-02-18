@@ -86,7 +86,7 @@ class LaunchParamsMixin(object):
 		for key, val in items:
 			if key in self.launch_params and val is not None:
 				if key == 'roles':
-					if isinstance(val, (tuple, list)):
+					if isinstance(val, (tuple, list, set)):
 						self.roles = list(val)
 					else:
 						self.roles = val.split(',')
