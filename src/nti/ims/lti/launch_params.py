@@ -21,7 +21,7 @@ LAUNCH_DATA_PARAMS = [
 	'resource_link_id',
 	'resource_link_title',
 	'resource_link_description',
-	'user_id',
+	'user_id', #Uniquely identifies the user. This should not contain any identifying information for the user. 
 	'user_image',
 	'lis_person_name_given',
 	'lis_person_name_family',

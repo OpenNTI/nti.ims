@@ -73,6 +73,8 @@ class ToolConsumer(LaunchParamsMixin):
 			elif isinstance(request[key], list):
 				return_params[key] = request.get_parameter(key)
 			else:
+				print('HERE')
+				print(key)
 				return_params[key] = unquote(request.get_parameter(key))
 		return return_params
 
