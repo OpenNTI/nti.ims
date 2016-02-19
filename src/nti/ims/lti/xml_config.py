@@ -11,6 +11,11 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+try:
+	from cStringIO import StringIO
+except ImportError:
+	from StringIO import StringIO
+
 from lxml import etree
 
 from nti.common.string import to_unicode
@@ -23,6 +28,7 @@ NSMAP = {
 	'lticc' : 'http://www.imsglobal.org/xsd/imslticc_v1p0'
 }
 
+etree_parse = getattr(etree, "parse")
 etree_fromstring = getattr(etree, "fromstring")
 
 class LTIConfig(object):
@@ -33,14 +39,17 @@ class LTIConfig(object):
 		self.custom_params = {}
 		self.cartridge_params = {}
 
-	def parse(self, xml_str):
+	def parse(self, xml_source):
 		"""
 		Arguments
 
 		xml_str : string of xml configuration
 
 		"""
-		root = etree_fromstring(xml_str)
+		if not hasattr(xml_source, 'read'):
+			source = StringIO(xml_source)
+		tree = etree_parse(source)
+		root = tree.getroot()
 		self.createFromElement(root)
 
 	def createFromElement(self, element):
