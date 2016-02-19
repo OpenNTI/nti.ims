@@ -20,13 +20,14 @@ NSMAP = {
 	'lticm' : 'http://www.imsglobal.org/xsd/imslticm_v1p0',
 	'lticp' : 'http://www.imsglobal.org/xsd/imslticp_v1p0',
 	'xsi' 	: 'http://www.w3.org/2001/XMLSchema-instance',
+	'lticc' : 'http://www.imsglobal.org/xsd/imslticc_v1p0'
 }
 
 etree_fromstring  = getattr(etree, "fromstring")
 
 class LTIConfig(object):
 
-	def __init__(self): sd
+	def __init__(self):
 		self.ext_params = {}
 		self.blti_params = {}
 		self.custom_params = {}
@@ -44,6 +45,7 @@ class LTIConfig(object):
 
 	def createFromElement(self, element):
 		blti_prefix = NSMAP['blti']
+		lticc_prefix = NSMAP['lticc']
 		for node in element:
 			if node.tag == '{%s}title' % (blti_prefix):
 				self.blti_params['title'] = to_unicode(node.text)
@@ -55,6 +57,8 @@ class LTIConfig(object):
 				self.blti_params['secure_icon'] = to_unicode(node.text)
 			elif node.tag == '{%s}launch_url' % (blti_prefix):
 				self.blti_params['launch_url'] = to_unicode(node.text)
+			elif node.tag == '{%s}icon' % (blti_prefix):
+				self.blti_params['icon'] = to_unicode(node.text)
 			elif node.tag == '{%s}vendor' % (blti_prefix):
 				self.process_vendor(node)
 			elif node.tag == '{%s}custom' % (blti_prefix):
@@ -62,9 +66,14 @@ class LTIConfig(object):
 			elif node.tag == '{%s}extensions' % (blti_prefix):
 				platform = to_unicode(node.attrib['platform'])
 				self.ext_params[platform] = self.process_ext_params(node)
-			elif node.tag == 'cartridge_bundle':
+			elif node.tag == '{%s}cartridge_bundle' % lticc_prefix:
 				if 'identifierref' in node.attrib:
 					self.cartridge_params['cartridge_bundle'] = to_unicode(node.attrib['identifierref'])
+			elif node.tag == '{%s}cartridge_icon' % lticc_prefix:
+				if 'identifierref' in node.attrib:
+					self.cartridge_params['cartridge_icon'] = to_unicode(node.attrib['identifierref'])
+			else:
+				logger.warn('Unhandled node %s', node.tag) 
 
 	def process_vendor(self, element):
 		lticp_prefix = NSMAP['lticp']
@@ -84,7 +93,7 @@ class LTIConfig(object):
 					elif child.tag == '{%s}email' % lticp_prefix:
 						self.blti_params['vendor_contact_email'] = to_unicode(node.text)
 			else:
-				logger.warn('Unhandled node : %s') % node.tag
+				logger.warn('Unhandled vendor node : %s', node.tag) 
 
 	def process_custom_params(self, element):
 		for node in element:
@@ -108,4 +117,6 @@ class LTIConfig(object):
 					else:
 						logger.warn('Unhandled extension option')
 				params[opt_name] = options
+			else:
+				logger.warn('Unhandled extension node %s', node.tag) 
 		return params
