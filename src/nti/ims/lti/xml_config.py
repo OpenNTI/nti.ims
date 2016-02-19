@@ -3,7 +3,7 @@
 """
 Adapted from https://github.com/tophatmonocle/ims_lti_py
 
-.. $Id: lti_config.py 83134 2016-02-18 17:39:30Z carlos.sanchez $
+.. $Id$
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
@@ -23,7 +23,7 @@ NSMAP = {
 	'lticc' : 'http://www.imsglobal.org/xsd/imslticc_v1p0'
 }
 
-etree_fromstring  = getattr(etree, "fromstring")
+etree_fromstring = getattr(etree, "fromstring")
 
 class LTIConfig(object):
 
@@ -73,7 +73,7 @@ class LTIConfig(object):
 				if 'identifierref' in node.attrib:
 					self.cartridge_params['cartridge_icon'] = to_unicode(node.attrib['identifierref'])
 			else:
-				logger.warn('Unhandled node %s', node.tag) 
+				logger.warn('Unhandled node: %s', node.tag)
 
 	def process_vendor(self, element):
 		lticp_prefix = NSMAP['lticp']
@@ -93,7 +93,7 @@ class LTIConfig(object):
 					elif child.tag == '{%s}email' % lticp_prefix:
 						self.blti_params['vendor_contact_email'] = to_unicode(node.text)
 			else:
-				logger.warn('Unhandled vendor node : %s', node.tag) 
+				logger.warn('Unhandled vendor node: %s', node.tag)
 
 	def process_custom_params(self, element):
 		for node in element:
@@ -118,5 +118,5 @@ class LTIConfig(object):
 						logger.warn('Unhandled extension option')
 				params[opt_name] = options
 			else:
-				logger.warn('Unhandled extension node %s', node.tag) 
+				logger.warn('Unhandled extension node %s', node.tag)
 		return params

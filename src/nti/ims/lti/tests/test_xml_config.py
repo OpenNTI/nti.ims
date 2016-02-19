@@ -7,13 +7,13 @@ __docformat__ = "restructuredtext en"
 # disable: accessing protected members, too many methods
 # pylint: disable=W0212,R0904
 
+from hamcrest import has_key
+from hamcrest import assert_that
+from hamcrest import greater_than
+
 import os
 
 import unittest
-
-from hamcrest import assert_that 
-from hamcrest import greater_than
-from hamcrest import has_key
 
 from nti.ims.lti.xml_config import LTIConfig
 
@@ -27,10 +27,10 @@ class TestToolConsumer(unittest.TestCase):
 			if isinstance(content, bytes):
 				content = unicode(content, 'utf-8')
 		return content
-	
+
 	def test_parse_xml(self):
 		xml_str = self._load_xml('cartridge_basiclti_link_1.xml')
-		
+
 		lti_config = LTIConfig()
 		lti_config.parse(xml_str)
 
