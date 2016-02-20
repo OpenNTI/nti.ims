@@ -33,7 +33,7 @@ class ToolConsumer(LaunchParamsMixin):
 
 	def _params_update(self):
 		return {
-			'oauth_nonce' : str(generate_identifier()),
+			'oauth_nonce' : generate_identifier(),
 			'oauth_timestamp' : str(int(time.time())),
 		}
 
