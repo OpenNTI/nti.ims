@@ -57,3 +57,26 @@ class TestToolConsumer(unittest.TestCase):
 
 		assert_that(lti_config.cartridge_params, has_key('cartridge_bundle'))
 		assert_that(lti_config.cartridge_params, has_key('cartridge_icon'))
+
+	def test_parse_rating_xml(self):
+		xml_str = self._load_xml('rating_basic_lti.xml')
+
+		lti_config = LTIConfig()
+		lti_config.parse(xml_str)
+
+		assert_that(len(lti_config.blti_params), greater_than(0))
+		assert_that(len(lti_config.ext_params), greater_than(0))
+
+		assert_that(lti_config.blti_params, has_key('title'))
+		assert_that(lti_config.blti_params, has_key('description'))
+		assert_that(lti_config.blti_params, has_key('launch_url'))
+		assert_that(lti_config.blti_params, has_key('secure_launch_url'))
+		assert_that(lti_config.blti_params, has_key('icon'))
+		assert_that(lti_config.blti_params, has_key('secure_icon'))
+		assert_that(lti_config.blti_params, has_key('vendor_code'))
+		assert_that(lti_config.blti_params, has_key('vendor_name'))
+		assert_that(lti_config.blti_params, has_key('vendor_description'))
+		assert_that(lti_config.blti_params, has_key('vendor_url'))
+		assert_that(lti_config.blti_params, has_key('vendor_contact_email'))
+
+		assert_that(lti_config.ext_params, has_key('learn'))
