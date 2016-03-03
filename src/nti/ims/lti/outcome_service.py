@@ -5,8 +5,9 @@ Based on IMS Global Learning Tools Interoperability® Outcomes Management
 http://www.imsglobal.org/specs/ltiomv1p0/specification
 It is used to post grades back from other learning tools to the Tool Consumer
 
-.. $Id: outcome_services.py 83134 2016-02-18 17:39:30Z carlos.sanchez $
+.. $Id$
 """
+
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
 
@@ -22,7 +23,7 @@ from lxml import objectify
 
 from nti.common.string import to_unicode
 
-NSMAP  = {
+NSMAP = {
 	'imsx_POXEnvelopeResponse' : 'http://www.imsglobal.org/services/ltiv1p1/xsd/imsoms_v1p0',
 	'imsx_POXEnvelopeRequest'  : 'http://www.imsglobal.org/services/ltiv1p1/xsd/imsoms_v1p0'
 }
@@ -30,8 +31,10 @@ NSMAP  = {
 CODE_MAJOR = ['success', 'processing', 'failure', 'unsupported']
 SEVERITY_TYPE = ['status', 'warning', 'error']
 
+etree_element = getattr(etree, "Element")
 etree_tostring = getattr(etree, "tostring")
 etree_sub_element = getattr(etree, "SubElement")
+
 objectify_parse = getattr(objectify, "parse")
 
 class OutcomeResponse(object):
@@ -41,13 +44,13 @@ class OutcomeResponse(object):
 	LTI Outcome Management Service specification version 1.0 (updated Jan 2015) describes three types of outcome services : replaceResult, readResult and deleteResult
 	TC parse request from TP and send response back to TP.
 
-	TODO : 
+	TODO :
 	- decide if TC will support all the outcome services (replaceResult, readResult and deleteResult)
 	"""
 
 	def __init__(self):
 		self.outcome_service_type = None
-	
+
 	def parse(self, xml_source):
 		"""
 		process Plain Old XML received from TP
@@ -66,7 +69,6 @@ class OutcomeResponse(object):
 				elif node.tag == '{%s}imsx_POXBody' % self.request_ns:
 					self.process_imsx_pox_body(node)
 
-
 	def process_imsx_pox_request_header(self, imsx_POXHeader):
 		try:
 			self.message_identifier = imsx_POXHeader.\
@@ -77,7 +79,6 @@ class OutcomeResponse(object):
 								imsx_version
 		except AttributeError:
 			pass
-
 
 	def process_imsx_pox_body(self, element):
 		node = element.getchildren()[0]
@@ -98,16 +99,16 @@ class OutcomeResponse(object):
 				if self.outcome_service_type == 'replaceResult':
 					self.result_record['score'] = element.resultRecord.result.resultScore.textString
 				self.result_record['sourcedGUID'] = to_unicode(element.resultRecord.sourcedGUID.sourcedId)
-		except:
+		except Exception:
 			pass
 
-	def generate_response_xml(self, 
-							  imsx_version, 
-							  code_major_type, 
-							  severity_type, 
-							  message_identifier, 
-							  description=None, 
-							  language='en', 
+	def generate_response_xml(self,
+							  imsx_version,
+							  code_major_type,
+							  severity_type,
+							  message_identifier,
+							  description=None,
+							  language='en',
 							  score=None):
 		"""
 		generate response xml that will be sent back to TP
@@ -121,7 +122,7 @@ class OutcomeResponse(object):
 
 		if self.imsx_version == imsx_version:
 			response_ns = NSMAP['imsx_POXEnvelopeResponse']
-			root = etree.Element('imsx_POXEnvelopeResponse', xmlns=response_ns)
+			root = etree_element('imsx_POXEnvelopeResponse', xmlns=response_ns)
 			root = self.set_response_pox_header(root)
 			root = self.set_response_pox_body(root)
 
@@ -130,10 +131,10 @@ class OutcomeResponse(object):
 	def set_response_pox_header(self, root):
 		header = etree_sub_element(root, 'imsx_POXHeader')
 		header_info = etree_sub_element(header, 'imsx_POXResponseHeaderInfo')
-		
+
 		version = etree_sub_element(header_info, 'imsx_version')
 		version.text = to_unicode(self.imsx_version)
-		
+
 		message_identifier = etree_sub_element(header_info, 'imsx_messageIdentifier')
 		message_identifier.text = to_unicode(self.response_message_identifier)
 
@@ -166,7 +167,7 @@ class OutcomeResponse(object):
 		if self.outcome_service_type == 'replaceResult':
 			outcome_response = etree_sub_element(body, 'replaceResultResponse')
 		elif self.outcome_service_type == 'readResult':
-			outcome_response = etree_sub_element(body,'readResultResponse')
+			outcome_response = etree_sub_element(body, 'readResultResponse')
 			result = etree_sub_element(outcome_response, 'result')
 			result_score = etree_sub_element(result, 'resultScore')
 			language = etree_sub_element(result_score, 'language')
@@ -179,13 +180,10 @@ class OutcomeResponse(object):
 
 class OutcomeRequest(object):
 	"""
-	Mainly used by Tool Provider 
-	TODO :  -  script to check if launch params from TC has 'lis_outcome_service_url' and 'lis_result_sourcedid'
-			-  script to generate xml sent to TC. A sourcedGUID provided in the 'lis_result_sourcedid' launch parameters.
-			-  script to sign the request using OAuth 1.0 body signing.
-			-  script to issue an HTTP POST request to the lis_outcome_service_url specified in the launch request that include the signed OAuth Authorization header
+	Mainly used by Tool Provider
+	TODO:  -  script to check if launch params from TC has 'lis_outcome_service_url' and 'lis_result_sourcedid'
+		   -  script to generate xml sent to TC. A sourcedGUID provided in the 'lis_result_sourcedid' launch parameters.
+		   -  script to sign the request using OAuth 1.0 body signing.
+		   -  script to issue an HTTP POST request to the lis_outcome_service_url specified in the launch request that include the signed OAuth Authorization header
 	"""
 	pass
-	
-
-

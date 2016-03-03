@@ -103,8 +103,8 @@ class LTIConfig(object):
 			self.custom_params[node.attrib['name']] = to_unicode(node.text)
 
 	def process_ext_params(self, element):
-		lticm_prefix = NSMAP['lticm']
 		params = {}
+		lticm_prefix = NSMAP['lticm']
 		for node in element:
 			if node.tag == '{%s}property' % lticm_prefix:
 				if 'name' in node.attrib:

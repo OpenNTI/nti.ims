@@ -6,6 +6,7 @@ __docformat__ = "restructuredtext en"
 
 # disable: accessing protected members, too many methods
 # pylint: disable=W0212,R0904
+
 from hamcrest import has_key
 from hamcrest import equal_to
 from hamcrest import assert_that
@@ -14,7 +15,7 @@ import os
 
 import unittest
 
-from nti.ims.lti.outcomes_service import OutcomeResponse
+from nti.ims.lti.outcome_service import OutcomeResponse
 
 class TestOutcomeResponse(unittest.TestCase):
 
@@ -65,14 +66,14 @@ class TestOutcomeResponse(unittest.TestCase):
 		severity_type = 'status'
 		message_identifier = 4560
 		description = 'Score for 3124567 is now 0.92'
-		response_xml = outcome_response.generate_response_xml(
-										  imsx_version, 
-										  code_major_type, 
-										  severity_type, 
-										  message_identifier, 
-										  description=description, 
-										  language='en', 
-										  score=None)
+		_ = outcome_response.generate_response_xml(
+										imsx_version,
+										code_major_type,
+										severity_type,
+										message_identifier,
+										description=description,
+										language='en',
+										score=None)
 
 	def test_generate_response_xml_read_result(self):
 		xml = self._load_xml('read_result_request.xml')
@@ -84,14 +85,14 @@ class TestOutcomeResponse(unittest.TestCase):
 		message_identifier = 1313355158804
 		description = 'Result read'
 		score = 0.91
-		response_xml = outcome_response.generate_response_xml(
-										  imsx_version, 
-										  code_major_type, 
-										  severity_type, 
-										  message_identifier, 
-										  description=description, 
-										  language='en', 
-										  score=score)
+		_ = outcome_response.generate_response_xml(
+										imsx_version,
+										code_major_type,
+										severity_type,
+										message_identifier,
+										description=description,
+										language='en',
+										score=score)
 
 	def test_generate_response_xml_delete_result(self):
 		xml = self._load_xml('delete_result_request.xml')
@@ -101,11 +102,11 @@ class TestOutcomeResponse(unittest.TestCase):
 		code_major_type = 'success'
 		severity_type = 'status'
 		message_identifier = 4560
-		response_xml = outcome_response.generate_response_xml(
-										  imsx_version, 
-										  code_major_type, 
-										  severity_type, 
-										  message_identifier, 
-										  description=None, 
-										  language='en', 
-										  score=None)
+		_ = outcome_response.generate_response_xml(
+										imsx_version,
+										code_major_type,
+										severity_type,
+										message_identifier,
+										description=None,
+										language='en',
+										score=None)
