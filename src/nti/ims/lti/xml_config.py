@@ -40,12 +40,6 @@ class LTIConfig(object):
 		self.cartridge_params = {}
 
 	def parse(self, xml_source):
-		"""
-		Arguments
-
-		xml_str : string of xml configuration
-
-		"""
 		if not hasattr(xml_source, 'read'):
 			source = StringIO(xml_source)
 		tree = etree_parse(source)

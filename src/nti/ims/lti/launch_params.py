@@ -28,8 +28,8 @@ LAUNCH_DATA_PARAMS = [
 	'lis_person_name_full',
 	'lis_person_contact_email_primary',
 	'lis_person_sourcedid',
-	'lis_result_sourcedid',
-	'lis_outcome_service_url',
+	'lis_result_sourcedid', #This param along with lis_outcome_service_url param must be defined in order to support grade return from the TP to the TC using the Basic Outcomes service
+	'lis_outcome_service_url', #This is an endpoint implemented by the Tool Consumer for the purpose of receiving grading callbacks. The TP can expect that there is a one-to-one mapping between the lis_outcome_service_url and a particular oauth_consumer_key.
 	'lis_course_section_sourcedid',
 	'lis_course_offering_sourcedid',
 	'roles',
