@@ -27,7 +27,7 @@ class TestOutcomeResponse(unittest.TestCase):
 				content = unicode(content, 'utf-8')
 		return content
 
-	def test_parse_xml(self):
+	def test_parse_replace_result_xml(self):
 		xml = self._load_xml('replace_result_request.xml')
 		outcome_response = OutcomeResponse()
 		outcome_response.parse(xml)
@@ -35,5 +35,14 @@ class TestOutcomeResponse(unittest.TestCase):
 		assert_that(outcome_response.outcome_service_type, equal_to('replaceResult'))
 		assert_that(outcome_response.result_record, has_key('score'))
 		assert_that(outcome_response.result_record['score'], equal_to(0.92))
+		assert_that(outcome_response.result_record, has_key('sourcedGUID'))
+		assert_that(outcome_response.result_record['sourcedGUID'], equal_to(u'3124567'))
+
+	def test_parse_read_result_xml(self):
+		xml = self._load_xml('read_result_request.xml')
+		outcome_response = OutcomeResponse()
+		outcome_response.parse(xml)
+		assert_that(outcome_response.message_identifier, equal_to(999999123))
+		assert_that(outcome_response.outcome_service_type, equal_to('readResult'))
 		assert_that(outcome_response.result_record, has_key('sourcedGUID'))
 		assert_that(outcome_response.result_record['sourcedGUID'], equal_to(u'3124567'))

@@ -41,6 +41,9 @@ class OutcomeResponse(object):
 	TODO : 
 	- decide if TC will support all the outcome services (replaceResult, readResult and deleteResult)
 	"""
+
+	def __init__(self):
+		self.outcome_service_type = None
 	
 	def parse(self, xml_source):
 		"""
@@ -69,23 +72,23 @@ class OutcomeResponse(object):
 
 	def process_imsx_pox_body(self, element):
 		node = element.getchildren()[0]
+		self.result_record = {}
 		if node.tag == '{%s}replaceResultRequest' % self.request_ns:
 			self.outcome_service_type = 'replaceResult'
-			self.result_record = {}
-			self.process_result_record(node)
-			print(self.result_record)
 		elif node.tag == '{%s}readResultRequest' % self.request_ns:
 			self.outcome_service_type = 'readResult'
 		elif node.tag == '{%s}deleteResultRequest' % self.request_ns:
 			self.outcome_service_type = 'deleteResult'
 		else:
 			logger.warn('Unrecognized outcome service type : %s', node.tag)
-		
+		self.process_result_record(node)
 
 	def process_result_record(self, element):
 		try:
-			self.result_record['score'] = element.resultRecord.result.resultScore.textString
-			self.result_record['sourcedGUID'] = to_unicode(element.resultRecord.sourcedGUID.sourcedId)
+			if self.outcome_service_type is not None:
+				if self.outcome_service_type == 'replaceResult':
+					self.result_record['score'] = element.resultRecord.result.resultScore.textString
+				self.result_record['sourcedGUID'] = to_unicode(element.resultRecord.sourcedGUID.sourcedId)
 		except:
 			pass
 
