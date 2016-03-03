@@ -17,6 +17,7 @@ try:
 except ImportError:
 	from StringIO import StringIO
 
+from lxml import etree
 from lxml import objectify
 
 from nti.common.string import to_unicode
@@ -29,6 +30,8 @@ NSMAP  = {
 CODE_MAJOR = ['success', 'processing', 'failure', 'unsupported']
 SEVERITY_TYPE = ['status', 'warning', 'error']
 
+etree_tostring = getattr(etree, "tostring")
+etree_sub_element = getattr(etree, "SubElement")
 objectify_parse = getattr(objectify, "parse")
 
 class OutcomeResponse(object):
@@ -65,9 +68,15 @@ class OutcomeResponse(object):
 
 
 	def process_imsx_pox_request_header(self, imsx_POXHeader):
-		self.message_identifier = imsx_POXHeader.\
-							 	  imsx_POXRequestHeaderInfo.\
-							 	  imsx_messageIdentifier
+		try:
+			self.message_identifier = imsx_POXHeader.\
+								 	  imsx_POXRequestHeaderInfo.\
+								 	  imsx_messageIdentifier
+			self.imsx_version = imsx_POXHeader.\
+								imsx_POXRequestHeaderInfo.\
+								imsx_version
+		except AttributeError:
+			pass
 
 
 	def process_imsx_pox_body(self, element):
@@ -91,6 +100,82 @@ class OutcomeResponse(object):
 				self.result_record['sourcedGUID'] = to_unicode(element.resultRecord.sourcedGUID.sourcedId)
 		except:
 			pass
+
+	def generate_response_xml(self, 
+							  imsx_version, 
+							  code_major_type, 
+							  severity_type, 
+							  message_identifier, 
+							  description=None, 
+							  language='en', 
+							  score=None):
+		"""
+		generate response xml that will be sent back to TP
+		"""
+		self.code_major_type = code_major_type
+		self.severity_type = severity_type
+		self.response_message_identifier = message_identifier
+		self.description = description
+		self.language = language
+		self.score = score
+
+		if self.imsx_version == imsx_version:
+			response_ns = NSMAP['imsx_POXEnvelopeResponse']
+			root = etree.Element('imsx_POXEnvelopeResponse', xmlns=response_ns)
+			root = self.set_response_pox_header(root)
+			root = self.set_response_pox_body(root)
+
+		return '<?xml version="1.0" encoding="UTF-8"?>' + etree_tostring(root)
+
+	def set_response_pox_header(self, root):
+		header = etree_sub_element(root, 'imsx_POXHeader')
+		header_info = etree_sub_element(header, 'imsx_POXResponseHeaderInfo')
+		
+		version = etree_sub_element(header_info, 'imsx_version')
+		version.text = to_unicode(self.imsx_version)
+		
+		message_identifier = etree_sub_element(header_info, 'imsx_messageIdentifier')
+		message_identifier.text = to_unicode(self.response_message_identifier)
+
+		header_info = self.set_response_status_info(header_info)
+		return root
+
+	def set_response_status_info(self, header_info):
+		status_info = etree_sub_element(header_info, 'imsx_statusInfo')
+		code_major = etree_sub_element(status_info, 'imsx_codeMajor')
+		if self.code_major_type in CODE_MAJOR:
+			code_major.text = to_unicode(self.code_major_type)
+
+		severity = etree_sub_element(status_info, 'imsx_severity')
+		if self.severity_type in SEVERITY_TYPE:
+			severity.text = to_unicode(self.severity_type)
+
+		if self.description is not None:
+			description = etree_sub_element(status_info, 'imsx_description')
+			description.text = to_unicode(self.description)
+
+		message_ref_identifier = etree_sub_element(status_info, 'imsx_messageRefIdentifier')
+		message_ref_identifier.text = to_unicode(self.message_identifier)
+
+		operation_ref_identifier = etree_sub_element(status_info, 'imsx_operationRefIdentifier')
+		operation_ref_identifier.text = to_unicode(self.outcome_service_type)
+		return header_info
+
+	def set_response_pox_body(self, root):
+		body = etree_sub_element(root, 'imsx_POXBody')
+		if self.outcome_service_type == 'replaceResult':
+			outcome_response = etree_sub_element(body, 'replaceResultResponse')
+		elif self.outcome_service_type == 'readResult':
+			outcome_response = etree_sub_element(body,'readResultResponse')
+			result = etree_sub_element(outcome_response, 'result')
+			result_score = etree_sub_element(result, 'resultScore')
+			language = etree_sub_element(result_score, 'language')
+			language.text = to_unicode(self.language)
+			text_string = etree_sub_element(result_score, 'textString')
+			text_string.text = to_unicode(self.score)
+		elif self.outcome_service_type == 'deleteResult':
+			outcome_response = etree_sub_element(body, 'deleteResultResponse')
+		return root
 
 class OutcomeRequest(object):
 	"""
