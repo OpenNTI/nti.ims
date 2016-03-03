@@ -46,3 +46,12 @@ class TestOutcomeResponse(unittest.TestCase):
 		assert_that(outcome_response.outcome_service_type, equal_to('readResult'))
 		assert_that(outcome_response.result_record, has_key('sourcedGUID'))
 		assert_that(outcome_response.result_record['sourcedGUID'], equal_to(u'3124567'))
+
+	def test_parse_delete_result_xml(self):
+		xml = self._load_xml('delete_result_request.xml')
+		outcome_response = OutcomeResponse()
+		outcome_response.parse(xml)
+		assert_that(outcome_response.message_identifier, equal_to(999999123))
+		assert_that(outcome_response.outcome_service_type, equal_to('deleteResult'))
+		assert_that(outcome_response.result_record, has_key('sourcedGUID'))
+		assert_that(outcome_response.result_record['sourcedGUID'], equal_to(u'3124567'))
