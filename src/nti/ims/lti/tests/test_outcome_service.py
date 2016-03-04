@@ -16,6 +16,7 @@ import os
 import unittest
 
 from nti.ims.lti.outcome_service import OutcomeResponse
+from nti.ims.lti.outcome_service import OutcomeRequest
 
 class TestOutcomeResponse(unittest.TestCase):
 
@@ -110,3 +111,54 @@ class TestOutcomeResponse(unittest.TestCase):
 										description=None,
 										language='en',
 										score=None)
+
+def create_outcome_request_accessors():
+	accessors = {}
+	accessors['lis_outcome_service_url'] = 'http://www.imsglobal.org/developers/LTI/test/v1p1/common/tool_consumer_outcome.php?b64=MTIzNDU6OjpzZWNyZXQ'
+	accessors['lis_result_sourcedid'] = 'feb-123-456-2929::28883'
+	accessors['consumer_key'] = '123456'
+	accessors['consumer_secret'] = 'secret_123456'
+	accessors['message_identifier'] = 999999123
+	return accessors
+
+class TestOutcomeRequest(unittest.TestCase):
+
+	def test_generate_request_xml_replace_result(self):
+		accessors = create_outcome_request_accessors()
+		outcome_service_type = 'replaceResult'
+		outcome_request = OutcomeRequest(accessors['lis_outcome_service_url'],
+										 accessors['lis_result_sourcedid'] ,
+										 accessors['consumer_key'],
+										 accessors['consumer_secret'],
+										 outcome_service_type,
+										 accessors['message_identifier'],
+								  		)
+		outcome_request.score = 0.92
+		_ = outcome_request.generate_request_xml()
+
+	def test_generate_request_xml_read_result(self):
+		accessors = create_outcome_request_accessors()
+		outcome_service_type = 'readResult'
+		outcome_request = OutcomeRequest(accessors['lis_outcome_service_url'],
+										 accessors['lis_result_sourcedid'] ,
+										 accessors['consumer_key'],
+										 accessors['consumer_secret'],
+										 outcome_service_type,
+										 accessors['message_identifier'],
+								  		)
+		outcome_request.score = None
+		_ = outcome_request.generate_request_xml()
+
+	def test_generate_request_xml_delete_result(self):
+		accessors = create_outcome_request_accessors()
+		outcome_service_type = 'deleteResult'
+		outcome_request = OutcomeRequest(accessors['lis_outcome_service_url'],
+										 accessors['lis_result_sourcedid'] ,
+										 accessors['consumer_key'],
+										 accessors['consumer_secret'],
+										 outcome_service_type,
+										 accessors['message_identifier'],
+								  		)
+		outcome_request.score = None
+		_ = outcome_request.generate_request_xml()
+

@@ -3,7 +3,6 @@
 """
 Based on IMS Global Learning Tools Interoperability® Outcomes Management
 http://www.imsglobal.org/specs/ltiomv1p0/specification
-It is used to post grades back from other learning tools to the Tool Consumer
 
 .. $Id$
 """
@@ -40,6 +39,7 @@ objectify_parse = getattr(objectify, "parse")
 class OutcomeResponse(object):
 	"""
 	Mainly used by Tool Consumer.
+	It is used to post grades back from other learning tools to the Tool Consumer
 	TC needs to implement 'lis_outcome_service_url' endpoint for the purpose of receiving grading callbacks from TP
 	LTI Outcome Management Service specification version 1.0 (updated Jan 2015) describes three types of outcome services : replaceResult, readResult and deleteResult
 	TC parse request from TP and send response back to TP.
@@ -125,8 +125,7 @@ class OutcomeResponse(object):
 			root = etree_element('imsx_POXEnvelopeResponse', xmlns=response_ns)
 			root = self.set_response_pox_header(root)
 			root = self.set_response_pox_body(root)
-
-		return '<?xml version="1.0" encoding="UTF-8"?>' + etree_tostring(root)
+			return '<?xml version="1.0" encoding="UTF-8"?>' + etree_tostring(root)
 
 	def set_response_pox_header(self, root):
 		header = etree_sub_element(root, 'imsx_POXHeader')
@@ -186,4 +185,58 @@ class OutcomeRequest(object):
 		   -  script to sign the request using OAuth 1.0 body signing.
 		   -  script to issue an HTTP POST request to the lis_outcome_service_url specified in the launch request that include the signed OAuth Authorization header
 	"""
-	pass
+	
+	def __init__(self, 
+				 lis_outcome_service_url, 
+				 lis_result_sourcedid,
+				 consumer_key,
+				 consumer_secret,
+				 outcome_service_type,
+				 message_identifier,
+				 imsx_version='V1.0',
+				 language='en'):
+		self.lis_outcome_service_url = lis_outcome_service_url
+		self.lis_result_sourcedid = lis_result_sourcedid
+		self.consumer_key = consumer_key
+		self.consumer_secret = consumer_secret
+		self.outcome_service_type = outcome_service_type
+		self.message_identifier = message_identifier
+		self.imsx_version = imsx_version
+		self.language = language
+
+	def generate_request_xml(self):
+		request_ns = NSMAP['imsx_POXEnvelopeRequest']
+		root = etree_element('imsx_POXEnvelopeRequest', xmlns=request_ns)
+		root = self.set_request_pox_header(root)
+		root = self.set_request_pox_body(root)
+		return '<?xml version="1.0" encoding="UTF-8"?>' + etree_tostring(root)
+
+	def set_request_pox_header(self, root):
+		header = etree_sub_element(root, 'imsx_POXHeader')
+		header_info = etree_sub_element(header,'imsx_POXRequestHeaderInfo')
+		version = etree_sub_element(header_info, 'imsx_version')
+		version.text = to_unicode(self.imsx_version)
+		message_identifier = etree_sub_element(header_info, 'imsx_messageIdentifier')
+		message_identifier.text = to_unicode(self.message_identifier)
+		return root
+
+	def set_request_pox_body(self, root):
+		body = etree_sub_element(root, 'imsx_POXBody')
+		request = etree_sub_element(body, '%s%s' %(self.outcome_service_type, 'Request'))
+		record = etree_sub_element(request, 'resultRecord')
+		guid = etree_sub_element(record, 'sourcedGUID')
+		source_id = etree_sub_element(guid, 'sourcedId')
+		source_id.text = to_unicode(self.lis_result_sourcedid)
+
+		if self.score is not None:
+			result = etree_sub_element(record,'result')
+			result_score = etree_sub_element(result, 'resultScore')
+			language = etree_sub_element(result_score, 'language')
+			language.text = to_unicode(self.language)
+			text_string = etree_sub_element(result_score, 'textString')
+			text_string.text = to_unicode(self.score)
+		return root
+
+			
+
+
