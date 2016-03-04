@@ -185,9 +185,9 @@ class OutcomeRequest(object):
 		   -  script to sign the request using OAuth 1.0 body signing.
 		   -  script to issue an HTTP POST request to the lis_outcome_service_url specified in the launch request that include the signed OAuth Authorization header
 	"""
-	
-	def __init__(self, 
-				 lis_outcome_service_url, 
+
+	def __init__(self,
+				 lis_outcome_service_url,
 				 lis_result_sourcedid,
 				 consumer_key,
 				 consumer_secret,
@@ -213,7 +213,7 @@ class OutcomeRequest(object):
 
 	def set_request_pox_header(self, root):
 		header = etree_sub_element(root, 'imsx_POXHeader')
-		header_info = etree_sub_element(header,'imsx_POXRequestHeaderInfo')
+		header_info = etree_sub_element(header, 'imsx_POXRequestHeaderInfo')
 		version = etree_sub_element(header_info, 'imsx_version')
 		version.text = to_unicode(self.imsx_version)
 		message_identifier = etree_sub_element(header_info, 'imsx_messageIdentifier')
@@ -222,21 +222,17 @@ class OutcomeRequest(object):
 
 	def set_request_pox_body(self, root):
 		body = etree_sub_element(root, 'imsx_POXBody')
-		request = etree_sub_element(body, '%s%s' %(self.outcome_service_type, 'Request'))
+		request = etree_sub_element(body, '%s%s' % (self.outcome_service_type, 'Request'))
 		record = etree_sub_element(request, 'resultRecord')
 		guid = etree_sub_element(record, 'sourcedGUID')
 		source_id = etree_sub_element(guid, 'sourcedId')
 		source_id.text = to_unicode(self.lis_result_sourcedid)
 
 		if self.score is not None:
-			result = etree_sub_element(record,'result')
+			result = etree_sub_element(record, 'result')
 			result_score = etree_sub_element(result, 'resultScore')
 			language = etree_sub_element(result_score, 'language')
 			language.text = to_unicode(self.language)
 			text_string = etree_sub_element(result_score, 'textString')
 			text_string.text = to_unicode(self.score)
 		return root
-
-			
-
-

@@ -15,8 +15,8 @@ import os
 
 import unittest
 
-from nti.ims.lti.outcome_service import OutcomeResponse
 from nti.ims.lti.outcome_service import OutcomeRequest
+from nti.ims.lti.outcome_service import OutcomeResponse
 
 class TestOutcomeResponse(unittest.TestCase):
 
@@ -161,4 +161,3 @@ class TestOutcomeRequest(unittest.TestCase):
 								  		)
 		outcome_request.score = None
 		_ = outcome_request.generate_request_xml()
-
