@@ -204,6 +204,26 @@ class OutcomeRequest(object):
 		self.imsx_version = imsx_version
 		self.language = language
 
+
+	def parse(self, xml_source):
+		"""
+		process Plain Old XML received from TP
+		"""
+		if not hasattr(xml_source, 'read'):
+			source = StringIO(xml_source)
+
+		tree = objectify_parse(source)
+		root = tree.getroot()
+
+		self.request_ns = NSMAP['imsx_POXEnvelopeRequest']
+		if root.tag == 'imsx_POXEnvelopeRequest':
+			for node in root.getchildren():
+				if node.tag == 'imsx_POXHeader'  :
+					self.process_imsx_pox_request_header(node)
+					for head_info in node:
+						if head_info.tag = 'imsx_POXResponseHeaderInfo':
+							return None
+
 	def generate_request_xml(self):
 		request_ns = NSMAP['imsx_POXEnvelopeRequest']
 		root = etree_element('imsx_POXEnvelopeRequest', xmlns=request_ns)
