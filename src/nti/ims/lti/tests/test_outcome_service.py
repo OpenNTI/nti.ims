@@ -128,10 +128,7 @@ class TestOutcomeRequest(unittest.TestCase):
 		outcome_service_type = 'replaceResult'
 		outcome_request = OutcomeRequest(accessors['lis_outcome_service_url'],
 										 accessors['lis_result_sourcedid'] ,
-										 accessors['consumer_key'],
-										 accessors['consumer_secret'],
-										 outcome_service_type,
-										 accessors['message_identifier'],
+										 outcome_service_type
 								  		)
 		outcome_request.score = 0.92
 		_ = outcome_request.generate_request_xml()
@@ -141,10 +138,7 @@ class TestOutcomeRequest(unittest.TestCase):
 		outcome_service_type = 'readResult'
 		outcome_request = OutcomeRequest(accessors['lis_outcome_service_url'],
 										 accessors['lis_result_sourcedid'] ,
-										 accessors['consumer_key'],
-										 accessors['consumer_secret'],
-										 outcome_service_type,
-										 accessors['message_identifier'],
+										 outcome_service_type
 								  		)
 		outcome_request.score = None
 		_ = outcome_request.generate_request_xml()
@@ -154,10 +148,7 @@ class TestOutcomeRequest(unittest.TestCase):
 		outcome_service_type = 'deleteResult'
 		outcome_request = OutcomeRequest(accessors['lis_outcome_service_url'],
 										 accessors['lis_result_sourcedid'] ,
-										 accessors['consumer_key'],
-										 accessors['consumer_secret'],
-										 outcome_service_type,
-										 accessors['message_identifier'],
+										 outcome_service_type
 								  		)
 		outcome_request.score = None
 		_ = outcome_request.generate_request_xml()

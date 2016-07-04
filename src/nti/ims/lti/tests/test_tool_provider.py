@@ -64,11 +64,23 @@ class TestToolProvider(unittest.TestCase):
 		assert_that(hasattr(TP, 'launch_presentation_return_url'), equal_to(True))
 		assert_that(hasattr(TP, 'launch_presentation_document_target'), equal_to(True))
 		
+		assert_that(hasattr(TP, 'ext_params'), equal_to(True))
 		#assert_that(hasattr(TP, 'ext_user_username'), equal_to(True))
 		#assert_that(hasattr(TP, 'userid'), equal_to(True))
 		#assert_that(hasattr(TP, 'ext_lms'), equal_to(True))
-		
-		
+
+
+	def test_generated_outcome_service_request_for_moodle(self):
+		params = create_params_moodle()
+		consumer_key = 'key'
+		consumer_secret = 'secret'
+		TP = ToolProvider(consumer_key, consumer_secret, params)
+
+		assert_that(TP.lis_outcome_service_url, equal_to(u'http://localhost:8888/moodle31/mod/lti/service.php'))
+		assert_that(TP.lis_result_sourcedid, equal_to(u'{"data":{"instanceid":"2","userid":"2","typeid":null,"launchid":163267342},"hash":"5dc2f4a7d91147c714e79c74fc3c0f40f0b3e79758e36d5a24907a874c8b0d3d"}'))
+
+		outcome_request_xml = TP.generate_outcome_request_xml()
+		print(outcome_request_xml)
 		
 		
 		

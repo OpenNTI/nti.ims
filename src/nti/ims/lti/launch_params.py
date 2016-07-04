@@ -11,6 +11,8 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+import ast
+
 from collections import defaultdict
 
 from nti.common.string import to_unicode
@@ -91,11 +93,31 @@ class LaunchParamsMixin(object):
 					else:
 						self.roles = val.split(',')
 				else:
-					setattr(self, key, to_unicode(val))
+					value = self.process_param_value(val)
+					setattr(self, key, value)
 			elif 'custom_' in key:
 				self.custom_params[key] = to_unicode(val)
 			elif'ext_' in key:
 				self.ext_params[key] = to_unicode(val)
+
+	def process_param_value(self, value):
+		if isinstance(value, list):
+			if len(value) == 1:
+				if not isinstance(value[0], str) and not isinstance(value[0], unicode):
+					logger.info('Unhandled parameter list value')
+					logger.info(value[0])
+					value = to_unicode(value[0])
+				else:
+					value = value[0]
+			else:
+				logger.info('parameter value is a list and it has more than one item')
+				logger.info(value)
+		elif isinstance(value, str) or isinstance(value, unicode):
+			value = to_unicode(value)
+		else:
+			logger.info('Unhandled parameter value')
+			logger.info(value)
+		return value
 
 	def to_params(self):
 		"""

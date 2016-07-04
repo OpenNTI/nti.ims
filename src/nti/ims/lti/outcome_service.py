@@ -180,29 +180,35 @@ class OutcomeResponse(object):
 class OutcomeRequest(object):
 	"""
 	Mainly used by Tool Provider
-	TODO:  -  script to check if launch params from TC has 'lis_outcome_service_url' and 'lis_result_sourcedid' (write it in different module)
-		   -  script to generate xml sent to TC. A sourcedGUID provided in the 'lis_result_sourcedid' launch parameters.
-		   -  script to sign the request using OAuth 1.0 body signing.
-		   -  script to issue an HTTP POST request to the lis_outcome_service_url specified in the launch request that include the signed OAuth Authorization header
+	TODO:  -  generate message_identifier
+		   -  set score 
 	"""
 
 	def __init__(self,
 				 lis_outcome_service_url,
 				 lis_result_sourcedid,
-				 consumer_key,
-				 consumer_secret,
 				 outcome_service_type,
-				 message_identifier,
 				 imsx_version='V1.0',
 				 language='en'):
 		self.lis_outcome_service_url = lis_outcome_service_url
 		self.lis_result_sourcedid = lis_result_sourcedid
-		self.consumer_key = consumer_key
-		self.consumer_secret = consumer_secret
+
 		self.outcome_service_type = outcome_service_type
-		self.message_identifier = message_identifier
+		if self.outcome_service_type == u'replaceResult':
+			self.set_score()
 		self.imsx_version = imsx_version
 		self.language = language
+
+		#need to generate message identifier
+		self.message_identifier = 'test'
+		
+	def set_score(self):
+		"""
+		We need to check whether the operation is replaceResult, readResult or deleteResult
+		if it is a replaceResult then TP should set the score that will be sent to TC
+		to do : retrive database to get the score for a particular user of particular context (course/assignments)
+		"""
+		self.score = 0.9 #this is dummy score (we need to create a mechanism to get the score)
 
 	def generate_request_xml(self):
 		request_ns = NSMAP['imsx_POXEnvelopeRequest']
@@ -228,7 +234,7 @@ class OutcomeRequest(object):
 		source_id = etree_sub_element(guid, 'sourcedId')
 		source_id.text = to_unicode(self.lis_result_sourcedid)
 
-		if self.score is not None:
+		if self.outcome_service_type == u'replaceResult':
 			result = etree_sub_element(record, 'result')
 			result_score = etree_sub_element(result, 'resultScore')
 			language = etree_sub_element(result_score, 'language')

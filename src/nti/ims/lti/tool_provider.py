@@ -177,6 +177,19 @@ class ToolProvider(LaunchParamsMixin):
 			original.fragment
 		))
 
+	def generate_outcome_request_xml(self, service_type='replaceResult', imsx_version='V1.0', language='en'):
+		"""
+		generate outcome request xml sent from TP to TC 
+		todo : figure out how to generate message_identifier (meanwhile just generate random number)
+		"""
+		outcome_request = OutcomeRequest(self.lis_outcome_service_url,
+										 self.lis_result_sourcedid, 
+										 service_type, 
+										 imsx_version,
+										 language)
+		xml = outcome_request.generate_request_xml()
+		return xml
+
 	def new_request(self, defaults, service_type='replaceResult'):
 		"""
 		out = dict(defaults)
@@ -191,13 +204,5 @@ class ToolProvider(LaunchParamsMixin):
 			"language": self.language
 		})
 		"""
-		self.outcome_requests.append(OutcomeRequest(self.consumer_key, 
-													self.consumer_secret,
-													self.lis_outcome_service_url,
-													self.lis_result_sourcedid, 
-													service_type, 
-													self.message_identifier,
-													self.imsx_version,
-													self.language))
 		self.last_outcome_request = self.outcome_requests[-1]
 		return self.last_outcome_request
