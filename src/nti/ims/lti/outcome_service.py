@@ -180,7 +180,7 @@ class OutcomeResponse(object):
 class OutcomeRequest(object):
 	"""
 	Mainly used by Tool Provider
-	TODO:  -  script to check if launch params from TC has 'lis_outcome_service_url' and 'lis_result_sourcedid'
+	TODO:  -  script to check if launch params from TC has 'lis_outcome_service_url' and 'lis_result_sourcedid' (write it in different module)
 		   -  script to generate xml sent to TC. A sourcedGUID provided in the 'lis_result_sourcedid' launch parameters.
 		   -  script to sign the request using OAuth 1.0 body signing.
 		   -  script to issue an HTTP POST request to the lis_outcome_service_url specified in the launch request that include the signed OAuth Authorization header
@@ -203,25 +203,6 @@ class OutcomeRequest(object):
 		self.message_identifier = message_identifier
 		self.imsx_version = imsx_version
 		self.language = language
-
-	def parse(self, xml_source):
-		"""
-		process Plain Old XML received from TP
-		"""
-		if not hasattr(xml_source, 'read'):
-			source = StringIO(xml_source)
-
-		tree = objectify_parse(source)
-		root = tree.getroot()
-
-		self.request_ns = NSMAP['imsx_POXEnvelopeRequest']
-		if root.tag == 'imsx_POXEnvelopeRequest':
-			for node in root.getchildren():
-				if node.tag == 'imsx_POXHeader'  :
-					self.process_imsx_pox_request_header(node)
-					for head_info in node:
-						if head_info.tag == 'imsx_POXResponseHeaderInfo':
-							return None
 
 	def generate_request_xml(self):
 		request_ns = NSMAP['imsx_POXEnvelopeRequest']

@@ -177,7 +177,7 @@ class ToolProvider(LaunchParamsMixin):
 			original.fragment
 		))
 
-	def new_request(self, defaults, service_type):
+	def new_request(self, defaults, service_type='replaceResult'):
 		"""
 		out = dict(defaults)
 		out.update({
