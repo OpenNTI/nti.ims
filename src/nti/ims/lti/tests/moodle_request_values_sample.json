@@ -1,0 +1,101 @@
+{
+    "resource_link_id": [
+        "2"
+    ], 
+    "lis_person_name_family": [
+        "-"
+    ], 
+    "tool_consumer_info_product_family_code": [
+        "moodle"
+    ], 
+    "oauth_nonce": [
+        "5c0e17edd532dd67b75df71f2ce1639a"
+    ], 
+    "lis_result_sourcedid": [
+        "{\"data\":{\"instanceid\":\"2\",\"userid\":\"2\",\"typeid\":null,\"launchid\":1559272422},\"hash\":\"cab2467ffa02f501386f24f3dcbe71999d30fde4ebc707afb4962152c432394a\"}"
+    ], 
+    "context_id": [
+        "2"
+    ], 
+    "lis_person_contact_email_primary": [
+        "admin@localhost"
+    ], 
+    "oauth_signature_method": [
+        "HMAC-SHA1"
+    ], 
+    "oauth_version": [
+        "1.0"
+    ], 
+    "tool_consumer_info_version": [
+        "2016052300.04"
+    ], 
+    "tool_consumer_instance_guid": [
+        "localhost"
+    ], 
+    "oauth_signature": [
+        "Fb2E+k8R9u4dKXeP36PBnxBOe7c="
+    ], 
+    "context_label": [
+        "About"
+    ], 
+    "lti_message_type": [
+        "basic-lti-launch-request"
+    ], 
+    "lti_version": [
+        "LTI-1p0"
+    ], 
+    "tool_consumer_instance_name": [
+        "Moodle 3.1"
+    ], 
+    "ext_user_username": [
+        "admin"
+    ], 
+    "lis_person_name_full": [
+        "- Admin -"
+    ], 
+    "context_title": [
+        "About Moodle4Mac"
+    ], 
+    "user_id": [
+        "2"
+    ], 
+    "roles": [
+        "Instructor,urn:lti:sysrole:ims/lis/Administrator,urn:lti:instrole:ims/lis/Administrator"
+    ], 
+    "oauth_timestamp": [
+        "1467619837"
+    ], 
+    "tool_consumer_instance_description": [
+        "Moodle 3.1"
+    ], 
+    "launch_presentation_document_target": [
+        "iframe"
+    ], 
+    "oauth_consumer_key": [
+        "key"
+    ], 
+    "ext_lms": [
+        "moodle-2"
+    ], 
+    "lis_person_name_given": [
+        "- Admin"
+    ], 
+    "launch_presentation_return_url": [
+        "http://localhost:8888/moodle31/mod/lti/return.php?course=2&launch_container=3&instanceid=2&sesskey=ZnINowPmbn"
+    ], 
+    "context_type": [
+        "CourseSection"
+    ], 
+    "launch_presentation_locale": [
+        "en"
+    ], 
+    "lis_outcome_service_url": [
+        "http://localhost:8888/moodle31/mod/lti/service.php"
+    ], 
+    "resource_link_title": [
+        "NTI_LTI"
+    ], 
+    "oauth_callback": [
+        "about:blank"
+    ]
+}
