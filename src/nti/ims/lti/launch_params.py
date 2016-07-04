@@ -101,7 +101,7 @@ class LaunchParamsMixin(object):
 				self.ext_params[key] = to_unicode(val)
 
 	def process_param_value(self, value):
-		if isinstance(value, list):
+		if isinstance(value, (tuple, list, set)):
 			if len(value) == 1:
 				if not isinstance(value[0], str) and not isinstance(value[0], unicode):
 					logger.info('Unhandled parameter list value')

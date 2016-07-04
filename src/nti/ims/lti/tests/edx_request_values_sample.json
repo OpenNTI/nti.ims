@@ -1,0 +1,47 @@
+{
+    "lti_version": [
+        "LTI-1p0"
+    ], 
+    "oauth_nonce": [
+        "104958806078703881061467622028"
+    ], 
+    "lis_result_sourcedid": [
+        "course-v1%3AedX%2BDemoX%2BDemo_Course:-bf3da14a2fc2474382b9ac80ef1fd431:student"
+    ], 
+    "context_id": [
+        "course-v1:edX+DemoX+Demo_Course"
+    ], 
+    "oauth_signature_method": [
+        "HMAC-SHA1"
+    ], 
+    "oauth_version": [
+        "1.0"
+    ], 
+    "oauth_signature": [
+        "F8Pm3Qs4nhxQwyuK1f5/GVxpA9w="
+    ], 
+    "lti_message_type": [
+        "basic-lti-launch-request"
+    ], 
+    "resource_link_id": [
+        "-bf3da14a2fc2474382b9ac80ef1fd431"
+    ], 
+    "user_id": [
+        "student"
+    ], 
+    "roles": [
+        "Instructor"
+    ], 
+    "oauth_consumer_key": [
+        "key"
+    ], 
+    "oauth_timestamp": [
+        "1467622028"
+    ], 
+    "lis_outcome_service_url": [
+        "/preview/xblock/block-v1:edX+DemoX+Demo_Course+type@lti_consumer+block@bf3da14a2fc2474382b9ac80ef1fd431/handler/outcome_service_handler"
+    ], 
+    "oauth_callback": [
+        "about:blank"
+    ]
+}
