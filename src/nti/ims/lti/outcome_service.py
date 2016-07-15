@@ -189,26 +189,25 @@ class OutcomeRequest(object):
 				 lis_result_sourcedid,
 				 outcome_service_type,
 				 imsx_version='V1.0',
-				 language='en'):
+				 language='en'
+				 ):
 		self.lis_outcome_service_url = lis_outcome_service_url
 		self.lis_result_sourcedid = lis_result_sourcedid
 
 		self.outcome_service_type = outcome_service_type
-		if self.outcome_service_type == u'replaceResult':
-			self.set_score()
 		self.imsx_version = imsx_version
 		self.language = language
 
 		#need to generate message identifier
 		self.message_identifier = 'test'
 		
-	def set_score(self):
+	def set_score(self, score):
 		"""
 		We need to check whether the operation is replaceResult, readResult or deleteResult
 		if it is a replaceResult then TP should set the score that will be sent to TC
 		to do : retrive database to get the score for a particular user of particular context (course/assignments)
 		"""
-		self.score = 0.9 #this is dummy score (we need to create a mechanism to get the score)
+		self.score = score
 
 	def generate_request_xml(self):
 		request_ns = NSMAP['imsx_POXEnvelopeRequest']

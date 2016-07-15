@@ -106,38 +106,6 @@ class ToolProvider(LaunchParamsMixin):
 		else:
 			return default
 
-	def post_replace_result(self, score, outcome=defaultdict(lambda:None), result_data=None):
-		"""
-		POSTs the given score to the Tool Consumer with a replaceResult.
-		Returns OutcomeResponse object and stores it in self.outcome_request
-		OPTIONAL:
-			result_data must be a dictionary
-			Note: ONLY ONE of these values can be in the dict at a time,
-			due to the Canvas specification.
-			'text' : str text
-			'url' : str url
-		"""
-		return self.new_request(outcome, "replaceResult").post_replace_result(score, result_data)
-
-	def post_delete_result(self, outcome=defaultdict(lambda:None)):
-		"""
-		POSTs a delete request to the Tool Consumer.
-		"""
-		return self.new_request(outcome, "deleteResult").post_delete_result()
-
-	def post_read_result(self, outcome=defaultdict(lambda:None)):
-		"""
-		POSTs the given score to the Tool Consumer with a replaceResult, the
-		returned OutcomeResponse will have the score.
-		"""
-		return self.new_request(outcome, "readResult").post_read_result()
-
-	def last_outcome_request(self):
-		"""
-		Returns the most recent OutcomeRequest.
-		"""
-		return self.outcome_requests[-1]
-
 	def last_outcome_success(self):
 		"""
 		Convenience method for determining the success of the last
@@ -177,7 +145,7 @@ class ToolProvider(LaunchParamsMixin):
 			original.fragment
 		))
 
-	def generate_outcome_request_xml(self, service_type='replaceResult', imsx_version='V1.0', language='en'):
+	def generate_outcome_request_xml(self, service_type='replaceResult', imsx_version='V1.0', language='en', score=None):
 		"""
 		generate outcome request xml sent from TP to TC 
 		todo : figure out how to generate message_identifier (meanwhile just generate random number)
@@ -187,22 +155,8 @@ class ToolProvider(LaunchParamsMixin):
 										 service_type, 
 										 imsx_version,
 										 language)
+		outcome_request.set_score(score)
 		xml = outcome_request.generate_request_xml()
 		return xml
 
-	def new_request(self, defaults, service_type='replaceResult'):
-		"""
-		out = dict(defaults)
-		out.update({
-			'consumer_key': self.consumer_key,
-			'consumer_secret': self.consumer_secret,
-			'lis_outcome_service_url': self.lis_outcome_service_url,
-			'lis_result_sourcedid': self.lis_result_sourcedid,
-			'outcome_service_type': service_type,
-			'message_identifier': self.message_identifier,
-			'imsx_version': self.imsx_version,
-			"language": self.language
-		})
-		"""
-		self.last_outcome_request = self.outcome_requests[-1]
-		return self.last_outcome_request
+	

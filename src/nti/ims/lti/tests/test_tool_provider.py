@@ -92,7 +92,7 @@ class TestToolProvider(unittest.TestCase):
 		assert_that(TP.lis_outcome_service_url, equal_to(u'http://localhost:8888/moodle31/mod/lti/service.php'))
 		assert_that(TP.lis_result_sourcedid, equal_to(u'{"data":{"instanceid":"2","userid":"2","typeid":null,"launchid":1559272422},"hash":"cab2467ffa02f501386f24f3dcbe71999d30fde4ebc707afb4962152c432394a"}'))
 
-		outcome_request_xml = TP.generate_outcome_request_xml()
+		outcome_request_xml = TP.generate_outcome_request_xml(service_type='replaceResult', imsx_version='V1.0', language='en', score=0.9)
 		print(outcome_request_xml)
 		
 	def test_launch_parameters_from_edx(self):
@@ -116,5 +116,6 @@ class TestToolProvider(unittest.TestCase):
 		assert_that(TP.lis_outcome_service_url, equal_to("/preview/xblock/block-v1:edX+DemoX+Demo_Course+type@lti_consumer+block@bf3da14a2fc2474382b9ac80ef1fd431/handler/outcome_service_handler"))
 		assert_that(TP.oauth_callback, equal_to("about:blank"))
 		
-		
+		_ = TP.generate_outcome_request_xml(service_type='replaceResult', imsx_version='V1.0', language='en', score=0.9)
+		print(_)
 		
