@@ -106,14 +106,6 @@ class ToolProvider(LaunchParamsMixin):
 		else:
 			return default
 
-	def last_outcome_success(self):
-		"""
-		Convenience method for determining the success of the last
-		OutcomeRequest.
-		"""
-		return all((self.last_outcome_request,
-					self.last_outcome_request.was_outcome_post_successful()))
-
 	def build_return_url(self):
 		"""
 		If the Tool Consumer sent a return URL, add any set messages to the

@@ -3,58 +3,46 @@
 """
 OAuthentication for LTI Integration
 
-Using example flask OAuth2 Server
+OAuth Signing based on: https://groups.google.com/forum/#!searchin/edx-code/lti/edx-code/Ys7UJO2KcSw/tgnES3pesVQJ
 
 .. $Id$
 
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
+from oauthlib.oauth1.rfc5849 import signature
+from oauthlib.oauth1.rfc5849.utils import escape
+from oauthlib.oauth1.rfc5849.signature import collect_parameters
+import base64
+from hashlib import sha1
+from uuid import uuid4
+import time
+import requests
 
 logger = __import__('logging').getLogger(__name__)
 
-# try:
-# 	from cStringIO import StringIO
-# except ImportError:
-# 	from StringIO import StringIO
-# 
-# import requests
-# 
-# from lxml import etree
-# from lxml import objectify
-# 
-# from nti.common.string import to_unicode
 
-# from requests_oauthlib import OAuth1
-
-CLIENT_KEY = 'key'
+key = u'key'
+CLIENT_KEY = u'key'
 CLIENT_SECRET = 'secret'
-"""
-oauth = OAuth(app)
-#Note that the URLs here come from the OAuth Server, so maybe eventually NTI dataserver
-remote = oauth.remote_app(
-	'remote',
-	consumer_key=CLIENT_KEY,
-	consumer_secret=CLIENT_SECRET,
-	base_url='http://127.0.0.1:5000/api/',
-	request_token_url='http://127.0.0.1:5000/oauth/request_token',
-	access_token_method='GET',
-	access_token_url='http://127.0.0.1:5000/oauth/access_token',
-	authorize_url='http://127.0.0.1:5000/oauth/authorize',
-)
-"""
 
-"""
-class OAuthService(object):
-	def __init__(self):
-		self.key = "key"
-		self.secret = "secret"
-"""
-def authorized():
-# 	url = 'http://127.0.0.1:5000/oauth/authorize'
-# 	auth = OAuth1("", "secret", "", "")
-	# remote.authorize(callback=url_for('authorized', _external=True))
-	return None
+def send_grade(provider, outcome):
+
+	post_to = provider.params['lis_outcome_service_url'][0]
+	body_hash = (base64.b64encode(sha1(outcome).digest()).decode("utf-8"))
+
+	oauth_args = [("oauth_body_hash", body_hash),("oauth_consumer_key", key),("oauth_nonce", uuid4().hex.decode('utf-8')),
+        ("oauth_signature_method", u"HMAC-SHA1"),("oauth_timestamp", str(int(time.time())).decode('utf-8')), ("oauth_version", u"1.0")]
+
+	params = signature.normalize_parameters(oauth_args)
+	base_string = signature.construct_base_string("POST", post_to, params)
+	sig = signature.sign_hmac_sha1(base_string, "secret", "")
+
+	oauth_header = (", ".join(['%s="%s"' % items for items in oauth_args]))
+	oauth_header += ', oauth_signature="%s"' % escape(sig)
+	headers = {'Content-Type': "application/xml",'Authorization': "OAuth %s" % oauth_header}
+	return requests.post(post_to, headers=headers, data=outcome)
+
 
 def validate_request(request_vals):
 	# print (request_vals)
@@ -65,11 +53,4 @@ def validate_request(request_vals):
 	else:
 		return False
 
-"""
-nti_client = OAuth2Service( client_id='random_id',
-	client_secret='random_secret',
-	name='nti_client',
-	authorize_url='',
-	access_token_url='',
-	base_url='')
-"""
+
