@@ -20,8 +20,10 @@ from zope.container.contained import Contained
 from zope.proxy import ProxyBase
 
 from nti.common.property import alias
-from nti.common.proxy import removeAllProxies
+
 from nti.common.representation import WithRepr
+
+from nti.externalization.proxy import removeAllProxies
 
 from nti.ims.sis import get_text
 from nti.ims.sis import to_legacy_role
