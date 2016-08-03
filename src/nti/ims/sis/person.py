@@ -14,7 +14,8 @@ from functools import total_ordering
 from zope import interface
 
 from nti.common.property import alias
-from nti.common.representation import WithRepr
+
+from nti.externalization.representation import WithRepr
 
 from nti.ims.sis import get_text
 from nti.ims.sis import to_legacy_role

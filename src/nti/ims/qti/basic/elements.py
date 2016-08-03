@@ -10,10 +10,12 @@ logger = __import__('logging').getLogger(__name__)
 
 from zope import schema
 from zope import interface
+
 from zope.container import contained as zcontained
+
 from zope.interface.common.sequence import IFiniteSequence
 
-from nti.common.representation import WithRepr
+from nti.externalization.representation import WithRepr
 
 from nti.schema.field import SchemaConfigured
 
