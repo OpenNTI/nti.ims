@@ -15,9 +15,10 @@ from nti.common.representation import WithRepr
 
 from nti.ims.lti.interfaces import IConsumer
 
+from nti.schema.eqhash import EqHash
+
 from nti.schema.fieldproperty import createDirectFieldProperties
 
-from nti.schema.schema import EqHash
 from nti.schema.schema import SchemaConfigured
 
 @WithRepr

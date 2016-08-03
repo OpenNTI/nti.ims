@@ -38,10 +38,11 @@ from nti.ims.sis.interfaces import INSTRUCTOR_ROLE
 
 from nti.ims.sis.sourcedid import SourcedID
 
-from nti.schema.field import SchemaConfigured
-from nti.schema.fieldproperty import createDirectFieldProperties
+from nti.schema.eqhash import EqHash
 
-from nti.schema.schema import EqHash
+from nti.schema.field import SchemaConfigured
+
+from nti.schema.fieldproperty import createDirectFieldProperties
 
 DEFAULT_ID_TYPE = IMember['idtype'].default
 

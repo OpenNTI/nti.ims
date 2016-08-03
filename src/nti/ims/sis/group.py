@@ -16,9 +16,10 @@ from functools import total_ordering
 from zope import interface
 
 from nti.common.property import alias
-from nti.common.representation import WithRepr
 
 from nti.externalization.datetime import datetime_from_string
+
+from nti.externalization.representation import WithRepr
 
 from nti.ims.sis import get_text
 
@@ -27,12 +28,13 @@ from nti.ims.sis.interfaces import ITimeFrame
 
 from nti.ims.sis.sourcedid import SourcedID
 
+from nti.schema.eqhash import EqHash
+
 from nti.schema.field import SchemaConfigured
+
 from nti.schema.fieldproperty import createDirectFieldProperties
 
 from nti.schema.interfaces import InvalidValue
-
-from nti.schema.schema import EqHash
 
 @WithRepr
 @EqHash('start', 'end')
