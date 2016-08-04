@@ -14,12 +14,12 @@ import six
 import gzip
 import mimetypes
 
-from nti.common.string import safestr
+from nti.common.string import to_unicode
 
 def get_text(node):
 	if node is not None and node.text:
 		text = node.text
-		text = safestr(text)
+		text = to_unicode(text)
 		return text
 	return None
 

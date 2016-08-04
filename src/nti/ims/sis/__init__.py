@@ -9,8 +9,6 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-from nti.common.iterables import isorted
-
 from nti.ims.sis.interfaces import STUDENT
 from nti.ims.sis.interfaces import INSTRUCTOR
 from nti.ims.sis.interfaces import STUDENT_ROLE
