@@ -28,7 +28,10 @@ CLIENT_SECRET = 'secret'
 
 def send_grade(provider, outcome):
 
+	#grades are always sent to the consumer request's "lis_outcome_service_url"
 	post_to = provider.params['lis_outcome_service_url'][0]
+
+	#body hash is required for a valid signature on request to consumer
 	body_hash = (base64.b64encode(sha1(outcome).digest()).decode("utf-8"))
 
 	oauth_args = [("oauth_body_hash", body_hash),("oauth_consumer_key", key),("oauth_nonce", uuid4().hex.decode('utf-8')),
@@ -36,6 +39,9 @@ def send_grade(provider, outcome):
 
 	params = signature.normalize_parameters(oauth_args)
 	base_string = signature.construct_base_string("POST", post_to, params)
+
+	#all of the consumers should use this signature type, but you can check the 
+	#consumer's signature method in the parameters from their initial request.
 	sig = signature.sign_hmac_sha1(base_string, "secret", "")
 
 	oauth_header = (", ".join(['%s="%s"' % items for items in oauth_args]))
