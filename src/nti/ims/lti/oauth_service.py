@@ -25,11 +25,17 @@ logger = __import__('logging').getLogger(__name__)
 key = u'key'
 CLIENT_KEY = u'key'
 CLIENT_SECRET = 'secret'
+is_edX = False
+ 
 
 def send_grade(provider, outcome):
-
 	#grades are always sent to the consumer request's "lis_outcome_service_url"
+	global is_edX
 	post_to = provider.params['lis_outcome_service_url'][0]
+	if(post_to[0] == '/'):
+		is_edX = True 
+	if (is_edX):
+		post_to = "http://192.168.33.10/" + post_to
 
 	#body hash is required for a valid signature on request to consumer
 	body_hash = (base64.b64encode(sha1(outcome).digest()).decode("utf-8"))
