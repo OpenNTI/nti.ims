@@ -15,8 +15,6 @@ from functools import total_ordering
 
 from zope import interface
 
-from nti.common.property import alias
-
 from nti.externalization.datetime import datetime_from_string
 
 from nti.externalization.representation import WithRepr
@@ -27,6 +25,8 @@ from nti.ims.sis.interfaces import IGroup
 from nti.ims.sis.interfaces import ITimeFrame
 
 from nti.ims.sis.sourcedid import SourcedID
+
+from nti.property.property import alias
 
 from nti.schema.eqhash import EqHash
 

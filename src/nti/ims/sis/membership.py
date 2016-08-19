@@ -19,8 +19,6 @@ from zope.container.contained import Contained
 
 from zope.proxy import ProxyBase
 
-from nti.common.property import alias
-
 from nti.externalization.proxy import removeAllProxies
 
 from nti.externalization.representation import WithRepr
@@ -37,6 +35,8 @@ from nti.ims.sis.interfaces import INACTIVE_STATUS
 from nti.ims.sis.interfaces import INSTRUCTOR_ROLE
 
 from nti.ims.sis.sourcedid import SourcedID
+
+from nti.property.property import alias
 
 from nti.schema.eqhash import EqHash
 

@@ -14,7 +14,12 @@ import six
 import gzip
 import mimetypes
 
-from nti.common.string import to_unicode
+def to_unicode(s, encoding='utf-8', err='strict'):
+	"""
+	Decode a byte sequence and unicode result
+	"""
+	s = s.decode(encoding, err) if isinstance(s, bytes) else s
+	return unicode(s) if s is not None else None
 
 def get_text(node):
 	if node is not None and node.text:

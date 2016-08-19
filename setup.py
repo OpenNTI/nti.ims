@@ -51,8 +51,8 @@ setup(
         'zope.proxy',
         'zope.schema',
         'zope.security',
-        'nti.common',
         'nti.externalization',
+        'nti.property',
 		'nti.schema'
 	],
 	extras_require={
