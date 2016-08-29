@@ -9,6 +9,7 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+from nti.ims.sis.interfaces import FACULTY
 from nti.ims.sis.interfaces import STUDENT
 from nti.ims.sis.interfaces import INSTRUCTOR
 from nti.ims.sis.interfaces import STUDENT_ROLE
@@ -22,6 +23,6 @@ def to_legacy_role(role):
 		role = role.upper()
 		if role == STUDENT:
 			role = STUDENT_ROLE
-		elif role == INSTRUCTOR:
+		elif role in (FACULTY, INSTRUCTOR):
 			role = INSTRUCTOR_ROLE
 	return role
