@@ -14,30 +14,33 @@ import six
 import gzip
 import mimetypes
 
+
 def to_unicode(s, encoding='utf-8', err='strict'):
-	"""
-	Decode a byte sequence and unicode result
-	"""
-	s = s.decode(encoding, err) if isinstance(s, bytes) else s
-	return unicode(s) if s is not None else None
+    """
+    Decode a byte sequence and unicode result
+    """
+    s = s.decode(encoding, err) if isinstance(s, bytes) else s
+    return unicode(s) if s is not None else None
+
 
 def get_text(node):
-	if node is not None and node.text:
-		text = node.text
-		text = to_unicode(text)
-		return text
-	return None
+    if node is not None and node.text:
+        text = node.text
+        text = to_unicode(text)
+        return text
+    return None
+
 
 def get_fileobj(source):
-	if hasattr(source, 'read'):
-		return source
-	elif isinstance(source, six.string_types):
-		mimetype = mimetypes.guess_type(source)
-		if mimetype[1] == 'gzip':
-			fileobj = gzip.GzipFile(source)
-		elif mimetype[1] == 'bzip2':
-			fileobj = bz2.BZ2File(source)
-		else:
-			fileobj = open(source)
-		return fileobj
-	return None
+    if hasattr(source, 'read'):
+        return source
+    elif isinstance(source, six.string_types):
+        mimetype = mimetypes.guess_type(source)
+        if mimetype[1] == 'gzip':
+            fileobj = gzip.GzipFile(source)
+        elif mimetype[1] == 'bzip2':
+            fileobj = bz2.BZ2File(source)
+        else:
+            fileobj = open(source)
+        return fileobj
+    return None
