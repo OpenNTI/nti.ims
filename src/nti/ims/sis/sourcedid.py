@@ -28,49 +28,51 @@ from nti.schema.fieldproperty import createDirectFieldProperties
 DEFAULT_SOURCE = ISourcedID['source'].default
 CRN_TERM_PATTERN = re.compile(r"(.*)\.(.*)", re.UNICODE | re.IGNORECASE)
 
+
 @WithRepr
 @total_ordering
 @EqHash('source', 'id')
 @interface.implementer(ISourcedID)
 class SourcedID(SchemaConfigured):
-	id = None
-	source = None
+    id = None
+    source = None
 
-	createDirectFieldProperties(ISourcedID)
+    createDirectFieldProperties(ISourcedID)
 
-	@property
-	def CRN(self):
-		m = CRN_TERM_PATTERN.match(self.id or u'')
-		groups = m.groups() if m is not None else ()
-		return groups[0] if groups else None
+    @property
+    def CRN(self):
+        m = CRN_TERM_PATTERN.match(self.id or u'')
+        groups = m.groups() if m is not None else ()
+        return groups[0] if groups else None
 
-	@property
-	def Term(self):
-		m = CRN_TERM_PATTERN.match(self.id or u'')
-		groups = m.groups() if m is not None else ()
-		return groups[1] if groups else None
+    @property
+    def Term(self):
+        m = CRN_TERM_PATTERN.match(self.id or u'')
+        groups = m.groups() if m is not None else ()
+        return groups[1] if groups else None
 
-	def __lt__(self, other):
-		try:
-			return (self.source, self.id) < (other.source, other.id)
-		except AttributeError:  # pragma: no cover
-			return NotImplemented
+    def __lt__(self, other):
+        try:
+            return (self.source, self.id) < (other.source, other.id)
+        except AttributeError:  # pragma: no cover
+            return NotImplemented
 
-	def __gt__(self, other):
-		try:
-			return (self.source, self.id) > (other.source, other.id)
-		except AttributeError:  # pragma: no cover
-			return NotImplemented
+    def __gt__(self, other):
+        try:
+            return (self.source, self.id) > (other.source, other.id)
+        except AttributeError:  # pragma: no cover
+            return NotImplemented
 
-	@classmethod
-	def createFromElement(cls, element):
-		source = element.find('source')
-		source = get_text(source) or DEFAULT_SOURCE
+    @classmethod
+    def createFromElement(cls, element):
+        source = element.find('source')
+        source = get_text(source) or DEFAULT_SOURCE
 
-		id_ = element.find('id')
-		id_ = get_text(id_)
+        id_ = element.find('id')
+        id_ = get_text(id_)
 
-		result = SourcedID(source=source, id=id_) if source and id_ else None
-		if result is None:
-			logger.debug('Skipping sourceid node %r (%s, %s)', element, source, id_)
-		return result
+        result = SourcedID(source=source, id=id_) if source and id_ else None
+        if result is None:
+            logger.debug(
+                'Skipping sourceid node %r (%s, %s)', element, source, id_)
+        return result

@@ -18,11 +18,12 @@ from nti.ims.sis.interfaces import INSTRUCTOR_ROLE
 from nti.ims.sis.utils import get_text
 from nti.ims.sis.utils import get_fileobj
 
+
 def to_legacy_role(role):
-	if role:
-		role = role.upper()
-		if role == STUDENT:
-			role = STUDENT_ROLE
-		elif role in (FACULTY, INSTRUCTOR):
-			role = INSTRUCTOR_ROLE
-	return role
+    if role:
+        role = role.upper()
+        if role == STUDENT:
+            role = STUDENT_ROLE
+        elif role in (FACULTY, INSTRUCTOR):
+            role = INSTRUCTOR_ROLE
+    return role

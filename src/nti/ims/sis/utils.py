@@ -14,6 +14,11 @@ import six
 import gzip
 import mimetypes
 
+try:
+    _unicode = unicode
+except NameError:  # python 3
+    _unicode = lambda s: s
+
 
 def to_unicode(s, encoding='utf-8', err='strict'):
     """

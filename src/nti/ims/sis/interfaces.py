@@ -43,116 +43,134 @@ INACTIVE_STATUS = 0
 #: Classes
 CLASSES = 'CLASSES'
 
+
 class IElementCreatable(interface.Interface):
 
-	def createFromElement(element):
-		"""
-		return a instance of this object from an Element object
-		"""
+    def createFromElement(element):
+        """
+        return a instance of this object from an Element object
+        """
+
 
 class ISourcedID(IElementCreatable):
-	id = ValidTextLine(title='Identifier', required=True)
-	source = ValidTextLine(title='Source', required=False, default='SIS')
+    id = ValidTextLine(title='Identifier', required=True)
+    source = ValidTextLine(title='Source', required=False, default='SIS')
+
 
 class ITimeFrame(IElementCreatable):
-	start = Float(title='start time', required=False)
-	end = Float(title='end time', required=False)
+    start = Float(title='start time', required=False)
+    end = Float(title='end time', required=False)
+
 
 class IGroup(IElementCreatable):
-	sourcedid = Object(ISourcedID, title='Source id', required=True)
-	timeframe = Object(ITimeFrame, title='Time frame', required=False)
-	description = ValidTextLine(title='Group description', required=False)
-	type = ValidTextLine(title='Group type', required=False)
-	level = ValidTextLine(title='Group level', required=False)
+    sourcedid = Object(ISourcedID, title='Source id', required=True)
+    timeframe = Object(ITimeFrame, title='Time frame', required=False)
+    description = ValidTextLine(title='Group description', required=False)
+    type = ValidTextLine(title='Group type', required=False)
+    level = ValidTextLine(title='Group level', required=False)
+
 
 class IPerson(IElementCreatable):
-	sourcedid = Object(ISourcedID, title='Source id', required=True)
-	userid = ValidTextLine(title='user id', required=False)
-	name = ValidTextLine(title='person name', required=False)
-	email = ValidTextLine(title='person email', required=False)
-	userrole = ValidTextLine(title='user role type', required=False, default=STUDENT_ROLE)
+    sourcedid = Object(ISourcedID, title='Source id', required=True)
+    userid = ValidTextLine(title='user id', required=False)
+    name = ValidTextLine(title='person name', required=False)
+    email = ValidTextLine(title='person email', required=False)
+    userrole = ValidTextLine(title='user role type',
+                             required=False, 
+                             default=STUDENT_ROLE)
+
 
 class IPersons(IDict):
 
-	def add(person):
-		"""
-		add a person
-		"""
+    def add(person):
+        """
+        add a person
+        """
 
-	def get_by_userid(userid):
-		"""
-		return a IPerson w/ the specified userid
-		"""
+    def get_by_userid(userid):
+        """
+        return a IPerson w/ the specified userid
+        """
+
 
 class IRole(IElementCreatable):
-	userid = ValidTextLine(title='User id', required=False)
-	datasource = ValidTextLine(title='Data source', required=False)
-	status = Int(title='Status id', required=True, default=ACTIVE_STATUS)
-	roletype = ValidTextLine(title='role type', required=True, default=STUDENT_ROLE)
+    userid = ValidTextLine(title='User id', required=False)
+    datasource = ValidTextLine(title='Data source', required=False)
+    status = Int(title='Status id', required=True, default=ACTIVE_STATUS)
+    roletype = ValidTextLine(title='role type', 
+                             required=True,
+                             default=STUDENT_ROLE)
+
 
 class IMember(IElementCreatable):
-	sourcedid = Object(ISourcedID, title='source id', required=True)
-	idtype = Int(title='Id type', required=False, default=1)
-	role = Object(IRole, title='Source id', required=True)
+    sourcedid = Object(ISourcedID, title='source id', required=True)
+    idtype = Int(title='Id type', required=False, default=1)
+    role = Object(IRole, title='Source id', required=True)
+
 
 class IMembership(IElementCreatable, IIterable, IFiniteSequence):
 
-	sourcedid = Object(ISourcedID, title='source id', required=True)
-	members = IndexedIterable(title="The members.",
-							  value_type=Object(IMember, title="A member"))
+    sourcedid = Object(ISourcedID, title='source id', required=True)
+    members = IndexedIterable(title="The members.",
+                              value_type=Object(IMember, title="A member"))
 
-	def add(member):
-		"""
-		add a member
-		"""
+    def add(member):
+        """
+        add a member
+        """
 
-	def index(member):
-		"""
-		return the storage index for the specified member
-		"""
+    def index(member):
+        """
+        return the storage index for the specified member
+        """
 
-	def __iadd__(other):
-		"""
-		merge with another membership
-		"""
+    def __iadd__(other):
+        """
+        merge with another membership
+        """
+
 
 class IEnterprise(IElementCreatable):
 
-	persons = Object(IPersons)
-	groups = Dict(key_type=Object(ISourcedID), value_type=Object(IGroup))
-	membership = Dict(key_type=Object(ISourcedID), value_type=Object(IMembership))
+    persons = Object(IPersons)
 
-	def get_persons():
-		"""
-		return all IPerson objects in this object
-		"""
+    groups = Dict(key_type=Object(ISourcedID), 
+                  value_type=Object(IGroup))
 
-	def add_group(group):
-		"""
-		add the specified group
-		"""
+    membership = Dict(key_type=Object(ISourcedID), 
+                      value_type=Object(IMembership))
 
-	def get_group(sourcedid):
-		"""
-		return the group w/ the specifeid id
-		"""
+    def get_persons():
+        """
+        return all IPerson objects in this object
+        """
 
-	def get_groups():
-		"""
-		return all groups
-		"""
+    def add_group(group):
+        """
+        add the specified group
+        """
 
-	def add_membership(membership):
-		""""
-		add the specified membership
-		"""
+    def get_group(sourcedid):
+        """
+        return the group w/ the specifeid id
+        """
 
-	def get_membership(sourcedid):
-		"""
-		return the membership w/ the specifeid id
-		"""
+    def get_groups():
+        """
+        return all groups
+        """
 
-	def get_memberships():
-		"""
-		return all membership
-		"""
+    def add_membership(membership):
+        """"
+        add the specified membership
+        """
+
+    def get_membership(sourcedid):
+        """
+        return the membership w/ the specifeid id
+        """
+
+    def get_memberships():
+        """
+        return all membership
+        """
