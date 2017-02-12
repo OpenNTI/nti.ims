@@ -8,8 +8,6 @@
 	<include package="zope.component" />
 	<include package="zope.security" />
 
-	<include package=".lti" />
-	<include package=".qti" />
 	<include package=".sis" />
 
 </configure>
