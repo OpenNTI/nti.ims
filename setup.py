@@ -7,16 +7,12 @@ entry_points = {
 }
 
 TESTS_REQUIRE = [
-	'fudge',
-	'nose',
-	'nose-timer',
-	'nose-pudb',
-	'nose-progressive',
-	'nose2[coverage_plugin]',
-	'pyhamcrest',
-	'zope.testing',
-	'nti.nose_traceback_info',
-	'nti.testing'
+    'fudge',
+    'nose2[coverage_plugin]',
+    'nti.testing',
+    'pyhamcrest',
+    'z3c.baseregistry',
+    'zope.testrunner',
 ]
 
 setup(
@@ -45,15 +41,15 @@ setup(
 		'dolmen.builtins',
 		'lxml',
 		'ims_lti_py',
+		'nti.externalization',
+		'nti.property',
+		'nti.schema',
         'zope.component',
         'zope.container',
         'zope.interface',
         'zope.proxy',
         'zope.schema',
         'zope.security',
-        'nti.externalization',
-        'nti.property',
-		'nti.schema'
 	],
 	extras_require={
 		'test': TESTS_REQUIRE,
