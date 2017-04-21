@@ -12,26 +12,28 @@ logger = __import__('logging').getLogger(__name__)
 import bz2
 import six
 import gzip
+import codecs
 import mimetypes
 
 try:
     _unicode = unicode
 except NameError:  # python 3
-    _unicode = lambda s: s
+    def _unicode(s): return str(s)
 
 
-def to_unicode(s, encoding='utf-8', err='strict'):
+def unicode_(s, encoding='utf-8', err='strict'):
     """
     Decode a byte sequence and unicode result
     """
     s = s.decode(encoding, err) if isinstance(s, bytes) else s
-    return unicode(s) if s is not None else None
+    return _unicode(s) if s is not None else None
+text_ = to_unicode = unicode_
 
 
 def get_text(node):
     if node is not None and node.text:
         text = node.text
-        text = to_unicode(text)
+        text = unicode_(text)
         return text
     return None
 
@@ -46,6 +48,6 @@ def get_fileobj(source):
         elif mimetype[1] == 'bzip2':
             fileobj = bz2.BZ2File(source)
         else:
-            fileobj = open(source)
+            fileobj = codecs.open(source, "r", "utf-8")
         return fileobj
     return None
