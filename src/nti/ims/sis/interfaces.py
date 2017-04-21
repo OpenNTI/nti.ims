@@ -9,10 +9,8 @@ __docformat__ = "restructuredtext en"
 
 from zope import interface
 
+from zope.interface.common.mapping import IMapping
 from zope.interface.common.sequence import IFiniteSequence
-
-from dolmen.builtins import IDict
-from dolmen.builtins import IIterable
 
 from nti.schema.field import Int
 from nti.schema.field import Dict
@@ -80,7 +78,7 @@ class IPerson(IElementCreatable):
                              default=STUDENT_ROLE)
 
 
-class IPersons(IDict):
+class IPersons(IMapping):
 
     def add(person):
         """
@@ -108,7 +106,7 @@ class IMember(IElementCreatable):
     role = Object(IRole, title='Source id', required=True)
 
 
-class IMembership(IElementCreatable, IIterable, IFiniteSequence):
+class IMembership(IElementCreatable, IFiniteSequence):
 
     sourcedid = Object(ISourcedID, title='source id', required=True)
     members = IndexedIterable(title="The members.",
@@ -129,6 +127,10 @@ class IMembership(IElementCreatable, IIterable, IFiniteSequence):
         merge with another membership
         """
 
+    def __iter__():
+        """
+        Return an iterator object.
+        """
 
 class IEnterprise(IElementCreatable):
 

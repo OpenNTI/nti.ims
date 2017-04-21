@@ -8,10 +8,7 @@ entry_points = {
 
 TESTS_REQUIRE = [
     'fudge',
-    'nose2[coverage_plugin]',
     'nti.testing',
-    'pyhamcrest',
-    'z3c.baseregistry',
     'zope.testrunner',
 ]
 
@@ -38,7 +35,6 @@ setup(
     tests_require=TESTS_REQUIRE,
     install_requires=[
         'setuptools',
-        'dolmen.builtins',
         'lxml',
         'ims_lti_py',
         'nti.externalization',
