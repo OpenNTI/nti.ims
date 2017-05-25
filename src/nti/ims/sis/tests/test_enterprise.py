@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 # disable: accessing protected members, too many methods
@@ -24,11 +24,11 @@ from nti.ims.sis.enterprise import Enterprise
 class TestEnterprise(unittest.TestCase):
 
     def test_sourceid(self):
-        a = SourcedID(source="SIS", id="112133307")
+        a = SourcedID(source=u"SIS", id=u"112133307")
         assert_that(a, has_property("source", "SIS"))
         assert_that(a, has_property("id", "112133307"))
-        b = SourcedID(source="SIS", id="112133307")
-        c = SourcedID(source="SIS", id="112133443")
+        b = SourcedID(source=u"SIS", id=u"112133307")
+        c = SourcedID(source=u"SIS", id=u"112133443")
         assert_that(a, is_(b))
         assert_that(a, is_not(c))
 
@@ -43,9 +43,9 @@ class TestEnterprise(unittest.TestCase):
         assert_that(p, has_property('userid', is_('cald3307')))
         assert_that(p, has_property('email', is_('maletas@ou.edu')))
         assert_that(p, has_property('sourcedid',
-								    has_property('source', is_('SIS'))))
-        assert_that(p, has_property('sourcedid', 
-								    has_property('id', is_('112133307'))))
+                                    has_property('source', is_('SIS'))))
+        assert_that(p, has_property('sourcedid',
+                                    has_property('id', is_('112133307'))))
 
         groups = list(enterprise.get_groups())
         assert_that(groups, has_length(1))
@@ -54,15 +54,15 @@ class TestEnterprise(unittest.TestCase):
         assert_that(group, has_property('type', is_('CLASSES')))
         assert_that(group, has_property('level', is_('0')))
         assert_that(group, has_property('description',
-										is_('P E-2213-001 - Thermodynamics')))
-        assert_that(group, has_property('sourcedid', 
-										has_property('source', is_('SIS'))))
+                                        is_('P E-2213-001 - Thermodynamics')))
         assert_that(group, has_property('sourcedid',
-										has_property('id', is_('18161.201120'))))
+                                        has_property('source', is_('SIS'))))
+        assert_that(group, has_property('sourcedid',
+                                        has_property('id', is_('18161.201120'))))
         assert_that(group, has_property('timeframe',
-										has_property('end', is_(1338181200.0))))
-        assert_that(group, has_property('timeframe', 
-										has_property('start', is_(none()))))
+                                        has_property('end', is_(1338181200.0))))
+        assert_that(group, has_property('timeframe',
+                                        has_property('start', is_(none()))))
 
         memberships = list(enterprise.get_memberships())
         assert_that(memberships, has_length(1))
@@ -70,32 +70,32 @@ class TestEnterprise(unittest.TestCase):
         assert_that(membership, is_not(none()))
         assert_that(membership, has_length(1))
         assert_that(membership, has_property('sourcedid',
-											 has_property('source', is_('SIS'))))
-        assert_that(membership, has_property('sourcedid', 
-											 has_property('id', is_('18161.201120'))))
-        assert_that(membership, has_property('sourcedid', 
-											 has_property('Term', is_('201120'))))
-        assert_that(membership, has_property('sourcedid', 
-											 has_property('CRN', is_('18161'))))
+                                             has_property('source', is_('SIS'))))
+        assert_that(membership, has_property('sourcedid',
+                                             has_property('id', is_('18161.201120'))))
+        assert_that(membership, has_property('sourcedid',
+                                             has_property('Term', is_('201120'))))
+        assert_that(membership, has_property('sourcedid',
+                                             has_property('CRN', is_('18161'))))
 
         members = list(membership)
         assert_that(members, has_length(1))
         member = membership[0]
         assert_that(member, is_not(none()))
-        assert_that(member, has_property('sourcedid', 
-										 has_property('source', is_('SIS'))))
         assert_that(member, has_property('sourcedid',
-										 has_property('id', is_('112133307'))))
+                                         has_property('source', is_('SIS'))))
         assert_that(member, has_property('sourcedid',
-										 has_property('Term', is_(none()))))
+                                         has_property('id', is_('112133307'))))
         assert_that(member, has_property('sourcedid',
-										 has_property('CRN', is_(none()))))
-        assert_that(member, has_property('role', 
-										 has_property('roletype', is_('01'))))
-        assert_that(member, has_property('role', 
-										 has_property('status', is_(1))))
-        assert_that(member, has_property('role', 
-										 has_property('userid', is_('cald3307'))))
+                                         has_property('Term', is_(none()))))
+        assert_that(member, has_property('sourcedid',
+                                         has_property('CRN', is_(none()))))
+        assert_that(member, has_property('role',
+                                         has_property('roletype', is_('01'))))
+        assert_that(member, has_property('role',
+                                         has_property('status', is_(1))))
+        assert_that(member, has_property('role',
+                                         has_property('userid', is_('cald3307'))))
 
     def test_export(self):
         path = os.path.join(os.path.dirname(__file__), 'export.xml.gz')
@@ -114,12 +114,12 @@ class TestEnterprise(unittest.TestCase):
         members = sorted(list(enterprise.get_all_members()))
         assert_that(members, has_length(2))
         assert_that(members[0], has_property('CourseID',
-											 has_property('id', is_('18161.201120'))))
+                                             has_property('id', is_('18161.201120'))))
         assert_that(members[0], has_property('course_id',
-											 has_property('id', is_('18161.201120'))))
-        assert_that(members[0], has_property('role', 
-											 has_property('status', is_(0))))
-        assert_that(members[1], has_property('course_id', 
-											 has_property('id', is_('18161.201121'))))
+                                             has_property('id', is_('18161.201120'))))
+        assert_that(members[0], has_property('role',
+                                             has_property('status', is_(0))))
+        assert_that(members[1], has_property('course_id',
+                                             has_property('id', is_('18161.201121'))))
         assert_that(members[1], has_property('role',
-											  has_property('status', is_(1))))
+                                             has_property('status', is_(1))))

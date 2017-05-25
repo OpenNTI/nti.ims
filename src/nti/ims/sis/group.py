@@ -4,7 +4,7 @@
 .. $Id$
 """
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -26,7 +26,7 @@ from nti.ims.sis.interfaces import ITimeFrame
 
 from nti.ims.sis.sourcedid import SourcedID
 
-from nti.ims.sis.utils import to_unicode
+from nti.ims.sis.utils import text_
 
 from nti.property.property import alias
 
@@ -65,7 +65,7 @@ class TimeFrame(SchemaConfigured):
         if start is not None or end is not None:
             result = TimeFrame(start=start, end=end)
             return result
-        logger.debug('Skipping timeframe node %r (%s, %s)', 
+        logger.debug('Skipping timeframe node %r (%s, %s)',
                      element, start, end)
         return None
 
@@ -109,7 +109,7 @@ class Group(SchemaConfigured):
             typevalue = grouptype.find('typevalue')
             type_ = get_text(typevalue)
             if typevalue is not None:
-                level = to_unicode(typevalue.get('level', u''))
+                level = text_(typevalue.get('level') or u'')
             else:
                 level = None
 
@@ -120,11 +120,11 @@ class Group(SchemaConfigured):
             timeframe = None
 
         if sid is not None:
-            result = Group(sourcedid=sid, 
+            result = Group(type=type_,
+                           level=level,
+                           sourcedid=sid,
                            timeframe=timeframe,
-                           description=description, 
-                           type=type_, 
-                           level=level)
+                           description=description)
         else:
             result = None
 

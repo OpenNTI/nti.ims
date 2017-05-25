@@ -6,7 +6,7 @@ Define membership objects.
 .. $Id$
 """
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -94,7 +94,9 @@ class Role(SchemaConfigured):
         datasource = element.find('datasource')
         datasource = get_text(datasource)
 
-        result = Role(roletype=roletype, userid=userid, status=status,
+        result = Role(userid=userid, 
+                      status=status,
+                      roletype=roletype, 
                       datasource=datasource)
         return result
 
@@ -166,21 +168,24 @@ class Member(Contained, SchemaConfigured):
         role = element.find('role')
         role = Role.createFromElement(role) if role is not None else None
 
-        result = Member(sourcedid=sid, role=role, idtype=idtype) \
-            if sid is not None and role is not None else None
+        if sid is not None and role is not None:
+            result = Member(role=role, 
+                            sourcedid=sid,
+                            idtype=idtype)
+        else:
+            result = None
 
         if result is None:
-            logger.debug(
-                'Skipping member node %r (%s, %s)', element, sid, role)
+            logger.debug('Skipping member node %r (%s, %s)', 
+                         element, sid, role)
         return result
 
 
 @total_ordering
 class _MemberProxy(ProxyBase):
 
-    course_id = property(
-        lambda s: s.__dict__.get('_course_id'),
-        lambda s, v: s.__dict__.__setitem__('_course_id', v))
+    course_id = property(lambda s: s.__dict__.get('_course_id'),
+                         lambda s, v: s.__dict__.__setitem__('_course_id', v))
 
     CourseID = alias('course_id')
 

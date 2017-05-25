@@ -4,7 +4,7 @@
 .. $Id$
 """
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 from zope import interface
@@ -20,17 +20,17 @@ from nti.schema.field import ValidTextLine
 from nti.schema.field import IndexedIterable
 
 #: Student role code
-STUDENT_ROLE = "01"
+STUDENT_ROLE = u"01"
 
 #: Instructor role code
-INSTRUCTOR_ROLE = "02"
+INSTRUCTOR_ROLE = u"02"
 
 #: Student
-STUDENT = 'STUDENT'
+STUDENT = u'STUDENT'
 
 #: Instructor
-FACULTY = "FACULTY"
-INSTRUCTOR = 'INSTRUCTOR'
+FACULTY = u"FACULTY"
+INSTRUCTOR = u'INSTRUCTOR'
 
 #: Active enrollment status
 ACTIVE_STATUS = 1
@@ -39,7 +39,7 @@ ACTIVE_STATUS = 1
 INACTIVE_STATUS = 0
 
 #: Classes
-CLASSES = 'CLASSES'
+CLASSES = u'CLASSES'
 
 
 class IElementCreatable(interface.Interface):
@@ -51,30 +51,30 @@ class IElementCreatable(interface.Interface):
 
 
 class ISourcedID(IElementCreatable):
-    id = ValidTextLine(title='Identifier', required=True)
-    source = ValidTextLine(title='Source', required=False, default='SIS')
+    id = ValidTextLine(title=u'Identifier', required=True)
+    source = ValidTextLine(title=u'Source', required=False, default=u'SIS')
 
 
 class ITimeFrame(IElementCreatable):
-    start = Float(title='start time', required=False)
-    end = Float(title='end time', required=False)
+    start = Float(title=u'start time', required=False)
+    end = Float(title=u'end time', required=False)
 
 
 class IGroup(IElementCreatable):
-    sourcedid = Object(ISourcedID, title='Source id', required=True)
-    timeframe = Object(ITimeFrame, title='Time frame', required=False)
-    description = ValidTextLine(title='Group description', required=False)
-    type = ValidTextLine(title='Group type', required=False)
-    level = ValidTextLine(title='Group level', required=False)
+    sourcedid = Object(ISourcedID, title=u'Source id', required=True)
+    timeframe = Object(ITimeFrame, title=u'Time frame', required=False)
+    description = ValidTextLine(title=u'Group description', required=False)
+    type = ValidTextLine(title=u'Group type', required=False)
+    level = ValidTextLine(title=u'Group level', required=False)
 
 
 class IPerson(IElementCreatable):
-    sourcedid = Object(ISourcedID, title='Source id', required=True)
-    userid = ValidTextLine(title='user id', required=False)
-    name = ValidTextLine(title='person name', required=False)
-    email = ValidTextLine(title='person email', required=False)
-    userrole = ValidTextLine(title='user role type',
-                             required=False, 
+    sourcedid = Object(ISourcedID, title=u'Source id', required=True)
+    userid = ValidTextLine(title=u'user id', required=False)
+    name = ValidTextLine(title=u'person name', required=False)
+    email = ValidTextLine(title=u'person email', required=False)
+    userrole = ValidTextLine(title=u'user role type',
+                             required=False,
                              default=STUDENT_ROLE)
 
 
@@ -92,25 +92,25 @@ class IPersons(IMapping):
 
 
 class IRole(IElementCreatable):
-    userid = ValidTextLine(title='User id', required=False)
-    datasource = ValidTextLine(title='Data source', required=False)
-    status = Int(title='Status id', required=True, default=ACTIVE_STATUS)
-    roletype = ValidTextLine(title='role type', 
+    userid = ValidTextLine(title=u'User id', required=False)
+    datasource = ValidTextLine(title=u'Data source', required=False)
+    status = Int(title=u'Status id', required=True, default=ACTIVE_STATUS)
+    roletype = ValidTextLine(title=u'role type',
                              required=True,
                              default=STUDENT_ROLE)
 
 
 class IMember(IElementCreatable):
-    sourcedid = Object(ISourcedID, title='source id', required=True)
-    idtype = Int(title='Id type', required=False, default=1)
-    role = Object(IRole, title='Source id', required=True)
+    sourcedid = Object(ISourcedID, title=u'source id', required=True)
+    idtype = Int(title=u'Id type', required=False, default=1)
+    role = Object(IRole, title=u'Source id', required=True)
 
 
 class IMembership(IElementCreatable, IFiniteSequence):
 
-    sourcedid = Object(ISourcedID, title='source id', required=True)
-    members = IndexedIterable(title="The members.",
-                              value_type=Object(IMember, title="A member"))
+    sourcedid = Object(ISourcedID, title=u'source id', required=True)
+    members = IndexedIterable(title=u'The members.',
+                              value_type=Object(IMember, title=u'A member'))
 
     def add(member):
         """
@@ -132,14 +132,15 @@ class IMembership(IElementCreatable, IFiniteSequence):
         Return an iterator object.
         """
 
+
 class IEnterprise(IElementCreatable):
 
     persons = Object(IPersons)
 
-    groups = Dict(key_type=Object(ISourcedID), 
+    groups = Dict(key_type=Object(ISourcedID),
                   value_type=Object(IGroup))
 
-    membership = Dict(key_type=Object(ISourcedID), 
+    membership = Dict(key_type=Object(ISourcedID),
                       value_type=Object(IMembership))
 
     def get_persons():

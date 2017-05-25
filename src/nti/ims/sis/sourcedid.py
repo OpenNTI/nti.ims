@@ -4,7 +4,7 @@
 .. $Id$
 """
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -73,6 +73,6 @@ class SourcedID(SchemaConfigured):
 
         result = SourcedID(source=source, id=id_) if source and id_ else None
         if result is None:
-            logger.debug(
-                'Skipping sourceid node %r (%s, %s)', element, source, id_)
+            logger.debug('Skipping sourceid node %r (%s, %s)', 
+                         element, source, id_)
         return result
