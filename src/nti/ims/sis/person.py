@@ -39,12 +39,11 @@ DEFAULT_ROLE = IPerson['userrole'].default
 @EqHash('sourcedid')
 @interface.implementer(IPerson)
 class Person(SchemaConfigured):
+    createDirectFieldProperties(IPerson)
+
     userid = None
     userrole = None
     sourcedid = None
-
-    createDirectFieldProperties(IPerson)
-
     id = alias('sourcedid')
 
     def __lt__(self, other):

@@ -43,10 +43,10 @@ from nti.schema.interfaces import InvalidValue
 @EqHash('start', 'end')
 @interface.implementer(ITimeFrame)
 class TimeFrame(SchemaConfigured):
+    createDirectFieldProperties(ITimeFrame)
+
     end = None
     start = None
-
-    createDirectFieldProperties(ITimeFrame)
 
     @classmethod
     def _mktime(cls, node):
@@ -75,9 +75,9 @@ class TimeFrame(SchemaConfigured):
 @EqHash('sourcedid')
 @interface.implementer(IGroup)
 class Group(SchemaConfigured):
-    sourcedid = None
     createDirectFieldProperties(IGroup)
 
+    sourcedid = None
     id = alias('sourcedid')
 
     def __lt__(self, other):

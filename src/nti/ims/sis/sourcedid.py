@@ -34,10 +34,10 @@ CRN_TERM_PATTERN = re.compile(r"(.*)\.(.*)", re.UNICODE | re.IGNORECASE)
 @EqHash('source', 'id')
 @interface.implementer(ISourcedID)
 class SourcedID(SchemaConfigured):
+    createDirectFieldProperties(ISourcedID)
+
     id = None
     source = None
-
-    createDirectFieldProperties(ISourcedID)
 
     @property
     def CRN(self):

@@ -52,11 +52,11 @@ DEFAULT_ID_TYPE = IMember['idtype'].default
 @interface.implementer(IRole)
 @EqHash('status', 'roletype', 'userid')
 class Role(SchemaConfigured):
+    createDirectFieldProperties(IRole)
+
     status = None
     userid = None
     roletype = None
-
-    createDirectFieldProperties(IRole)
 
     @property
     def is_student(self):
