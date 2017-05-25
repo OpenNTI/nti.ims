@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Define membership objects.
-
 .. $Id$
 """
 
@@ -15,7 +13,7 @@ from functools import total_ordering
 
 from zope import interface
 
-from zope.container.contained import Contained
+from zope.location.interfaces import IContained
 
 from zope.proxy import ProxyBase
 
@@ -35,6 +33,8 @@ from nti.ims.sis.interfaces import INACTIVE_STATUS
 from nti.ims.sis.interfaces import INSTRUCTOR_ROLE
 
 from nti.ims.sis.sourcedid import SourcedID
+
+from nti.ims.sis.utils import text_
 
 from nti.property.property import alias
 
@@ -82,8 +82,8 @@ class Role(SchemaConfigured):
 
     @classmethod
     def createFromElement(cls, element):
-        roletype = unicode(
-            to_legacy_role(element.get('roletype', STUDENT_ROLE)))
+        roletype = to_legacy_role(element.get('roletype', STUDENT_ROLE))
+        roletype = text_(roletype)
 
         userid = element.find('userid')
         userid = get_text(userid)
@@ -103,19 +103,20 @@ class Role(SchemaConfigured):
 
 @WithRepr
 @total_ordering
-@interface.implementer(IMember)
+@interface.implementer(IMember, IContained)
 @EqHash('sourcedid', 'idtype', 'role')
-class Member(Contained, SchemaConfigured):
+class Member(SchemaConfigured):
+    createDirectFieldProperties(IMember)
+
+    __name__ = None
+    __parent__ = None
+
     role = None
     idtype = None
     sourcedid = None
-    createDirectFieldProperties(IMember)
 
     id = alias('sourcedid')
-
-    @property
-    def membership(self):
-        return self.__parent__
+    membership = alias('__parent__')
 
     @property
     def is_student(self):
@@ -210,15 +211,16 @@ class _MemberProxy(ProxyBase):
 
 
 @interface.implementer(IMembership)
-class Membership(object):
+class Membership(SchemaConfigured):
+    createDirectFieldProperties(IMembership)
 
     sourcedid = None
-
-    def __init__(self):
-        self.members = []
-        self._v_cache = set()
-
     id = alias('sourcedid')
+    
+    def __init__(self, *args, **kwargs):
+        SchemaConfigured.__init__(self,  *args, **kwargs)
+        self.members = [] if self.members is None else self.members
+        self._v_cache = set()
 
     def add(self, member):
         if member is not None:
