@@ -14,7 +14,7 @@ from zope.interface.common.sequence import IFiniteSequence
 
 from nti.schema.field import Int
 from nti.schema.field import Dict
-from nti.schema.field import Float
+from nti.schema.field import Number
 from nti.schema.field import Object
 from nti.schema.field import ValidTextLine
 from nti.schema.field import IndexedIterable
@@ -56,8 +56,8 @@ class ISourcedID(IElementCreatable):
 
 
 class ITimeFrame(IElementCreatable):
-    start = Float(title=u'start time', required=False)
-    end = Float(title=u'end time', required=False)
+    start = Number(title=u'start time', required=False)
+    end = Number(title=u'end time', required=False)
 
 
 class IGroup(IElementCreatable):

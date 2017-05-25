@@ -19,8 +19,12 @@ import unittest
 
 from nti.ims.sis.enterprise import Enterprise
 
+from nti.ims.tests import SharedConfiguringTestLayer
+
 
 class TestOSU(unittest.TestCase):
+
+    layer = SharedConfiguringTestLayer
 
     def _parse_1(self, source):
         path = source

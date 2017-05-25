@@ -17,20 +17,14 @@ from hamcrest import has_property
 import os
 import unittest
 
-from nti.ims.sis.sourcedid import SourcedID
 from nti.ims.sis.enterprise import Enterprise
+
+from nti.ims.tests import SharedConfiguringTestLayer
 
 
 class TestEnterprise(unittest.TestCase):
 
-    def test_sourceid(self):
-        a = SourcedID(source=u"SIS", id=u"112133307")
-        assert_that(a, has_property("source", "SIS"))
-        assert_that(a, has_property("id", "112133307"))
-        b = SourcedID(source=u"SIS", id=u"112133307")
-        c = SourcedID(source=u"SIS", id=u"112133443")
-        assert_that(a, is_(b))
-        assert_that(a, is_not(c))
+    layer = SharedConfiguringTestLayer
 
     def test_parse(self):
         path = os.path.join(os.path.dirname(__file__), 'ims.xml')
