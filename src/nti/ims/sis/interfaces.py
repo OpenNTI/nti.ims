@@ -140,8 +140,8 @@ class IEnterprise(IElementCreatable):
     groups = Dict(key_type=Object(ISourcedID),
                   value_type=Object(IGroup))
 
-    membership = Dict(key_type=Object(ISourcedID),
-                      value_type=Object(IMembership))
+    memberships = Dict(key_type=Object(ISourcedID),
+                       value_type=Object(IMembership))
 
     def get_persons():
         """

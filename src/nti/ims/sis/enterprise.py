@@ -26,16 +26,22 @@ from nti.ims.sis.person import Persons
 
 from nti.ims.sis import get_fileobj
 
+from nti.schema.field import SchemaConfigured
+
+from nti.schema.fieldproperty import createDirectFieldProperties
+
 etree_parse = getattr(etree, 'parse')
 
 
 @interface.implementer(IEnterprise)
-class Enterprise(object):
+class Enterprise(SchemaConfigured):
+    createDirectFieldProperties(IEnterprise)
 
-    def __init__(self):
-        self.groups = {}
-        self.memberships = {}
-        self.persons = Persons()
+    def __init__(self, *args, **kwargs):
+        SchemaConfigured.__init__(self,  *args, **kwargs)
+        self.groups = {} if self.groups is None else self.groups
+        self.persons = Persons() if self.persons is None else self.persons
+        self.memberships = {} if self.memberships is None else self.memberships
 
     def add_group(self, group):
         if group is not None:

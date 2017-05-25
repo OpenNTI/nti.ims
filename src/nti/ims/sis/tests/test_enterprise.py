@@ -14,10 +14,15 @@ from hamcrest import has_length
 from hamcrest import assert_that
 from hamcrest import has_property
 
+from nti.testing.matchers import validly_provides
+from nti.testing.matchers import verifiably_provides
+
 import os
 import unittest
 
 from nti.ims.sis.enterprise import Enterprise
+
+from nti.ims.sis.interfaces import IEnterprise
 
 from nti.ims.tests import SharedConfiguringTestLayer
 
@@ -30,7 +35,10 @@ class TestEnterprise(unittest.TestCase):
         path = os.path.join(os.path.dirname(__file__), 'ims.xml')
         enterprise = Enterprise.parseFile(path)
         assert_that(enterprise, is_not(none()))
+        assert_that(enterprise, validly_provides(IEnterprise))
+        assert_that(enterprise, verifiably_provides(IEnterprise))
         assert_that(enterprise, has_property("persons", has_length(1)))
+
         p = enterprise.persons.get_by_userid('cald3307')
         assert_that(p, is_not(none()))
         assert_that(p, has_property('name', is_('Carlos Sanchez')))
