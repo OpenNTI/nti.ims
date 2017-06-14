@@ -11,6 +11,8 @@ from zope import interface
 
 from nti.base.interfaces import ITitled
 
+from nti.dataserver.interfaces import ITitledDescribedContent
+
 from nti.schema.field import TextLine
 
 class IOAuthConsumer(ITitled):
@@ -45,3 +47,25 @@ class IOAuthConsumers(interface.Interface):
         """
         Removes the IOAuthConsumer for the given key
         """
+
+class ITool(ITitledDescribedContent):
+    """
+    Describes a tool in the lti sense.  This works in conjunction.
+    """
+
+class IToolConfig(interface.Interface):
+    """
+    An object providing configuration information for launching a tool.
+    This is typcially used to render an LTI Common Cartridge xml snippet
+    for configuring the tool inside a consumer.
+    """
+
+class IToolConfigFactory(interface.Interface):
+    """
+    A callable that is capable of generating an IToolConfig.  These
+    are typcially registered as adapters on ITool.
+    """
+
+    def __call__():
+        pass
+

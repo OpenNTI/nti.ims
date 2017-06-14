@@ -9,4 +9,8 @@
 	<utility factory=".oauth.UtiltityBackedOAuthConsumers"
 			 provides=".interfaces.IOAuthConsumers"/>
 
+	<adapter factory=".config.ToolConfigFactory"
+			 provides=".interfaces.IToolConfigFactory"
+			 for=".interfaces.ITool" />
+
 </configure>
