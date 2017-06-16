@@ -42,7 +42,7 @@ setup(
     install_requires=[
         'setuptools',
         'lxml',
-        'ims_lti_py',
+        'lti',
         'nti.base',
         'nti.externalization',
         'nti.property',
