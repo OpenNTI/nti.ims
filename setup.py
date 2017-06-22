@@ -42,10 +42,12 @@ setup(
     install_requires=[
         'setuptools',
         'lxml',
-        'ims_lti_py',
+        'lti',
+        'nti.base',
         'nti.externalization',
         'nti.property',
         'nti.schema',
+        'nti.utils',
         'zope.component',
         'zope.interface',
         'zope.location',
