@@ -67,5 +67,7 @@ class IToolConfigFactory(interface.Interface):
     """
 
     def __call__():
-        pass
+        """
+        Returns an IToolConfig object.
+        """
 
