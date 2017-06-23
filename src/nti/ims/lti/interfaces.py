@@ -10,10 +10,10 @@ __docformat__ = "restructuredtext en"
 from zope import interface
 
 from nti.base.interfaces import ITitled
-
-from nti.dataserver.interfaces import ITitledDescribedContent
+from nti.base.interfaces import ITitledDescribed
 
 from nti.schema.field import TextLine
+
 
 class IOAuthConsumer(ITitled):
 
@@ -48,10 +48,12 @@ class IOAuthConsumers(interface.Interface):
         Removes the IOAuthConsumer for the given key
         """
 
-class ITool(ITitledDescribedContent):
+
+class ITool(ITitledDescribed):
     """
     Describes a tool in the lti sense.  This works in conjunction.
     """
+
 
 class IToolConfig(interface.Interface):
     """
@@ -59,6 +61,7 @@ class IToolConfig(interface.Interface):
     This is typcially used to render an LTI Common Cartridge xml snippet
     for configuring the tool inside a consumer.
     """
+
 
 class IToolConfigFactory(interface.Interface):
     """
@@ -70,4 +73,3 @@ class IToolConfigFactory(interface.Interface):
         """
         Returns an IToolConfig object.
         """
-

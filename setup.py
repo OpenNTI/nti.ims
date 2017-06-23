@@ -16,6 +16,7 @@ def _read(fname):
     with codecs.open(fname, encoding='utf-8') as f:
         return f.read()
 
+
 setup(
     name='nti.ims',
     version=_read('version.txt').strip(),
@@ -47,7 +48,6 @@ setup(
         'nti.externalization',
         'nti.property',
         'nti.schema',
-        'nti.utils',
         'zope.component',
         'zope.interface',
         'zope.location',
