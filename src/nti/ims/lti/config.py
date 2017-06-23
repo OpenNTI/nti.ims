@@ -9,12 +9,12 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-from zope import component
 from zope import interface
 
 from lti.tool_config import ToolConfig
 
-from .interfaces import IToolConfig
+from nti.ims.lti.interfaces import IToolConfig
+
 
 class ToolConfigFactory(object):
 
@@ -24,7 +24,7 @@ class ToolConfigFactory(object):
     def __call__(self):
         config = ToolConfig()
         config.title = self.tool.title
-        config.description = self.tool.description
         config.__name__ = self.tool.__name__
+        config.description = self.tool.description
         interface.alsoProvides(config, IToolConfig)
         return config
