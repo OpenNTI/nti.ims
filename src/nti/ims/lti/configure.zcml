@@ -13,7 +13,7 @@
 			 provides=".interfaces.IToolConfigFactory"
 			 for=".interfaces.ITool" />
 
-    <subscription factory=".config.CanvasConfigBuilder"
+    <subscriber factory=".config.CanvasConfigBuilder"
              provides=".interfaces.IToolConfigBuilder"
-              for="interface.ITool/>
+             for=".interfaces.ITool" />
 </configure>

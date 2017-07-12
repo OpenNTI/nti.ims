@@ -29,7 +29,7 @@ class ToolConfigFactory(object):
         interface.alsoProvides(config, IToolConfig)
         return config
 
-class CanvasToolConfigBuilder:
+class CanvasConfigBuilder(object):
 
     def configure(self, config):
         """
