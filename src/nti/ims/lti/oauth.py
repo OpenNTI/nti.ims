@@ -30,7 +30,7 @@ class OAuthConsumer(SchemaConfigured):
 
 
 @interface.implementer(IOAuthConsumers)
-class UtiltityBackedOAuthConsumers(object):
+class UtilityBackedOAuthConsumers(object):
 
     def __getitem__(self, key):
         consumer = component.queryUtility(IOAuthConsumer, name=key)
