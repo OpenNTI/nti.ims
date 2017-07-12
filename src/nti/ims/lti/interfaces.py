@@ -58,7 +58,7 @@ class ITool(ITitledDescribed):
 class IToolConfig(interface.Interface):
     """
     An object providing configuration information for launching a tool.
-    This is typcially used to render an LTI Common Cartridge xml snippet
+    This is typically used to render an LTI Common Cartridge xml snippet
     for configuring the tool inside a consumer.
     """
 
@@ -66,10 +66,23 @@ class IToolConfig(interface.Interface):
 class IToolConfigFactory(interface.Interface):
     """
     A callable that is capable of generating an IToolConfig.  These
-    are typcially registered as adapters on ITool.
+    are typically registered as adapters on ITool.
     """
 
     def __call__():
         """
         Returns an IToolConfig object.
+        """
+
+
+class IToolConfigBuilder(interface.Interface):
+    """
+    A subscriber interface to configure IToolConfig
+    for specific consumers i.e Canvas
+    """
+
+    def configure(config):
+        """
+        Configures the IToolConfig
+        :return IToolConfig
         """
