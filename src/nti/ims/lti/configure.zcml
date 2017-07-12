@@ -6,14 +6,14 @@
 	<include package="zope.component" file="meta.zcml" />
 	<include package="zope.component" />
 
-	<utility factory=".oauth.UtiltityBackedOAuthConsumers"
+	<utility factory=".oauth.UtilityBackedOAuthConsumers"
 			 provides=".interfaces.IOAuthConsumers"/>
 
 	<adapter factory=".config.ToolConfigFactory"
 			 provides=".interfaces.IToolConfigFactory"
 			 for=".interfaces.ITool" />
 
-    <subscription factory=".config.CanvasConfigBuilder"
+    <subscriber factory=".config.CanvasConfigBuilder"
              provides=".interfaces.IToolConfigBuilder"
-              for="interface.ITool/>
+             for=".interfaces.ITool" />
 </configure>
