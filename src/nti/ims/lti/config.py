@@ -28,4 +28,3 @@ class ToolConfigFactory(object):
         config.description = self.tool.description
         interface.alsoProvides(config, IToolConfig)
         return config
-
