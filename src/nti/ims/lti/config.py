@@ -29,18 +29,3 @@ class ToolConfigFactory(object):
         interface.alsoProvides(config, IToolConfig)
         return config
 
-@interface.implementer(IToolConfigBuilder)
-class CanvasToolConfigBuilder(object):
-
-    def configure(self, config):
-        """
-        Provides canvas specific customizations
-        """
-        canvas_ext = {
-            'oauth_compliant': 'true',
-            'privacy_level': 'Public'
-        }
-        config.set_ext_params('canvas.instructure.com', canvas_ext)
-        return config
-
-

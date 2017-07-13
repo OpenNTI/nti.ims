@@ -13,7 +13,7 @@
 			 provides=".interfaces.IToolConfigFactory"
 			 for=".interfaces.ITool" />
 
-    <subscriber factory=".config.CanvasToolConfigBuilder"
+    <subscriber factory="nti.app.products.ims.config.CanvasToolConfigBuilder"
                 provides=".interfaces.IToolConfigBuilder"
                 for=".interfaces.ITool" />
 </configure>
