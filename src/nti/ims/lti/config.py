@@ -13,7 +13,7 @@ from zope import interface
 
 from lti.tool_config import ToolConfig
 
-from nti.ims.lti.interfaces import IToolConfig
+from nti.ims.lti.interfaces import IToolConfig, IToolConfigBuilder
 
 
 class ToolConfigFactory(object):
@@ -29,7 +29,8 @@ class ToolConfigFactory(object):
         interface.alsoProvides(config, IToolConfig)
         return config
 
-class CanvasConfigBuilder(object):
+@interface.implementer(IToolConfigBuilder)
+class CanvasToolConfigBuilder(object):
 
     def configure(self, config):
         """
