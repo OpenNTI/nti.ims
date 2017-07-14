@@ -3,25 +3,27 @@
 
 from __future__ import print_function, absolute_import, division
 
-from nti.ims.lti.config import ToolConfigFactory
-from nti.testing.matchers import verifiably_provides
-from zope import interface
-
 __docformat__ = "restructuredtext en"
 
 # disable: accessing protected members, too many methods
 # pylint: disable=W0212,R0904
 
-from hamcrest import not_none, is_
+from hamcrest import is_
 from hamcrest import assert_that
-from hamcrest import has_property
 
-from zope import component
 
-from nti.ims.lti.interfaces import IOAuthConsumer, IToolConfig, IToolConfigBuilder
+from zope import interface
+
+
+from nti.ims.lti.config import ToolConfigFactory
+
+from nti.ims.lti.interfaces import IToolConfig
+from nti.ims.lti.interfaces import IToolConfigBuilder
 from nti.ims.lti.interfaces import ITool
 
 import nti.testing.base
+
+from nti.testing.matchers import verifiably_provides
 
 
 ZCML_STRING = u"""
@@ -44,6 +46,7 @@ ZCML_STRING = u"""
 
 """
 
+
 @interface.implementer(ITool)
 class FakeTool(object):
 
@@ -52,6 +55,7 @@ class FakeTool(object):
     description = u'A fake tool for testing'
 
     __name__ = title
+
 
 @interface.implementer(IToolConfigBuilder)
 class FakeConfigBuilder(object):
@@ -64,6 +68,7 @@ class FakeConfigBuilder(object):
         config.set_custom_param('test_key', 'test_value')
 
         return config
+
 
 class TestConfigFactory(nti.testing.base.ConfiguringTestBase):
 
@@ -89,5 +94,3 @@ class TestConfigFactory(nti.testing.base.ConfiguringTestBase):
         assert_that(config.description, is_(tool.description))
 
         assert_that(config, verifiably_provides(IToolConfig))
-
-
