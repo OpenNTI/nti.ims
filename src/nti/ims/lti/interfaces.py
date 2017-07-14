@@ -78,7 +78,7 @@ class IToolConfigFactory(interface.Interface):
 class IToolConfigBuilder(interface.Interface):
     """
     A subscriber interface to configure IToolConfig
-    for specific consumers i.e Canvas
+    for specific tools
     """
 
     def configure(config):
