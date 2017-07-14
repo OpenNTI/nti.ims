@@ -35,7 +35,6 @@ ZCML_STRING = u"""
 									title="Global foo.bar.com" />
 	</configure>
 </configure>
-
 """
 
 
@@ -43,7 +42,6 @@ class TestZcml(nti.testing.base.ConfiguringTestBase):
 
     def test_registration(self):
         self.configure_string(ZCML_STRING)
-
         consumer = component.queryUtility(IOAuthConsumer, name='foo.bar.com')
         assert_that(consumer, not_none())
         assert_that(consumer, has_property('key', "foo.bar.com"))

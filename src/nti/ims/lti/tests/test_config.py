@@ -10,20 +10,17 @@ __docformat__ = "restructuredtext en"
 
 from hamcrest import is_
 from hamcrest import assert_that
-
+from nti.testing.matchers import verifiably_provides
 
 from zope import interface
 
-
 from nti.ims.lti.config import ToolConfigFactory
 
+from nti.ims.lti.interfaces import ITool
 from nti.ims.lti.interfaces import IToolConfig
 from nti.ims.lti.interfaces import IToolConfigBuilder
-from nti.ims.lti.interfaces import ITool
 
 import nti.testing.base
-
-from nti.testing.matchers import verifiably_provides
 
 
 ZCML_STRING = u"""
@@ -43,7 +40,6 @@ ZCML_STRING = u"""
 		            provides=".interfaces.IToolConfigBuilder" />
 	</configure>
 </configure>
-
 """
 
 
@@ -64,9 +60,7 @@ class FakeConfigBuilder(object):
         pass
 
     def configure(self, config):
-
         config.set_custom_param('test_key', 'test_value')
-
         return config
 
 
@@ -74,23 +68,16 @@ class TestConfigFactory(nti.testing.base.ConfiguringTestBase):
 
     def test_config_builder(self):
         self.configure_string(ZCML_STRING)
-
         tool = FakeTool()
         factory = ToolConfigFactory(tool)
-        from IPython.core.debugger import Tracer;
-        Tracer()()
         config = factory()
-
         assert_that(config.get_custom_param('test_key'), is_('test_value'))
 
     def test_basic_attributes(self):
-
         tool = FakeTool()
         factory = ToolConfigFactory(tool)
         config = factory()
-
         assert_that(config.title, is_(tool.title))
         assert_that(config.__name__, is_(tool.__name__))
         assert_that(config.description, is_(tool.description))
-
         assert_that(config, verifiably_provides(IToolConfig))
