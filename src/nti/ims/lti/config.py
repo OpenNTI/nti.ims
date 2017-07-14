@@ -10,10 +10,12 @@ __docformat__ = "restructuredtext en"
 logger = __import__('logging').getLogger(__name__)
 
 from zope import interface
+from zope.component import subscribers
 
 from lti.tool_config import ToolConfig
 
 from nti.ims.lti.interfaces import IToolConfig
+from nti.ims.lti.interfaces import IToolConfigBuilder
 
 
 class ToolConfigFactory(object):
@@ -27,4 +29,7 @@ class ToolConfigFactory(object):
         config.__name__ = self.tool.__name__
         config.description = self.tool.description
         interface.alsoProvides(config, IToolConfig)
+        # Add consumer specific config details
+        for builder in subscribers((self.tool,), IToolConfigBuilder):
+            config = builder.configure(config)
         return config
