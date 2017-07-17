@@ -98,12 +98,10 @@ class IToolConsumerInstance(interface.Interface):
     Fields are further detailed at: https://www.imsglobal.org/specs/ltiv1p1p1/implementation-guide
     """
 
-    ####################################################################################################################
-    ########################################## GENERIC INFO ############################################################
-    ####################################################################################################################
+    # GENERIC INFO
 
     user_id = TextLine(title=u'A unique identifier for the user',
-                            required=False)
+                       required=False)
 
     user_image = HTTPURL(title=u'A URL to a user image',
                          required=False)
@@ -112,66 +110,60 @@ class IToolConsumerInstance(interface.Interface):
                 required=False)
 
     message_type = TextLine(title=u'The type of LTI message',
-                                 required=True)
+                            required=True)
 
     version = Number(title=u'The LTI version being used',
                      required=True)
 
     resource_link_id = TextLine(title=u'A unique resource identifier',
-                                     required=True)
+                                required=True)
 
     resource_link_title = TextLine(title=u'A title for the resource',
-                                        required=False)
+                                   required=False)
 
     resource_link_desc = TextLine(title=u'A description for the resource',
-                                       required=False)
+                                  required=False)
 
-    ####################################################################################################################
-    ############################################## LIS INFO ############################################################
-    ####################################################################################################################
+    # LIS INFO
 
     lis_person_name_given = TextLine(title=u'The given name of the user',
-                                          required=False)
+                                     required=False)
 
     lis_person_name_family = TextLine(title=u'The family name of the user',
-                                           required=False)
+                                      required=False)
 
     lis_person_name_full = TextLine(title=u'The full name of the user',
-                                         required=False)
+                                    required=False)
 
     lis_person_contact_email_primary = TextLine(title=u'The email address of the user',
-                                                     required=False)
+                                                required=False)
 
     role_scope_mentor = List(title=u'A list of user_id values the current user can access as a mentor',
                              required=False)
 
-    ####################################################################################################################
-    ############################################# CONTEXT INFO #########################################################
-    ####################################################################################################################
+    # CONTEXT INFO
 
     context_id = TextLine(title=u'A opaque identifier that uniquely identifies the context that contains the link'
-                                     u'being launched',
-                               required=False)
+                                u'being launched',
+                          required=False)
 
     context_type = List(title=u'A list of URN values that identify the context of the content',
                         required=False)
 
     context_title = TextLine(title=u'The title of the context',
-                                  required=False)
+                             required=False)
 
     context_label = TextLine(title=u'The label for the context -- intended to fit in a table',
-                                  required=False)
+                             required=False)
 
-    ####################################################################################################################
-    ############################################ PRESENTATION INFO #####################################################
-    ####################################################################################################################
+    # PRESENTATION INFO
 
     presentation_locale = TextLine(title=u'The BCP-47 language, country, and variant tag',
-                                        required=False)
+                                   required=False)
 
     presentation_target = TextLine(title=u'The kind of browser window/frame where the provider is being launched'
-                                              u' from (iframe, window, or frame',
-                                        required=False)
+                                         u' from (iframe, window, or frame',
+                                   required=False)
 
     presentation_css_url = HTTPURL(title=u'A URL to a LMS specific CSS file',
                                    required=False)
@@ -186,40 +178,34 @@ class IToolConsumerInstance(interface.Interface):
                                             u'interface',
                                       required=False)
 
-    ####################################################################################################################
-    ########################################## TOOL CONSUMER INFO ######################################################
-    ####################################################################################################################
+    # TOOL CONSUMER INFO
 
     tc_info_product_family_code = TextLine(title=u'The product name of the consumer',
-                                                required=False)
+                                           required=False)
 
     tc_info_version = TextLine(title=u'The version of the consumer',
-                                    required=False)
+                               required=False)
 
     tc_instance_guid = TextLine(title=u'A unique identifier for the consumer instance',
-                                     required=False)
+                                required=False)
 
     tc_instance_name = TextLine(title=u'The name of the consumer instance (likely the school name)',
-                                     required=False)
+                                required=False)
 
     tc_instance_description = TextLine(title=u'A description of the consumer instance',
-                                            required=False)
+                                       required=False)
 
     tc_instance_url = HTTPURL(title=u'The URL of the consmer instance',
                               required=False)
 
     tc_instance_contact_email = TextLine(title=u'An email contact for the consumer instance',
-                                              required=False)
+                                         required=False)
 
-    ####################################################################################################################
-    ########################################### FIELD EXTENSIONS #######################################################
-    ####################################################################################################################
+    # FIELD EXTENSIONS
 
     field_extensions = Dict(title=u'A dictionary of consumer specific launch message extensions')
 
-    ####################################################################################################################
-    ######################################### CUSTOM KEY VALUES ########################################################
-    ####################################################################################################################
+    # CUSTOM KEY VALUES
 
     custom_values = Dict(title=u'A dictionary of consumer specific custom values')
 
