@@ -14,11 +14,8 @@ logger = __import__('logging').getLogger(__name__)
 
 from hamcrest import is_
 from hamcrest import assert_that
-from nti.testing.matchers import verifiably_provides
 
 from zope import interface
-
-from nti.ims.lti.config import ToolConfigFactory
 
 from nti.ims.lti.interfaces import IToolConsumerInstance
 
