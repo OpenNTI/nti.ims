@@ -223,15 +223,6 @@ class IToolConsumerInstance(interface.Interface):
 
     custom_values = Dict(title=u'A dictionary of consumer specific custom values')
 
-    ####################################################################################################################
-    ############################################## METHODS #############################################################
-    ####################################################################################################################
-
-    def __init__(launch_request):
-        """
-        Initializes all available fields of a tool consumer instance
-        """
-
 
 class IToolConsumerInstanceBuilder(interface.Interface):
 
