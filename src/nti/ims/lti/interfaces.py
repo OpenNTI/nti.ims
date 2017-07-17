@@ -92,13 +92,7 @@ class IToolConfigBuilder(interface.Interface):
         """
 
 
-class IToolConsumerInstance(interface.Interface):
-    """
-    An instance of a tool consumer
-    Fields are further detailed at: https://www.imsglobal.org/specs/ltiv1p1p1/implementation-guide
-    """
-
-    # GENERIC INFO
+class IToolConsumerUserProperties(interface.Interface):
 
     user_id = TextLine(title=u'A unique identifier for the user',
                        required=False)
@@ -108,6 +102,9 @@ class IToolConsumerInstance(interface.Interface):
 
     role = List(title=u'A list of URN values for roles',
                 required=False)
+
+
+class IToolConsumerMessageProperties(interface.Interface):
 
     message_type = TextLine(title=u'The type of LTI message',
                             required=True)
@@ -124,7 +121,8 @@ class IToolConsumerInstance(interface.Interface):
     resource_link_desc = TextLine(title=u'A description for the resource',
                                   required=False)
 
-    # LIS INFO
+
+class IToolConsumerLISProperties(interface.Interface):
 
     lis_person_name_given = TextLine(title=u'The given name of the user',
                                      required=False)
@@ -141,7 +139,8 @@ class IToolConsumerInstance(interface.Interface):
     role_scope_mentor = List(title=u'A list of user_id values the current user can access as a mentor',
                              required=False)
 
-    # CONTEXT INFO
+
+class IToolConsumerContextProperties(interface.Interface):
 
     context_id = TextLine(title=u'A opaque identifier that uniquely identifies the context that contains the link'
                                 u'being launched',
@@ -156,7 +155,8 @@ class IToolConsumerInstance(interface.Interface):
     context_label = TextLine(title=u'The label for the context -- intended to fit in a table',
                              required=False)
 
-    # PRESENTATION INFO
+
+class IToolConsumerPresentationProperties(interface.Interface):
 
     presentation_locale = TextLine(title=u'The BCP-47 language, country, and variant tag',
                                    required=False)
@@ -178,7 +178,8 @@ class IToolConsumerInstance(interface.Interface):
                                             u'interface',
                                       required=False)
 
-    # TOOL CONSUMER INFO
+
+class IToolConsumerInstanceProperties(interface.Interface):
 
     tc_info_product_family_code = TextLine(title=u'The product name of the consumer',
                                            required=False)
@@ -195,17 +196,19 @@ class IToolConsumerInstance(interface.Interface):
     tc_instance_description = TextLine(title=u'A description of the consumer instance',
                                        required=False)
 
-    tc_instance_url = HTTPURL(title=u'The URL of the consmer instance',
+    tc_instance_url = HTTPURL(title=u'The URL of the consumer instance',
                               required=False)
 
     tc_instance_contact_email = TextLine(title=u'An email contact for the consumer instance',
                                          required=False)
 
-    # FIELD EXTENSIONS
+
+class IToolConsumerFieldExtensions(interface.Interface):
 
     field_extensions = Dict(title=u'A dictionary of consumer specific launch message extensions')
 
-    # CUSTOM KEY VALUES
+
+class IToolConsumerCustomValues(interface.Interface):
 
     custom_values = Dict(title=u'A dictionary of consumer specific custom values')
 
