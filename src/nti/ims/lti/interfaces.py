@@ -241,3 +241,10 @@ class IToolConsumerInstance(interface.Interface):
         """
         Parses field extensions in the launch request and places them in the field_extensions dict
         """
+
+class IToolConsumerInstanceBuilder(interface.Interface):
+
+    def build(launch_request):
+        """
+        Builds and returns a tool consumer instance
+        """
