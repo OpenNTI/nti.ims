@@ -12,11 +12,11 @@ from zope import interface
 from nti.base.interfaces import ITitled
 from nti.base.interfaces import ITitledDescribed
 
-from nti.schema.field import TextLine
 from nti.schema.field import Dict
+from nti.schema.field import List
 from nti.schema.field import Number
 from nti.schema.field import HTTPURL
-from nti.schema.field import List
+from nti.schema.field import TextLine
 
 
 class IOAuthConsumer(ITitled):

@@ -1,16 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-sheldon.smith
-7/17/17
-
-"""
 
 from __future__ import print_function, absolute_import, division
-
 __docformat__ = "restructuredtext en"
 
-logger = __import__('logging').getLogger(__name__)
+# disable: accessing protected members, too many methods
+# pylint: disable=W0212,R0904
+
 
 from hamcrest import is_
 from hamcrest import assert_that
@@ -20,8 +16,6 @@ from zope import interface
 from nti.ims.lti.interfaces import IToolConsumerInstance
 
 import nti.testing.base
-
-
 
 
 @interface.implementer(IToolConsumerInstance)
@@ -35,7 +29,7 @@ class FakeToolConsumerInstance(object):
 
     presentation_width = 12345
 
-    custom_values = {'fake' : 0, 'pretend' : 1}
+    custom_values = {'fake': 0, 'pretend': 1}
 
 
 class TestConfigFactory(nti.testing.base.ConfiguringTestBase):
@@ -58,5 +52,6 @@ class TestConfigFactory(nti.testing.base.ConfiguringTestBase):
         assert_that(tool.presentation_width, is_(12345))
 
         # test dict field
-        assert_that(tool.custom_values['fake'], is_(tool.custom_values['fake']))
+        assert_that(tool.custom_values['fake'],
+                    is_(tool.custom_values['fake']))
         assert_that(len(tool.custom_values), is_(2))
