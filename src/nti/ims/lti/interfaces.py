@@ -232,15 +232,6 @@ class IToolConsumerInstance(interface.Interface):
         Initializes all available fields of a tool consumer instance
         """
 
-    def _set_custom_values(launch_request):
-        """
-        Parses custom fields in the launch request and places them in the custom_values dict
-        """
-
-    def _set_field_extensions(launch_request):
-        """
-        Parses field extensions in the launch request and places them in the field_extensions dict
-        """
 
 class IToolConsumerInstanceBuilder(interface.Interface):
 
