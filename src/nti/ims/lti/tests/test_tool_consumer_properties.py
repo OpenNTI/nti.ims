@@ -14,15 +14,14 @@ from hamcrest import has_length
 
 from zope import interface
 
-from nti.ims.lti.interfaces import IToolConsumerLISProperties
-from nti.ims.lti.interfaces import IToolConsumerInstanceProperties
 from nti.ims.lti.interfaces import IToolConsumerCustomValues
-from nti.ims.lti.interfaces import IToolConsumerFieldExtensions
-from nti.ims.lti.interfaces import IToolConsumerMessageProperties
-from nti.ims.lti.interfaces import IToolConsumerPresentationProperties
+from nti.ims.lti.interfaces import IToolConsumerLISProperties
 from nti.ims.lti.interfaces import IToolConsumerUserProperties
+from nti.ims.lti.interfaces import IToolConsumerFieldExtensions
 from nti.ims.lti.interfaces import IToolConsumerContextProperties
-
+from nti.ims.lti.interfaces import IToolConsumerMessageProperties
+from nti.ims.lti.interfaces import IToolConsumerInstanceProperties
+from nti.ims.lti.interfaces import IToolConsumerPresentationProperties
 
 import nti.testing.base
 
@@ -35,6 +34,7 @@ class FakeToolConsumerUserProperties(object):
     user_image = 'http://www.fake.com/test'
 
     role = ['test', 'fake']
+
 
 @interface.implementer(IToolConsumerMessageProperties)
 class FakeToolConsumerMessageProperties(object):
@@ -153,8 +153,10 @@ class TestConfigFactory(nti.testing.base.ConfiguringTestBase):
         assert_that(field.field_extensions['fake'],
                     is_(field.field_extensions['fake']))
 
-        assert_that(inst.tc_info_product_family_code, is_(inst.tc_info_product_family_code))
+        assert_that(inst.tc_info_product_family_code,
+                    is_(inst.tc_info_product_family_code))
 
-        assert_that(lis.lis_person_contact_email_primary, is_(lis.lis_person_contact_email_primary))
+        assert_that(lis.lis_person_contact_email_primary,
+                    is_(lis.lis_person_contact_email_primary))
 
         assert_that(message.message_type, is_(message.message_type))
