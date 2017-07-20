@@ -48,6 +48,7 @@ setup(
         'nti.externalization',
         'nti.property',
         'nti.schema',
+        'six',
         'zope.component',
         'zope.interface',
         'zope.location',
