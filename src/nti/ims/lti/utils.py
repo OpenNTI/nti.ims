@@ -7,6 +7,8 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+from zope.component import queryAdapter
+
 DEFAULT_FIELDS = [
     'tool_consumer_instance_guid',
     'tool_consumer_instance_url',
@@ -16,23 +18,30 @@ DEFAULT_FIELDS = [
 ]
 
 
-class LaunchRequestFieldFilter(object):
+class LaunchRequestFilter(object):
 
-    def filter(self, request, value=None, fields=None):
+    @classmethod
+    def filter_for_adapter(cls, request, interface, fields=DEFAULT_FIELDS):
         """
         Filters a launch request specific fields
         :param request: ILTIRequest
-        :param value: the term being searched for
+        :param interface: the interface being adapted
         :param fields: where to check for the value
         :return: the field name where the value is contained, or None if not found
         """
 
-        if not fields:
-            fields = DEFAULT_FIELDS
-
         params = request.params
 
+        # Check the suspected locations
         for field in fields:
-            if params[field] == value:
-                return field
+            try:
+                adapter_name = params[field]
+                adapter = queryAdapter(request,
+                                       interface,
+                                       name=adapter_name)
+                if adapter:
+                    return adapter
+            except KeyError:
+                logger.exception('No key in field %s', field)
+
         return None
