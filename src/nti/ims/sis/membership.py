@@ -17,6 +17,8 @@ from zope.location.interfaces import IContained
 
 from zope.proxy import ProxyBase
 
+from nti.base._compat import text_
+
 from nti.externalization.proxy import removeAllProxies
 
 from nti.externalization.representation import WithRepr
@@ -33,8 +35,6 @@ from nti.ims.sis.interfaces import INACTIVE_STATUS
 from nti.ims.sis.interfaces import INSTRUCTOR_ROLE
 
 from nti.ims.sis.sourcedid import SourcedID
-
-from nti.ims.sis.utils import text_
 
 from nti.property.property import alias
 

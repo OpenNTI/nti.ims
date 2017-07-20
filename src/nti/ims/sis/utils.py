@@ -15,19 +15,7 @@ import gzip
 import codecs
 import mimetypes
 
-try:
-    _unicode = unicode
-except NameError:  # python 3
-    def _unicode(s): return str(s)
-
-
-def text_(s, encoding='utf-8', err='strict'):
-    """
-    Decode a byte sequence and unicode result
-    """
-    s = s.decode(encoding, err) if isinstance(s, bytes) else s
-    return _unicode(s) if s is not None else None
-unicode_ = to_unicode = text_
+from nti.base._compat import text_
 
 
 def get_text(node):
