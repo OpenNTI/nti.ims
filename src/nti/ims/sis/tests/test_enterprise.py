@@ -32,7 +32,7 @@ class TestEnterprise(unittest.TestCase):
     layer = SharedConfiguringTestLayer
 
     def test_parse(self):
-        path = os.path.join(os.path.dirname(__file__), 'ims.xml')
+        path = os.path.join(os.path.dirname(__file__), 'lti.xml')
         enterprise = Enterprise.parseFile(path)
         assert_that(enterprise, is_not(none()))
         assert_that(enterprise, validly_provides(IEnterprise))

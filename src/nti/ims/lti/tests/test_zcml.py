@@ -22,7 +22,7 @@ ZCML_STRING = u"""
 <configure	xmlns="http://namespaces.zope.org/zope"
 			xmlns:i18n="http://namespaces.zope.org/i18n"
 			xmlns:zcml="http://namespaces.zope.org/zcml"
-			xmlns:ims="http://nextthought.com/ntp/ims">
+			xmlns:lti="http://nextthought.com/ntp/lti">
 
 	<include package="zope.component" file="meta.zcml" />
 	<include package="zope.security" file="meta.zcml" />
@@ -30,7 +30,7 @@ ZCML_STRING = u"""
 	<include package="." file="meta.zcml" />
 
 	<configure>
-		<ims:registerLTIConsumer 	key="foo.bar.com"
+		<lti:registerLTIConsumer 	key="foo.bar.com"
 									secret="FhodCgoSGxoKCh8RCi4="
 									title="Global foo.bar.com" />
 	</configure>

@@ -18,7 +18,7 @@ def _read(fname):
 
 
 setup(
-    name='nti.ims',
+    name='nti.lti',
     version=_read('version.txt').strip(),
     author='Jason Madden',
     author_email='jason@nextthought.com',
