@@ -75,19 +75,19 @@ class AdaptAccountingForConsumer:
         self.fields = fields
         self.interface = interface
         self.request = request
-        self.foo = queryAdapter if query else getAdapter
+        self.queryType = queryAdapter if query else getAdapter
 
         if isinstance(request, tuple) or multi:
-            self.foo = queryMultiAdapter if query else getMultiAdapter
+            self.queryType = queryMultiAdapter if query else getMultiAdapter
 
     def __call__(self, field, field_value):
 
         if self.value:
             return
 
-        self.value = self.foo(self.request,
-                              self.interface,
-                              name=field_value)
+        self.value = self.queryType(self.request,
+                                    self.interface,
+                                    name=field_value)
 
 
 class MapValuesToRequest:
