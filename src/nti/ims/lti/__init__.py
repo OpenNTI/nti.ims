@@ -50,3 +50,4 @@ def adapt_accounting_for_consumer(request,
             logger.exception('No key in field %s', field)
 
     return None
+
