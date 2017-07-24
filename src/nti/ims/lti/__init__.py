@@ -24,30 +24,100 @@ DEFAULT_FIELDS = [
 ]
 
 
-def adapt_accounting_for_consumer(request,
-                                  interface,
-                                  multi=False,
-                                  query=True,
-                                  fields=DEFAULT_FIELDS):
+"""
+Filter Strategy interface
 
-    params = request.params
+must provide params to for matching
+must provide fields to search through
+must provide a value field to return
 
-    foo = queryAdapter if query else getAdapter
+filter_request will provide the current field and field value in the request
+"""
 
-    if isinstance(request, tuple) or multi:
-        foo = queryMultiAdapter if query else getMultiAdapter
 
-    # Check the suspected locations
+# A really fancy for loop
+def filter_request(filter_strategy, raise_key_error=True):
+    """
+    :param filter_strategy: A strategy for what to do with the fields of a launch request
+    :param raise_key_error: boolean
+    """
+
+    params = filter_strategy.params
+
+    fields = filter_strategy.fields
+
     for field in fields:
         try:
-            adapter_name = params[field]
-            adapter = foo(request,
-                          interface,
-                          name=adapter_name)
-            if adapter:
-                return adapter
+            field_value = params[field]
+            filter_strategy(field, field_value)
         except KeyError:
-            logger.exception('No key in field %s', field)
+            if raise_key_error:
+                raise KeyError
+            logger.exception("No value for field %s", field)
 
-    return None
+    return filter_strategy.value
 
+
+class AdaptAccountingForConsumer:
+    """
+    A launch request filter strategy for finding an adapter for a specific consumer
+    """
+
+    def __init__(self,
+                 request,
+                 interface,
+                 multi=False,
+                 query=True,
+                 fields=DEFAULT_FIELDS):
+
+        self.params = request.params
+        self.value = None
+        self.fields = fields
+        self.interface = interface
+        self.request = request
+        self.foo = queryAdapter if query else getAdapter
+
+        if isinstance(request, tuple) or multi:
+            self.foo = queryMultiAdapter if query else getMultiAdapter
+
+    def __call__(self, field, field_value):
+
+        if self.value:
+            return
+
+        self.value = self.foo(self.request,
+                              self.interface,
+                              name=field_value)
+
+
+class MapValuesToRequest:
+    """
+    A launch request strategy for mapping values to package specific fields
+    """
+
+    def __init__(self,
+                 request,
+                 mapping):
+
+        self.params = request.params
+        self.fields = mapping
+        self.value = {}
+
+    def __call__(self, field, field_value):
+        self.value[self.fields[field]] = field_value
+
+
+class GetMappingForConsumer:
+    """
+    A launch request strategy for getting a tool consumer name
+    """
+
+    def __init__(self, request, mapping, fields=DEFAULT_FIELDS):
+
+        self.fields = fields
+        self.params = request.params
+        self.value = mapping
+
+    def __call__(self, field, field_value):
+
+        self.value.set_consumer_map(field)
