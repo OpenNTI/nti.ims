@@ -6,6 +6,7 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+from zope.component import ComponentLookupError
 from zope.component import getAdapter
 from zope.component import getMultiAdapter
 from zope.component import queryAdapter
@@ -39,7 +40,7 @@ def adapt_accounting_for_consumer(request,
             adapter = query_type(adaptee, interface, name=field_value)
             if adapter is not None:
                 return adapter
-        except KeyError:
+        except (KeyError, ComponentLookupError) as e:
             # This will likely occur often, and malformed requests are handled elsewhere
             pass
 
