@@ -15,6 +15,7 @@ from zope.component.zcml import utility
 from nti.ims.lti.consumer.interfaces import IProviderTool
 
 from nti.ims.lti.consumer.launch import ProviderToolFactory
+
 from nti.schema.field import Dict
 from nti.schema.field import HTTPURL
 from nti.schema.field import TextLine
