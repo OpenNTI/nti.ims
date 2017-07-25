@@ -50,4 +50,4 @@ def register_provider_tool(_context, key, secret, title, launch_url, required_pa
                       title=title,
                       launch_url=launch_url,
                       required_params=required_params)
-    utility(_context, provides=IProviderTool, factory=factory, name=key)
+    utility(_context, provides=IProviderTool, factory=factory, name=title)
