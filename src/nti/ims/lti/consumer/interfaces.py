@@ -7,17 +7,16 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-from zope import interface
-
 from nti.base.interfaces import ITitled
 
+from nti.schema.field import Dict
 from nti.schema.field import HTTPURL
 from nti.schema.field import TextLine
 
 
-class IOAuthProvider(ITitled):
+class IProviderTool(ITitled):
     """
-    The OAuth information for a Tool Provider
+    A provider tool utility
     """
 
     key = TextLine(title=u'The provider key',
@@ -26,65 +25,22 @@ class IOAuthProvider(ITitled):
     secret = TextLine(title=u'The provider secret',
                       required=True)
 
-    title = TextLine(title=u'A descriptive title for this provider',
-                     required=True)
-
-
-class IOAuthProviders(interface.Interface):
-    """
-    A mapping type which stores IOAuthProvider implementations
-    by their key
-    """
-
-    def __getitem__(key):
-        """
-        Returns the IOAuthProvider for the given key
-        """
-
-    def __setitem__(key, provider):
-        """
-        Sets the IOAuthProvider for the given key
-        """
-
-    def __delitem__(key):
-        """
-        Removes the IOAuthProvider for the given key
-        """
-
-
-class IProviderTool(interface.Interface):
-    """
-    Describes a provider tool in the lti sense
-    """
-
     launch_url = HTTPURL(title=u'The launch url for a provider tool',
                          required=True)
 
     title = TextLine(title=u'A descriptive title for this provider tool',
                      required=True)
 
+    # TODO a list/set may be a better option here
+    required_params = Dict(title=u'A dict of required parameters for this provider tool',
+                           description=u'A map of required parameters where the key is the parameter'
+                                       u'and the value is a brief description'
+                                       u'e.g {\'primary_user_id\': \'The primary user id\''
+                                       u'     \'secondary_user_id\': \'The secondary user id\'',
+                           required=True)
 
-class IOnConsumerLaunchRequestListener(interface.Interface):
-    """
-    Provides any launch time parameters
-    """
-
-    def set_user_info():
+    def get_launch_request(params_map):
         """
-        Provides user info for a launch request
-        """
-
-    def set_user_permissions():
-        """
-        Provides any specific user permissions for a launch request
-        """
-
-    def set_user_privacy_attributes():
-        """
-        Provides any privacy info for protected user attributes
-        """
-
-    def set_result_url():
-        """
-        Provides a url for returning results
+        Launches the tool described in the utility
+        The params_map must satisfy the required_params of the tool
         """
