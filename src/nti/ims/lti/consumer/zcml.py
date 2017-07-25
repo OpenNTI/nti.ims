@@ -19,6 +19,7 @@ from nti.schema.field import Dict
 from nti.schema.field import HTTPURL
 from nti.schema.field import TextLine
 
+
 class IRegisterProviderTool(interface.Interface):
 
     key = TextLine(title=u'The provider key',
@@ -33,7 +34,7 @@ class IRegisterProviderTool(interface.Interface):
     title = TextLine(title=u'A descriptive title for this provider tool',
                      required=True)
 
-    # TODO a list/set may be a better option here
+    # TODO a list may be a better option here
     required_params = Dict(title=u'A dict of required parameters for this provider tool',
                            description=u'A map of required parameters where the key is the parameter'
                                        u'and the value is a brief description'

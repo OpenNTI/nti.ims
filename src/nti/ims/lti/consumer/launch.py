@@ -35,7 +35,8 @@ NTI_PARAM_MAPPING = {u'firstname':          u'lis_person_name_given',
                      u'school_url':         u'tool_consumer_instance_url',
                      u'school_admin':       u'tool_consumer_instance_contact_email',
                      u'course_name':        u'context_title',
-                     u'course_number':      u'context_label'}
+                     u'course_number':      u'context_label',
+                     u'tool_name':          u'resource_link_title'}
 
 
 @interface.implementer(IProviderTool)
