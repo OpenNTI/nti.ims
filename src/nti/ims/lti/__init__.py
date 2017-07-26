@@ -44,5 +44,5 @@ def adapt_accounting_for_consumer(request,
             # This will likely occur often, and malformed requests are handled elsewhere
             pass
 
-    return query_type(adaptee, interface)
+    return query_type(adaptee, interface, name="default")
 
