@@ -7,6 +7,10 @@
 		<meta:directive	name="registerLTIConsumer"
 						schema=".zcml.IRegisterOAuthConsumer"
 						handler=".zcml.registerConsumer" />
+
+		<meta:directive name="registerLTIProvider"
+						schema=".consumer.zcml.IRegisterProviderTool"
+						handler=".consumer.zcml.register_provider_tool" />
 	</meta:directives>
 
 </configure>
