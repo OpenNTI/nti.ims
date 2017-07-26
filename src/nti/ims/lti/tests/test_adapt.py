@@ -93,19 +93,23 @@ class TestAdaptAccountingForConsumer(nti.testing.base.ConfiguringTestBase):
         factory = TestFactory()
 
         # Test single adapter query
-        adapter = adapt_accounting_for_consumer(request, request, ITestAdapter, query=True)
+        adapter = adapt_accounting_for_consumer(request, request,
+                                                ITestAdapter, query=True)
         assert_that(adapter, verifiably_provides(ITestAdapter))
 
         # Test single adapter get
-        adapter = adapt_accounting_for_consumer(request, request, ITestAdapter, query=False)
+        adapter = adapt_accounting_for_consumer(request, request,
+                                                ITestAdapter, query=False)
         assert_that(adapter, verifiably_provides(ITestAdapter))
 
         # Test single adapter tuple query
-        adapter = adapt_accounting_for_consumer(request, (request, factory), ITestAdapter, query=True)
+        adapter = adapt_accounting_for_consumer(request, (request, factory),
+                                                ITestAdapter, query=True)
         assert_that(adapter, verifiably_provides(ITestAdapter))
 
         # Test single adapter tuple get
-        adapter = adapt_accounting_for_consumer(request, request, ITestAdapter, query=False)
+        adapter = adapt_accounting_for_consumer(request, request,
+                                                ITestAdapter, query=False)
         assert_that(adapter, verifiably_provides(ITestAdapter))
 
     def test_single_adapter_no_match(self):
@@ -117,7 +121,8 @@ class TestAdaptAccountingForConsumer(nti.testing.base.ConfiguringTestBase):
         request.params = {}
 
         # Test single adapter query
-        adapter = adapt_accounting_for_consumer(request, request, ITestAdapter, query=True)
+        adapter = adapt_accounting_for_consumer(request, request,
+                                                ITestAdapter, query=True)
         assert_that(adapter, is_(None))
 
         # Test single adapter get
@@ -125,11 +130,13 @@ class TestAdaptAccountingForConsumer(nti.testing.base.ConfiguringTestBase):
                     raises(ComponentLookupError))
 
         # Test single adapter tuple query
-        adapter = adapt_accounting_for_consumer(request, (request, factory), ITestAdapter, query=True)
+        adapter = adapt_accounting_for_consumer(request, (request, factory),
+                                                ITestAdapter, query=True)
         assert_that(adapter, is_(None))
 
         # Test single adapter tuple get
-        assert_that(calling(adapt_accounting_for_consumer).with_args(request, request, ITestAdapter, query=False),
+        assert_that(calling(adapt_accounting_for_consumer).with_args(request, request,
+                                                                     ITestAdapter, query=False),
                     raises(ComponentLookupError))
 
     def test_multi_adapter_match(self):
@@ -174,23 +181,29 @@ class TestAdaptAccountingForConsumer(nti.testing.base.ConfiguringTestBase):
         request.params = {}
 
         gsm = getGlobalSiteManager()
-        gsm.registerAdapter(TestAdapter, (TestRequest,), ITestAdapter, "default")
-        gsm.registerAdapter(TestMultiAdapter, (TestRequest, TestFactory), ITestAdapter, "default")
+        gsm.registerAdapter(TestAdapter, (TestRequest,),
+                            ITestAdapter, "default")
+        gsm.registerAdapter(TestMultiAdapter, (TestRequest,
+                                               TestFactory), ITestAdapter, "default")
 
         # Test single adapter query
-        adapter = adapt_accounting_for_consumer(request, request, ITestAdapter, query=True)
+        adapter = adapt_accounting_for_consumer(request, request,
+                                                ITestAdapter, query=True)
         assert_that(adapter, verifiably_provides(ITestAdapter))
 
         # Test single adapter get
-        adapter = adapt_accounting_for_consumer(request, request, ITestAdapter, query=False)
+        adapter = adapt_accounting_for_consumer(request, request,
+                                                ITestAdapter, query=False)
         assert_that(adapter, verifiably_provides(ITestAdapter))
 
         # Test single adapter tuple query
-        adapter = adapt_accounting_for_consumer(request, (request, factory), ITestAdapter, query=True)
+        adapter = adapt_accounting_for_consumer(request, (request, factory),
+                                                ITestAdapter, query=True)
         assert_that(adapter, verifiably_provides(ITestAdapter))
 
         # Test single adapter tuple get
-        adapter = adapt_accounting_for_consumer(request, request, ITestAdapter, query=False)
+        adapter = adapt_accounting_for_consumer(request, request,
+                                                ITestAdapter, query=False)
         assert_that(adapter, verifiably_provides(ITestAdapter))
 
         # Test multi adapter query
@@ -203,5 +216,7 @@ class TestAdaptAccountingForConsumer(nti.testing.base.ConfiguringTestBase):
                                                 multi_adapter_for_tuple=True)
         assert_that(adapter, verifiably_provides(ITestAdapter))
 
-        gsm.unregisterAdapter(TestAdapter, (TestRequest,), ITestAdapter, "default")
-        gsm.unregisterAdapter(TestMultiAdapter, (TestRequest, TestFactory), ITestAdapter, "default")
+        gsm.unregisterAdapter(TestAdapter, (TestRequest,),
+                              ITestAdapter, "default")
+        gsm.unregisterAdapter(TestMultiAdapter, (TestRequest, TestFactory),
+                              ITestAdapter, "default")

@@ -1,16 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""
+.. $Id$
+"""
 
 from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-from zope.component import ComponentLookupError
 from zope.component import getAdapter
-from zope.component import getMultiAdapter
 from zope.component import queryAdapter
+from zope.component import getMultiAdapter
 from zope.component import queryMultiAdapter
+from zope.component import ComponentLookupError
 
 DEFAULT_FIELDS = [
     'tool_consumer_instance_guid',
@@ -41,8 +44,6 @@ def adapt_accounting_for_consumer(request,
             if adapter is not None:
                 return adapter
         except (KeyError, ComponentLookupError) as e:
-            # This will likely occur often, and malformed requests are handled elsewhere
-            pass
+            logger.error("malformed requests? %s", e)
 
     return query_type(adaptee, interface, name="default")
-
