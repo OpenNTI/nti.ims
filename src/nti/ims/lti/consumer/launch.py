@@ -3,6 +3,8 @@
 
 from __future__ import print_function, absolute_import, division
 
+from nti.ims.cypher import make_ciphertext
+
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -53,10 +55,10 @@ class ProviderToolFactory(SchemaConfigured):
             lti_param_name = NTI_PARAM_MAPPING[param]
             launch_params[lti_param_name] = params_map[param]
 
-        # TODO guessing there is a library used for this
-        unique_id = scramble(params_map[u'primary_id'])
-        unique_context = scramble(u'random')
-        unique_resource = scramble(u'resource')
+        # TODO these need hashed with something to make them unique
+        unique_id = make_ciphertext(params_map[u'primary_id'])
+        unique_context = make_ciphertext(u'random')
+        unique_resource = make_ciphertext(u'resource')
 
         launch_params[u'user_id'] = unique_id
         launch_params[u'context_id'] = unique_context
