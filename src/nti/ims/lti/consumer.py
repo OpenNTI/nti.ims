@@ -18,8 +18,6 @@ from slugify import Slugify
 from zope import component
 from zope import interface
 
-from zope.container.contained import NameChooser
-
 from zope.container.interfaces import INameChooser
 
 from nti.containers.containers import CaseInsensitiveLastModifiedBTreeContainer
@@ -33,7 +31,7 @@ from nti.ims.lti.interfaces import IToolConfig
 @interface.implementer(IConfiguredTool)
 class ConfiguredTool(Persistent):
 
-    non_config_values = {u'key', u'secret'}
+    non_config_values = {'key', 'secret'}
 
     def __init__(self, **kwargs):
 
@@ -58,10 +56,9 @@ class PersistentToolConfig(ToolConfig, Persistent):
 class ConfiguredToolContainer(CaseInsensitiveLastModifiedBTreeContainer):
 
     def add_tool(self, tool):
-        # Not adapting properly
-        # name = INameChooser(tool)
+        name = INameChooser(self).chooseName(tool.title, tool)
         slugger = Slugify()
-        slugged_name = slugger(tool.title)
+        slugged_name = slugger(name)
         tool.__name__ = slugged_name
 
         self[slugged_name] = tool

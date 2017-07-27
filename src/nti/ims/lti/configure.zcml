@@ -20,7 +20,4 @@
 			 provides=".interfaces.IConfiguredTool"
 			 for="pyramid.interfaces.IRequest" />
 
-	<adapter factory=".consumer.ConfiguredToolNameChooser"
-			 provides="zope.container.interfaces.INameChooser"
-			 for=".interfaces.IConfiguredTool" />
 </configure>
