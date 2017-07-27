@@ -64,8 +64,6 @@ class ConfiguredToolContainer(CaseInsensitiveLastModifiedBTreeContainer):
         slugged_name = slugger(tool.title)
         tool.__name__ = slugged_name
 
-        from IPython.core.debugger import Tracer;Tracer()()
-
         self[slugged_name] = tool
 
     def delete_tool(self, tool):
@@ -74,7 +72,5 @@ class ConfiguredToolContainer(CaseInsensitiveLastModifiedBTreeContainer):
         del self[name]
 
     def __getitem__(self, tool):
-        from IPython.core.debugger import Tracer;Tracer()()
-
         name = getattr(tool, '__name__', tool)
-        super(ConfiguredToolContainer, self).__getitem__(name)
+        return super(ConfiguredToolContainer, self).__getitem__(name)

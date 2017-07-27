@@ -48,10 +48,9 @@ class TestConsumer(nti.testing.base.ConfiguringTestBase):
         tools.add_tool(tool)
         assert_that(tools, has_length(1))
 
-        # tool = tools[tool]
-        tool = tools[tool.__name__]
-        assert_that(tool, verifiably_provides(IConfiguredTool))
+        tool = tools[tool]
         assert_that(tools, has_length(1))
+        assert_that(tool, verifiably_provides(IConfiguredTool))
 
         tools.delete_tool(tool)
         assert_that(tools, has_length(0))
