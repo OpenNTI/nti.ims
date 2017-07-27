@@ -15,36 +15,14 @@ from lti.tool_config import ToolConfig
 from zope.component import queryUtility
 from zope import interface
 
+from nti.ims.lti.consumer import ConfiguredToolContainer
+
 from nti.ims.lti.interfaces import IConfiguredTool
-from nti.ims.lti.interfaces import IConfiguredTools
+from nti.ims.lti.interfaces import IConfiguredToolContainer
 
 from nti.testing.matchers import verifiably_provides
 
 import nti.testing.base
-
-
-ZCML_STRING = """<configure	xmlns="http://namespaces.zope.org/zope"
-			                xmlns:i18n="http://namespaces.zope.org/i18n"
-			                xmlns:zcml="http://namespaces.zope.org/zcml">
-
-	                        <include package="zope.component" file="meta.zcml" />
-	                        <include package="zope.component" />
-
-                            <utility factory=".oauth.UtilityBackedOAuthConsumers"
-                                     provides=".interfaces.IOAuthConsumers"/>
-                        
-                            <utility factory="nti.containers.containers.CaseInsensitiveLastModifiedBTreeContainer"
-                                     provides=".interfaces.IConfiguredTools" />
-                        
-                            <adapter factory=".config.ToolConfigFactory"
-                                     provides=".interfaces.IToolConfigFactory"
-                                     for=".interfaces.ITool" />
-                        
-                            <adapter factory=".consumer.ConfiguredTool"
-                                     provides=".interfaces.IConfiguredTool"
-                                     for="pyramid.interfaces.IRequest" />
-                        
-                        </configure>"""
 
 
 @interface.implementer(IConfiguredTool)
@@ -63,20 +41,17 @@ class TestConsumer(nti.testing.base.ConfiguringTestBase):
 
     def test_configured_tools(self):
 
-        self.configure_string(ZCML_STRING)
-
-        tools = queryUtility(IConfiguredTools)
-        # assert_that(tools, verifiably_provides(IConfiguredTools))
+        tools = ConfiguredToolContainer()
+        assert_that(tools, verifiably_provides(IConfiguredToolContainer))
 
         tool = TestConfiguredTool()
         assert_that(tool, verifiably_provides(IConfiguredTool))
 
-        tools[tool.title] = tool
+        tools.add_tool(tool)
 
-        tool = tools[tool.title]
-        assert_that(tool, verifiably_provides(IConfiguredTool))
-
-        tools = queryUtility(IConfiguredTools)
-        tool = tools[tool.title]
+        tool = tools.get_tool(tool.title)
         assert_that(tool, verifiably_provides(IConfiguredTool))
         assert_that(tools, has_length(1))
+
+        tools.delete_tool(tool.title)
+        assert_that(tools, has_length(0))

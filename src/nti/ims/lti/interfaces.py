@@ -10,6 +10,8 @@ __docformat__ = "restructuredtext en"
 
 from zope import interface
 
+from zope.container.constraints import contains
+
 from nti.base.interfaces import ITitled
 from nti.base.interfaces import ITitledDescribed
 
@@ -233,8 +235,18 @@ class IConfiguredTool(ITitledDescribed):
     secret = TextLine(title=u'The provider secret',
                       required=True)
 
+    config = Object(IToolConfig)
 
-class IConfiguredTools(IContainer):
-    """
-    Persistent collection container for IConfiguredTool
-    """
+
+class IConfiguredToolContainer(IContainer):
+
+    contains(IConfiguredTool)
+
+    def add_tool(tool):
+        pass
+
+    def edit_tool(tool):
+        pass
+
+    def delete_tool(tool):
+        pass

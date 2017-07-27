@@ -16,31 +16,52 @@ from pyramid.interfaces import IRequest
 from zope import component
 from zope import interface
 
+from nti.containers.containers import CaseInsensitiveLastModifiedBTreeContainer
+
 from nti.ims.lti.interfaces import IConfiguredTool
+from nti.ims.lti.interfaces import IConfiguredToolContainer
+from nti.ims.lti.interfaces import IToolConfig
 
 
 @component.adapter(IRequest)
 @interface.implementer(IConfiguredTool)
 class ConfiguredTool(Persistent):
 
-    def __init__(self, params):
+    non_config_values = {'key', 'secret'}
 
-        # Pop the non-config defined values
-        self.key = params.pop('consumer_key')
-        self.secret = params.pop('secret')
+    def __init__(self, **kwargs):
 
-        # Store the params to populate the form for future editing
-        # and viewing as ToolConfig isn't helpful for retrieval
-        self.params = params
-        self.title = params['title']
-        self.description = params['description']
+        for (key, value) in kwargs:
+            if key in self.non_config_values:
+                setattr(self, key, value)
+                kwargs.pop(key)
 
         # TODO some kind of hook in the request to determine if
         # ToolConfig.create_from_xml can be used
-        self.config = PersistentToolConfig(params)
+        self.config = PersistentToolConfig(kwargs)
 
 
+@interface.implementer(IToolConfig)
 class PersistentToolConfig(Persistent, ToolConfig):
 
     def __init__(self, params):
         super(PersistentToolConfig, self).__init__(**params)
+
+
+@interface.implementer(IConfiguredToolContainer)
+class ConfiguredToolContainer(CaseInsensitiveLastModifiedBTreeContainer):
+
+    def add_tool(self, tool):
+        self[tool.title] = tool
+
+    def edit_tool(self, tool):
+        self[tool.title] = tool
+
+    def delete_tool(self, title):
+        del self[title]
+
+    def get_tool(self, title):
+        try:
+            return self[title]
+        except KeyError:
+            return None

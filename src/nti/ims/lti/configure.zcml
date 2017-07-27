@@ -9,8 +9,8 @@
 	<utility factory=".oauth.UtilityBackedOAuthConsumers"
 			 provides=".interfaces.IOAuthConsumers"/>
 
-	<utility factory="nti.containers.containers.CaseInsensitiveLastModifiedBTreeContainer"
-			 provides=".interfaces.IConfiguredTools" />
+	<utility factory="consumer.ConfiguredToolContainer"
+			 provides=".interfaces.IConfiguredToolContainer" />
 
 	<adapter factory=".config.ToolConfigFactory"
 			 provides=".interfaces.IToolConfigFactory"
