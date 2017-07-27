@@ -48,7 +48,7 @@ class PersistentToolConfig(ToolConfig, Persistent):
     def __init__(self, **kwargs):
         super(PersistentToolConfig, self).__init__(**kwargs)
 
-    def set_custom_param(self, key, val)
+    def set_custom_param(self, key, val):
         super(PersistentToolConfig, self).set_custom_param(key, val)
         self._p_changed = 1
 
