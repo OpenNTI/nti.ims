@@ -39,9 +39,6 @@ class ConfiguredTool(Persistent):
             setattr(self, key, value)
             if key in self.non_config_values:
                 kwargs.pop(key)
-
-        # TODO some kind of hook in the request to determine if
-        # ToolConfig.create_from_xml can be used
         self.config = PersistentToolConfig(**kwargs)
 
 
@@ -51,12 +48,22 @@ class PersistentToolConfig(ToolConfig, Persistent):
     def __init__(self, **kwargs):
         super(PersistentToolConfig, self).__init__(**kwargs)
 
+    def __setattr__(self, key, value):
+        super(PersistentToolConfig, self).__setattr__(key, value)
+        self._p_changed = 1
+
+    def __delattr__(self, item):
+        super(PersistentToolConfig, self).__delattr__(item)
+        self._p_changed = 1
+
 
 @interface.implementer(IConfiguredToolContainer)
 class ConfiguredToolContainer(CaseInsensitiveLastModifiedBTreeContainer):
 
     def add_tool(self, tool):
-        name = INameChooser(self).chooseName(tool.title, tool)
+        name = tool.title
+        # TODO Won't adapt
+        # name = INameChooser(self).chooseName(name, tool)
         slugger = Slugify()
         slugged_name = slugger(name)
         tool.__name__ = slugged_name
