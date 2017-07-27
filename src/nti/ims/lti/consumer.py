@@ -3,8 +3,6 @@
 
 from __future__ import print_function, absolute_import, division
 
-from zope.container.interfaces import INameChooser
-
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -21,6 +19,8 @@ from zope import component
 from zope import interface
 
 from zope.container.contained import Contained
+
+from zope.container.interfaces import INameChooser
 
 from nti.containers.containers import CaseInsensitiveLastModifiedBTreeContainer
 
