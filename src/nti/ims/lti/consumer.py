@@ -18,7 +18,7 @@ from slugify import Slugify
 from zope import component
 from zope import interface
 
-from zope.container.interfaces import INameChooser
+from zope.container.contained import Contained
 
 from nti.containers.containers import CaseInsensitiveLastModifiedBTreeContainer
 
@@ -29,7 +29,7 @@ from nti.ims.lti.interfaces import IToolConfig
 
 @component.adapter(IRequest)
 @interface.implementer(IConfiguredTool)
-class ConfiguredTool(Persistent):
+class ConfiguredTool(Persistent, Contained):
 
     non_config_values = {'key', 'secret'}
 
@@ -48,12 +48,16 @@ class PersistentToolConfig(ToolConfig, Persistent):
     def __init__(self, **kwargs):
         super(PersistentToolConfig, self).__init__(**kwargs)
 
-    def __setattr__(self, key, value):
-        super(PersistentToolConfig, self).__setattr__(key, value)
+    def set_custom_param(self, key, val)
+        super(PersistentToolConfig, self).set_custom_param(key, val)
         self._p_changed = 1
 
-    def __delattr__(self, item):
-        super(PersistentToolConfig, self).__delattr__(item)
+    def set_ext_param(self, ext_key, param_key, val):
+        super(PersistentToolConfig, self).set_ext_param(ext_key, param_key, val)
+        self._p_changed = 1
+
+    def set_ext_params(self, ext_key, ext_params):
+        super(PersistentToolConfig, self).set_ext_params(ext_key, ext_params)
         self._p_changed = 1
 
 
@@ -61,14 +65,13 @@ class PersistentToolConfig(ToolConfig, Persistent):
 class ConfiguredToolContainer(CaseInsensitiveLastModifiedBTreeContainer):
 
     def add_tool(self, tool):
-        name = tool.title
+        slugger = Slugify()
+        name = slugger(tool.title)
         # TODO Won't adapt
         # name = INameChooser(self).chooseName(name, tool)
-        slugger = Slugify()
-        slugged_name = slugger(name)
-        tool.__name__ = slugged_name
+        tool.__name__ = name
 
-        self[slugged_name] = tool
+        self[name] = tool
 
     def delete_tool(self, tool):
         # If the name is passed instead of the tool

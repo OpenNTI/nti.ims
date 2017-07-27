@@ -17,6 +17,8 @@ from nti.base.interfaces import ITitledDescribed
 
 from nti.coremetadata.interfaces import IContainer
 
+from nti.containers.contained import IContained
+
 from nti.schema.field import Dict
 from nti.schema.field import List
 from nti.schema.field import Number
@@ -227,7 +229,7 @@ class IToolConsumerInstanceBuilder(interface.Interface):
         """
 
 
-class IConfiguredTool(ITitledDescribed):
+class IConfiguredTool(ITitledDescribed, IContained):
 
     key = TextLine(title=u'The provider key',
                    required=True)
