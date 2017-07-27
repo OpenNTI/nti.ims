@@ -42,7 +42,7 @@ class ConfiguredTool(Persistent):
 
 
 @interface.implementer(IToolConfig)
-class PersistentToolConfig(Persistent, ToolConfig):
+class PersistentToolConfig(ToolConfig, Persistent):
 
     def __init__(self, params):
         super(PersistentToolConfig, self).__init__(**params)
