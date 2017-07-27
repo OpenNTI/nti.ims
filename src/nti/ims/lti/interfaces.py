@@ -233,9 +233,6 @@ class IConfiguredTool(ITitledDescribed):
     secret = TextLine(title=u'The provider secret',
                       required=True)
 
-    config = Object(title=u'The ToolConfig for this tool',
-                    required=True)
-
 
 class IConfiguredTools(IContainer):
     """

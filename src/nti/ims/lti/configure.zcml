@@ -16,7 +16,7 @@
 			 provides=".interfaces.IToolConfigFactory"
 			 for=".interfaces.ITool" />
 
-	<adapter factory=".consumers.ConfiguredTool"
+	<adapter factory=".consumer.ConfiguredTool"
 			 provides=".interfaces.IConfiguredTool"
 			 for="pyramid.interfaces.IRequest" />
 

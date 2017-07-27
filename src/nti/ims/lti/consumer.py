@@ -37,7 +37,7 @@ class ConfiguredTool(Persistent):
 
         # TODO some kind of hook in the request to determine if
         # ToolConfig.create_from_xml can be used
-        self.tool_config = PersistentToolConfig(params)
+        self.config = PersistentToolConfig(params)
 
 
 class PersistentToolConfig(Persistent, ToolConfig):
