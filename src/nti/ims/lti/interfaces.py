@@ -5,6 +5,7 @@
 """
 
 from __future__ import print_function, absolute_import, division
+
 __docformat__ = "restructuredtext en"
 
 from zope import interface
@@ -12,10 +13,13 @@ from zope import interface
 from nti.base.interfaces import ITitled
 from nti.base.interfaces import ITitledDescribed
 
+from nti.coremetadata.interfaces import IContainer
+
 from nti.schema.field import Dict
 from nti.schema.field import List
 from nti.schema.field import Number
 from nti.schema.field import HTTPURL
+from nti.schema.field import Object
 from nti.schema.field import TextLine
 
 
@@ -219,3 +223,21 @@ class IToolConsumerInstanceBuilder(interface.Interface):
         """
         Builds and returns a tool consumer instance
         """
+
+
+class IConfiguredTool(ITitledDescribed):
+
+    key = TextLine(title=u'The provider key',
+                   required=True)
+
+    secret = TextLine(title=u'The provider secret',
+                      required=True)
+
+    config = Object(title=u'The ToolConfig for this tool',
+                    required=True)
+
+
+class IConfiguredTools(IContainer):
+    """
+    Persistent collection container for IConfiguredTool
+    """
