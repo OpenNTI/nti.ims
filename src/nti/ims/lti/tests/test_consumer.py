@@ -23,7 +23,7 @@ from nti.ims.tests import SharedConfiguringTestLayer
 from nti.testing.matchers import verifiably_provides
 
 
-KWARGS = {u'key': u'test_key',
+KWARGS = {u'consumer_key': u'test_key',
           u'secret': u'test_secret',
           u'title': u'fake_title',
           u'description': u'test_desc'

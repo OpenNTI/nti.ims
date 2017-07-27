@@ -33,7 +33,7 @@ from nti.ims.lti.interfaces import IToolConfig
 @interface.implementer(IConfiguredTool)
 class ConfiguredTool(Persistent, Contained):
 
-    non_config_values = {'key', 'secret'}
+    non_config_values = {'consumer_key', 'secret'}
 
     def __init__(self, **kwargs):
 
