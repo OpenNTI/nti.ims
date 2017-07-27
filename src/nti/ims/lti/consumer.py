@@ -3,6 +3,8 @@
 
 from __future__ import print_function, absolute_import, division
 
+from zope.container.interfaces import INameChooser
+
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -67,8 +69,7 @@ class ConfiguredToolContainer(CaseInsensitiveLastModifiedBTreeContainer):
     def add_tool(self, tool):
         slugger = Slugify()
         name = slugger(tool.title)
-        # TODO Won't adapt
-        # name = INameChooser(self).chooseName(name, tool)
+        name = INameChooser(self).chooseName(name, tool)
         tool.__name__ = name
 
         self[name] = tool

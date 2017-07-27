@@ -12,10 +12,7 @@ logger = __import__('logging').getLogger(__name__)
 from hamcrest import assert_that
 from hamcrest import  has_length
 
-from lti.tool_config import ToolConfig
-
-from zope.interface import implements
-from zope import interface
+import unittest
 
 from nti.ims.lti.consumer import ConfiguredTool
 from nti.ims.lti.consumer import ConfiguredToolContainer
@@ -23,9 +20,9 @@ from nti.ims.lti.consumer import ConfiguredToolContainer
 from nti.ims.lti.interfaces import IConfiguredTool
 from nti.ims.lti.interfaces import IConfiguredToolContainer
 
-from nti.testing.matchers import verifiably_provides
+from nti.ims.tests import SharedConfiguringTestLayer
 
-import nti.testing.base
+from nti.testing.matchers import verifiably_provides
 
 
 KWARGS = {u'key': u'test_key',
@@ -35,7 +32,9 @@ KWARGS = {u'key': u'test_key',
           }
 
 
-class TestConsumer(nti.testing.base.ConfiguringTestBase):
+class TestConsumer(unittest.TestCase):
+
+    layer = SharedConfiguringTestLayer
 
     def test_configured_tools(self):
 
