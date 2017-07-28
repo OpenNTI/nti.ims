@@ -21,9 +21,11 @@ from zope.container.interfaces import INameChooser
 
 from nti.containers.containers import CaseInsensitiveLastModifiedBTreeContainer
 
+from nti.ims.lti.interfaces import IConfiguredTool
 from nti.ims.lti.interfaces import IToolConfig
 
 
+@interface.implementer(IConfiguredTool)
 class ConfiguredTool(Persistent, Contained):
 
     non_config_values = {'consumer_key', 'secret'}

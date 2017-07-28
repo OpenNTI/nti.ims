@@ -37,17 +37,14 @@ class TestConsumer(unittest.TestCase):
     def test_configured_tools(self):
 
         tools = ConfiguredToolContainer()
-        assert_that(tools, verifiably_provides(IConfiguredToolContainer))
 
         tool = ConfiguredTool(**KWARGS)
-        assert_that(tool, verifiably_provides(IConfiguredTool))
 
         tools.add_tool(tool)
         assert_that(tools, has_length(1))
 
         tool = tools[tool]
         assert_that(tools, has_length(1))
-        assert_that(tool, verifiably_provides(IConfiguredTool))
 
         tools.delete_tool(tool)
         assert_that(tools, has_length(0))
