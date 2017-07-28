@@ -11,11 +11,8 @@ from lti.tool_config import ToolConfig
 
 from persistent.persistence import Persistent
 
-from pyramid.interfaces import IRequest
-
 from slugify import Slugify
 
-from zope import component
 from zope import interface
 
 from zope.container.contained import Contained
@@ -24,13 +21,9 @@ from zope.container.interfaces import INameChooser
 
 from nti.containers.containers import CaseInsensitiveLastModifiedBTreeContainer
 
-from nti.ims.lti.interfaces import IConfiguredTool
-from nti.ims.lti.interfaces import IConfiguredToolContainer
 from nti.ims.lti.interfaces import IToolConfig
 
 
-@component.adapter(IRequest)
-@interface.implementer(IConfiguredTool)
 class ConfiguredTool(Persistent, Contained):
 
     non_config_values = {'consumer_key', 'secret'}
@@ -63,7 +56,6 @@ class PersistentToolConfig(ToolConfig, Persistent):
         self._p_changed = 1
 
 
-@interface.implementer(IConfiguredToolContainer)
 class ConfiguredToolContainer(CaseInsensitiveLastModifiedBTreeContainer):
 
     def add_tool(self, tool):
