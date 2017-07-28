@@ -9,16 +9,9 @@
 	<utility factory=".oauth.UtilityBackedOAuthConsumers"
 			 provides=".interfaces.IOAuthConsumers"/>
 
-	<utility factory=".consumer.ConfiguredToolContainer"
-			 provides=".interfaces.IConfiguredToolContainer" />
-
 	<adapter factory=".config.ToolConfigFactory"
 			 provides=".interfaces.IToolConfigFactory"
 			 for=".interfaces.ITool" />
-
-	<adapter factory=".consumer.ConfiguredTool"
-			 provides=".interfaces.IConfiguredTool"
-			 for="pyramid.interfaces.IRequest" />
 
 	<adapter factory="zope.container.contained.NameChooser"
 			 provides="zope.container.interfaces.INameChooser"
