@@ -249,3 +249,6 @@ class IConfiguredToolContainer(IContainer):
 
     def delete_tool(tool):
         pass
+
+    def edit_tool(tool):
+        pass

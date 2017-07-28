@@ -74,3 +74,6 @@ class ConfiguredToolContainer(CaseInsensitiveLastModifiedBTreeContainer):
     def __getitem__(self, tool):
         name = getattr(tool, '__name__', tool)
         return super(ConfiguredToolContainer, self).__getitem__(name)
+
+    def edit_tool(self, tool):
+        pass
