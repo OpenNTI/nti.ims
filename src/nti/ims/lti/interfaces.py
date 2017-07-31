@@ -232,7 +232,7 @@ class IToolConsumerInstanceBuilder(interface.Interface):
 class IConfiguredTool(ITitledDescribed, IContained):
 
     consumer_key = TextLine(title=u'The provider key',
-                   required=True)
+                            required=True)
 
     secret = TextLine(title=u'The provider secret',
                       required=True)

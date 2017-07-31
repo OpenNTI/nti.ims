@@ -32,13 +32,17 @@ class ConfiguredTool(Persistent, Contained):
 
     non_config_values = {'consumer_key', 'secret'}
 
-    def __init__(self, **kwargs):
+    def __init__(self, _v_request):
 
-        for (key, value) in kwargs.items():
+        from IPython.core.debugger import Tracer;Tracer()()
+
+        _v_kwargs = dict(_v_request.params)
+
+        for (key, value) in _v_kwargs.items():
             setattr(self, key, value)
             if key in self.non_config_values:
-                kwargs.pop(key)
-        self.config = PersistentToolConfig(**kwargs)
+                _v_kwargs.pop(key)
+        self.config = PersistentToolConfig(**_v_kwargs)
 
 
 @interface.implementer(IToolConfig)
