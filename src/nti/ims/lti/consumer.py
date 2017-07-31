@@ -32,17 +32,15 @@ class ConfiguredTool(Persistent, Contained):
 
     non_config_values = {'consumer_key', 'secret'}
 
-    def __init__(self, _v_request):
+    mimeType = mime_type = u'application/vnd.nextthought.ims.consumer.configuredtool'
 
-        from IPython.core.debugger import Tracer;Tracer()()
+    def __init__(self, **kwargs):
 
-        _v_kwargs = dict(_v_request.params)
-
-        for (key, value) in _v_kwargs.items():
+        for (key, value) in kwargs.items():
             setattr(self, key, value)
             if key in self.non_config_values:
-                _v_kwargs.pop(key)
-        self.config = PersistentToolConfig(**_v_kwargs)
+                kwargs.pop(key)
+        self.config = PersistentToolConfig(**kwargs)
 
 
 @interface.implementer(IToolConfig)
