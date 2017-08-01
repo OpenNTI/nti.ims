@@ -11,20 +11,21 @@ from lti import tool_config
 
 from lti.tool_config import ToolConfig
 
+from persistent import Persistent
+
 from slugify import Slugify
 
 from zope import interface
+
+from zope.container.btree import BTreeContainer
 
 from zope.container.contained import Contained
 
 from zope.container.interfaces import INameChooser
 
-from nti.containers.containers import CaseInsensitiveLastModifiedBTreeContainer
-
-from nti.dublincore.datastructures import PersistentCreatedModDateTrackingObject
+from nti.base.mixins import CreatedAndModifiedTimeMixin
 
 from nti.ims.lti.interfaces import IConfiguredTool
-from nti.ims.lti.interfaces import IToolConfig
 
 from nti.schema.fieldproperty import createDirectFieldProperties
 
@@ -32,7 +33,7 @@ from nti.schema.schema import PermissiveSchemaConfigured as SchemaConfigured
 
 
 @interface.implementer(IConfiguredTool)
-class ConfiguredTool(SchemaConfigured, PersistentCreatedModDateTrackingObject, Contained):
+class ConfiguredTool(SchemaConfigured, Persistent, Contained, CreatedAndModifiedTimeMixin):
 
     __external_can_create__ = True
 
@@ -42,16 +43,15 @@ class ConfiguredTool(SchemaConfigured, PersistentCreatedModDateTrackingObject, C
 
     def __init__(self, *args, **kwargs):
         SchemaConfigured.__init__(self, *args, **kwargs)
-        PersistentCreatedModDateTrackingObject.__init__(self)
+        Persistent.__init__(self)
 
 
-@interface.implementer(IToolConfig)
-class PersistentToolConfig(ToolConfig, PersistentCreatedModDateTrackingObject):
+class PersistentToolConfig(ToolConfig, Persistent, CreatedAndModifiedTimeMixin):
 
-    def __init__(self, request):
-        kwargs = self._validate_kwargs(request.json_body)
+    def __init__(self, kwargs):
+        kwargs = self._validate_kwargs(kwargs.json_body)
         super(PersistentToolConfig, self).__init__(**kwargs)
-        PersistentCreatedModDateTrackingObject.__init__(self)
+        Persistent.__init__(self)
 
     def _validate_kwargs(self, kwargs):
         result = dict()
@@ -63,6 +63,7 @@ class PersistentToolConfig(ToolConfig, PersistentCreatedModDateTrackingObject):
     def set_custom_param(self, key, val):
         super(PersistentToolConfig, self).set_custom_param(key, val)
         self._p_changed = 1
+
 
     def set_ext_param(self, ext_key, param_key, val):
         super(PersistentToolConfig, self).set_ext_param(ext_key, param_key, val)
@@ -80,7 +81,7 @@ class PersistentToolConfig(ToolConfig, PersistentCreatedModDateTrackingObject):
         self.create_from_xml(state[1])
 
 
-class ConfiguredToolContainer(CaseInsensitiveLastModifiedBTreeContainer):
+class ConfiguredToolContainer(BTreeContainer, CreatedAndModifiedTimeMixin):
 
     def add_tool(self, tool):
         slugger = Slugify()
