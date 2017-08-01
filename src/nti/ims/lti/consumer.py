@@ -26,6 +26,7 @@ from zope.container.interfaces import INameChooser
 from nti.base.mixins import CreatedAndModifiedTimeMixin
 
 from nti.ims.lti.interfaces import IConfiguredTool
+from nti.ims.lti.interfaces import IToolConfig
 
 from nti.schema.fieldproperty import createDirectFieldProperties
 
@@ -46,10 +47,11 @@ class ConfiguredTool(SchemaConfigured, Persistent, Contained, CreatedAndModified
         Persistent.__init__(self)
 
 
+@interface.implementer(IToolConfig)
 class PersistentToolConfig(ToolConfig, Persistent, CreatedAndModifiedTimeMixin):
 
     def __init__(self, kwargs):
-        kwargs = self._validate_kwargs(kwargs.json_body)
+        kwargs = self._validate_kwargs(kwargs)
         super(PersistentToolConfig, self).__init__(**kwargs)
         Persistent.__init__(self)
 
@@ -63,15 +65,17 @@ class PersistentToolConfig(ToolConfig, Persistent, CreatedAndModifiedTimeMixin):
     def set_custom_param(self, key, val):
         super(PersistentToolConfig, self).set_custom_param(key, val)
         self._p_changed = 1
-
+        self.updateLastMod()
 
     def set_ext_param(self, ext_key, param_key, val):
         super(PersistentToolConfig, self).set_ext_param(ext_key, param_key, val)
         self._p_changed = 1
+        self.updateLastMod()
 
     def set_ext_params(self, ext_key, ext_params):
         super(PersistentToolConfig, self).set_ext_params(ext_key, ext_params)
         self._p_changed = 1
+        self.updateLastMod()
 
     def __getstate__(self):
         return 1, self.to_xml()
