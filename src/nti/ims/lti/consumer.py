@@ -3,15 +3,13 @@
 
 from __future__ import print_function, absolute_import, division
 
-from nti.app.externalization.view_mixins import ModeledContentUploadRequestUtilsMixin
-
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-from lti.tool_config import ToolConfig
+from lti import tool_config
 
-from persistent.persistence import Persistent
+from lti.tool_config import ToolConfig
 
 from slugify import Slugify
 
@@ -23,31 +21,44 @@ from zope.container.interfaces import INameChooser
 
 from nti.containers.containers import CaseInsensitiveLastModifiedBTreeContainer
 
+from nti.dublincore.datastructures import PersistentCreatedModDateTrackingObject
+
 from nti.ims.lti.interfaces import IConfiguredTool
 from nti.ims.lti.interfaces import IToolConfig
 
+from nti.schema.fieldproperty import createDirectFieldProperties
+
+from nti.schema.schema import PermissiveSchemaConfigured as SchemaConfigured
+
 
 @interface.implementer(IConfiguredTool)
-class ConfiguredTool(Persistent, Contained):
+class ConfiguredTool(SchemaConfigured, PersistentCreatedModDateTrackingObject, Contained):
 
-    non_config_values = {'consumer_key', 'secret'}
+    __external_can_create__ = True
 
     mimeType = mime_type = u'application/vnd.nextthought.ims.consumer.configuredtool'
 
-    def __init__(self, **kwargs):
+    createDirectFieldProperties(IConfiguredTool)
 
-        for (key, value) in kwargs.items():
-            setattr(self, key, value)
-            if key in self.non_config_values:
-                kwargs.pop(key)
-        self.config = PersistentToolConfig(**kwargs)
+    def __init__(self, *args, **kwargs):
+        SchemaConfigured.__init__(self, *args, **kwargs)
+        PersistentCreatedModDateTrackingObject.__init__(self)
 
 
 @interface.implementer(IToolConfig)
-class PersistentToolConfig(ToolConfig, Persistent):
+class PersistentToolConfig(ToolConfig, PersistentCreatedModDateTrackingObject):
 
-    def __init__(self, **kwargs):
+    def __init__(self, request):
+        kwargs = self._validate_kwargs(request.json_body)
         super(PersistentToolConfig, self).__init__(**kwargs)
+        PersistentCreatedModDateTrackingObject.__init__(self)
+
+    def _validate_kwargs(self, kwargs):
+        result = dict()
+        for kwarg in kwargs:
+            if kwarg in tool_config.VALID_ATTRIBUTES:
+                result[kwarg] = kwargs[kwarg]
+        return result
 
     def set_custom_param(self, key, val):
         super(PersistentToolConfig, self).set_custom_param(key, val)
@@ -61,6 +72,13 @@ class PersistentToolConfig(ToolConfig, Persistent):
         super(PersistentToolConfig, self).set_ext_params(ext_key, ext_params)
         self._p_changed = 1
 
+    def __getstate__(self):
+        return 1, self.to_xml()
+
+    def __setstate__(self, state):
+        assert state[0] == 1
+        self.create_from_xml(state[1])
+
 
 class ConfiguredToolContainer(CaseInsensitiveLastModifiedBTreeContainer):
 
@@ -71,6 +89,7 @@ class ConfiguredToolContainer(CaseInsensitiveLastModifiedBTreeContainer):
         tool.__name__ = name
 
         self[name] = tool
+        return tool
 
     def delete_tool(self, tool):
         # If the name is passed instead of the tool

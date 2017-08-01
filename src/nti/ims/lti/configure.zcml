@@ -11,8 +11,11 @@
 	<include package="nti.externalization" file="meta.zcml" />
 	<include package="nti.externalization" />
 	<ext:registerAutoPackageIO
-		root_interfaces=".interfaces.IConfiguredTool"
+		root_interfaces=".interfaces.IConfiguredTool
+						 .interfaces.IToolConfig"
 		modules=".consumer" />
+
+	<!-- Tool Provider -->
 
 	<utility factory=".oauth.UtilityBackedOAuthConsumers"
 			 provides=".interfaces.IOAuthConsumers"/>

@@ -237,7 +237,8 @@ class IConfiguredTool(ITitledDescribed, IContained):
     secret = TextLine(title=u'The provider secret',
                       required=True)
 
-    config = Object(IToolConfig)
+    config = Object(IToolConfig,
+                    required=False)
 
 
 class IConfiguredToolContainer(IContainer):
