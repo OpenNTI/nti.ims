@@ -3,11 +3,6 @@
 
 from __future__ import print_function, absolute_import, division
 
-from nti.externalization.datastructures import InterfaceObjectIO
-from nti.externalization.interfaces import IInternalObjectExternalizer, IInternalObjectUpdater, IExternalObjectDecorator
-
-from nti.app.renderers.decorators import AbstractRequestAwareDecorator
-
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -34,6 +29,11 @@ from zope.container.contained import Contained
 from zope.container.interfaces import INameChooser
 
 from nti.base.mixins import CreatedAndModifiedTimeMixin
+
+from nti.externalization.datastructures import InterfaceObjectIO
+
+from nti.externalization.interfaces import IInternalObjectExternalizer
+from nti.externalization.interfaces import IInternalObjectUpdater
 
 from nti.ims.lti.interfaces import IConfiguredTool
 from nti.ims.lti.interfaces import IToolConfig
@@ -110,7 +110,7 @@ class PersistentToolConfig(ToolConfig, Persistent, CreatedAndModifiedTimeMixin):
 
     def __setstate__(self, state):
         assert state[0] == 1
-        self.create_from_xml(state[1])
+        self.process_xml(state[1])
 
 
 class ConfiguredToolContainer(BTreeContainer, CreatedAndModifiedTimeMixin):
@@ -134,6 +134,7 @@ class ConfiguredToolContainer(BTreeContainer, CreatedAndModifiedTimeMixin):
         return super(ConfiguredToolContainer, self).__getitem__(name)
 
     def edit_tool(self, tool):
+        self.delete_tool(tool.__name__)
         self[tool.__name__] = tool
 
 
@@ -159,6 +160,17 @@ class ConfiguredToolInternalizer(InterfaceObjectIO):
         config = _create_persistent_tool_config(parsed)
         super(ConfiguredToolInternalizer, self).updateFromExternalObject(parsed, *args, **kwargs)
         self._ext_self.config = config
+
+
+@component.adapter(IConfiguredTool)
+@interface.implementer(IInternalObjectExternalizer)
+class ConfiguredToolExternalizer(InterfaceObjectIO):
+
+    _ext_iface_upper_bound = IConfiguredTool
+
+    def toExternalObject(self, **kwargs):
+        from IPython.core.debugger import Tracer;Tracer()()
+        super(ConfiguredToolExternalizer, self).toExternalObject(**kwargs)
 
 
 def _create_persistent_tool_config(parsed):
