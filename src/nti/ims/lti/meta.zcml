@@ -7,6 +7,7 @@
 		<meta:directive	name="registerLTIConsumer"
 						schema=".zcml.IRegisterOAuthConsumer"
 						handler=".zcml.registerConsumer" />
+
 	</meta:directives>
 
 </configure>

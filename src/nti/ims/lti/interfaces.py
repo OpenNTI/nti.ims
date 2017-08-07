@@ -5,17 +5,25 @@
 """
 
 from __future__ import print_function, absolute_import, division
+
 __docformat__ = "restructuredtext en"
 
 from zope import interface
 
+from zope.container.constraints import contains
+
 from nti.base.interfaces import ITitled
 from nti.base.interfaces import ITitledDescribed
+
+from nti.coremetadata.interfaces import IContainer
+
+from nti.containers.contained import IContained
 
 from nti.schema.field import Dict
 from nti.schema.field import List
 from nti.schema.field import Number
 from nti.schema.field import HTTPURL
+from nti.schema.field import Object
 from nti.schema.field import TextLine
 
 
@@ -219,3 +227,26 @@ class IToolConsumerInstanceBuilder(interface.Interface):
         """
         Builds and returns a tool consumer instance
         """
+
+
+class IConfiguredTool(IContained):
+
+    consumer_key = TextLine(title=u'The provider key',
+                            required=True)
+
+    secret = TextLine(title=u'The provider secret',
+                      required=True)
+
+    config = Object(IToolConfig,
+                    required=False)
+
+
+class IConfiguredToolContainer(IContainer):
+
+    contains(IConfiguredTool)
+
+    def add_tool(tool):
+        pass
+
+    def delete_tool(tool):
+        pass

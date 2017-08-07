@@ -1,10 +1,21 @@
 <!-- -*- mode: nxml -*- -->
 <configure	xmlns="http://namespaces.zope.org/zope"
 			xmlns:i18n="http://namespaces.zope.org/i18n"
-			xmlns:zcml="http://namespaces.zope.org/zcml">
+			xmlns:zcml="http://namespaces.zope.org/zcml"
+			xmlns:ext="http://nextthought.com/ntp/ext">
 
 	<include package="zope.component" file="meta.zcml" />
 	<include package="zope.component" />
+
+	<!-- Externalization -->
+	<include package="nti.externalization" file="meta.zcml" />
+	<include package="nti.externalization" />
+	<ext:registerAutoPackageIO
+		root_interfaces=".interfaces.IConfiguredTool
+						 .interfaces.IToolConfig"
+		modules=".consumer" />
+
+	<!-- Tool Provider -->
 
 	<utility factory=".oauth.UtilityBackedOAuthConsumers"
 			 provides=".interfaces.IOAuthConsumers"/>
@@ -12,5 +23,13 @@
 	<adapter factory=".config.ToolConfigFactory"
 			 provides=".interfaces.IToolConfigFactory"
 			 for=".interfaces.ITool" />
+
+	<adapter factory=".consumer._ConfiguredToolNameChooser"
+			 provides="zope.container.interfaces.INameChooser"
+			 for=".interfaces.IConfiguredToolContainer" />
+
+	<!-- Events -->
+	<subscriber handler=".events.config_modified"
+				for=".interfaces.IToolConfig zope.lifecycleevent.IObjectModifiedEvent" />
 
 </configure>
