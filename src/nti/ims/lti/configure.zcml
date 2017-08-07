@@ -28,4 +28,8 @@
 			 provides="zope.container.interfaces.INameChooser"
 			 for=".interfaces.IConfiguredToolContainer" />
 
+	<!-- Events -->
+	<subscriber handler=".events.config_modified"
+				for=".interfaces.IToolConfig zope.lifecycleevent.IObjectModifiedEvent" />
+
 </configure>
