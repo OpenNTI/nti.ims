@@ -84,14 +84,17 @@ class PersistentToolConfig(ToolConfig, Persistent, CreatedAndModifiedTimeMixin):
 
     def set_custom_param(self, key, val):
         super(PersistentToolConfig, self).set_custom_param(key, val)
+        self._p_changed = 1
         lifecycleevent.modified(self)
 
     def set_ext_param(self, ext_key, param_key, val):
         super(PersistentToolConfig, self).set_ext_param(ext_key, param_key, val)
+        self._p_changed = 1
         lifecycleevent.modified(self)
 
     def set_ext_params(self, ext_key, ext_params):
         super(PersistentToolConfig, self).set_ext_params(ext_key, ext_params)
+        self._p_changed = 1
         lifecycleevent.modified(self)
 
     def __getstate__(self):

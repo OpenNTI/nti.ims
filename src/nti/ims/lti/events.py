@@ -16,5 +16,4 @@ from nti.ims.lti.interfaces import IToolConfig
 
 @component.adapter(IToolConfig, IObjectModifiedEvent)
 def config_modified(config, event):
-    config._p_changed = 1
     config.updateLastMod()
