@@ -109,7 +109,7 @@ class ConfiguredToolContainer(BTreeContainer, CreatedAndModifiedTimeMixin):
     def add_tool(self, tool):
         slugger = Slugify()
         name = slugger(tool.title)
-        name = _ConfiguredToolNameChooser(self).chooseName(name, tool)
+        name = INameChooser(self).chooseName(name, tool)
         tool.__name__ = name
 
         self[name] = tool
