@@ -30,12 +30,14 @@ from zope.container.interfaces import INameChooser
 
 from nti.base.mixins import CreatedAndModifiedTimeMixin
 
+from nti.containers.containers import AbstractNTIIDSafeNameChooser
+
 from nti.externalization.datastructures import InterfaceObjectIO
 
-from nti.externalization.interfaces import IInternalObjectExternalizer
 from nti.externalization.interfaces import IInternalObjectUpdater
 
 from nti.ims.lti.interfaces import IConfiguredTool
+from nti.ims.lti.interfaces import IConfiguredToolContainer
 from nti.ims.lti.interfaces import IToolConfig
 
 from nti.schema.fieldproperty import createDirectFieldProperties
@@ -79,16 +81,11 @@ class PersistentToolConfig(ToolConfig, Persistent, CreatedAndModifiedTimeMixin):
     __external_can_create__ = True
 
     def __init__(self, kwargs):
-        kwargs = self._validate_kwargs(kwargs)
+        # Parse the kwargs for tool config specific values
+        kwargs = {argname: kwargs[argname] for argname in kwargs if argname in tool_config.VALID_ATTRIBUTES}
+
         super(PersistentToolConfig, self).__init__(**kwargs)
         Persistent.__init__(self)
-
-    def _validate_kwargs(self, kwargs):
-        result = dict()
-        for kwarg in kwargs:
-            if kwarg in tool_config.VALID_ATTRIBUTES:
-                result[kwarg] = kwargs[kwarg]
-        return result
 
     def set_custom_param(self, key, val):
         super(PersistentToolConfig, self).set_custom_param(key, val)
@@ -118,7 +115,7 @@ class ConfiguredToolContainer(BTreeContainer, CreatedAndModifiedTimeMixin):
     def add_tool(self, tool):
         slugger = Slugify()
         name = slugger(tool.title)
-        name = INameChooser(self).chooseName(name, tool)
+        name = _ConfiguredToolNameChooser(self).chooseName(name, tool)
         tool.__name__ = name
 
         self[name] = tool
@@ -138,18 +135,6 @@ class ConfiguredToolContainer(BTreeContainer, CreatedAndModifiedTimeMixin):
         self[tool.__name__] = tool
 
 
-@component.adapter(IToolConfig)
-@interface.implementer(IInternalObjectExternalizer)
-class PersistentToolConfigExternalizer(InterfaceObjectIO):
-
-    _ext_iface_upper_bound = IToolConfig
-
-    def toExternalObject(self, mergeFrom=None, **kwargs):
-
-        from IPython.core.debugger import Tracer;Tracer()()
-        return super(PersistentToolConfigExternalizer, self).toExternalObject(**kwargs)
-
-
 @component.adapter(IConfiguredTool)
 @interface.implementer(IInternalObjectUpdater)
 class ConfiguredToolInternalizer(InterfaceObjectIO):
@@ -160,17 +145,6 @@ class ConfiguredToolInternalizer(InterfaceObjectIO):
         config = _create_persistent_tool_config(parsed)
         super(ConfiguredToolInternalizer, self).updateFromExternalObject(parsed, *args, **kwargs)
         self._ext_self.config = config
-
-
-@component.adapter(IConfiguredTool)
-@interface.implementer(IInternalObjectExternalizer)
-class ConfiguredToolExternalizer(InterfaceObjectIO):
-
-    _ext_iface_upper_bound = IConfiguredTool
-
-    def toExternalObject(self, **kwargs):
-        from IPython.core.debugger import Tracer;Tracer()()
-        super(ConfiguredToolExternalizer, self).toExternalObject(**kwargs)
 
 
 def _create_persistent_tool_config(parsed):
@@ -187,3 +161,9 @@ def _create_persistent_tool_config(parsed):
         pconfig.process_xml(xml_string)
         return pconfig
     return PersistentToolConfig(parsed)
+
+@component.adapter(IConfiguredToolContainer)
+@interface.implementer(INameChooser)
+class _ConfiguredToolNameChooser(AbstractNTIIDSafeNameChooser):
+
+    leaf_iface = IConfiguredToolContainer

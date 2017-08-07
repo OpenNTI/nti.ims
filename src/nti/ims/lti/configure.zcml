@@ -15,14 +15,6 @@
 						 .interfaces.IToolConfig"
 		modules=".consumer" />
 
-	<adapter factory=".consumer.PersistentToolConfigExternalizer"
-			 provides="nti.externalization.interfaces.IInternalObjectExternalizer"
-			 for=".interfaces.IToolConfig" />
-
-	<adapter factory=".consumer.ConfiguredToolExternalizer"
-			 provides="nti.externalization.interfaces.IInternalObjectExternalizer"
-			 for=".interfaces.IConfiguredTool" />
-
 	<!-- Internalization -->
 	<adapter factory=".consumer.ConfiguredToolInternalizer"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater"
@@ -37,7 +29,7 @@
 			 provides=".interfaces.IToolConfigFactory"
 			 for=".interfaces.ITool" />
 
-	<adapter factory="zope.container.contained.NameChooser"
+	<adapter factory=".consumer._ConfiguredToolNameChooser"
 			 provides="zope.container.interfaces.INameChooser"
 			 for=".interfaces.IConfiguredToolContainer" />
 
