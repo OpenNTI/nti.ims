@@ -15,8 +15,6 @@ from persistent import Persistent
 
 from slugify import Slugify
 
-from xml.etree import ElementTree as ET
-
 from zope import component
 from zope import interface
 
@@ -31,10 +29,6 @@ from zope.container.interfaces import INameChooser
 from nti.base.mixins import CreatedAndModifiedTimeMixin
 
 from nti.containers.containers import AbstractNTIIDSafeNameChooser
-
-from nti.externalization.datastructures import InterfaceObjectIO
-
-from nti.externalization.interfaces import IInternalObjectUpdater
 
 from nti.ims.lti.interfaces import IConfiguredTool
 from nti.ims.lti.interfaces import IConfiguredToolContainer
@@ -130,37 +124,6 @@ class ConfiguredToolContainer(BTreeContainer, CreatedAndModifiedTimeMixin):
         name = getattr(tool, '__name__', tool)
         return super(ConfiguredToolContainer, self).__getitem__(name)
 
-    def edit_tool(self, tool):
-        self.delete_tool(tool.__name__)
-        self[tool.__name__] = tool
-
-
-@component.adapter(IConfiguredTool)
-@interface.implementer(IInternalObjectUpdater)
-class ConfiguredToolInternalizer(InterfaceObjectIO):
-
-    _ext_iface_upper_bound = IConfiguredTool
-
-    def updateFromExternalObject(self, parsed, *args, **kwargs):
-        config = _create_persistent_tool_config(parsed)
-        super(ConfiguredToolInternalizer, self).updateFromExternalObject(parsed, *args, **kwargs)
-        self._ext_self.config = config
-
-
-def _create_persistent_tool_config(parsed):
-    field_storage = parsed['xml_file']
-    # Create from xml if uploaded
-    if parsed['xml_file'] is not u'':
-
-        file = field_storage.file
-        xml_tree = ET.parse(file)
-        root = xml_tree.getroot()
-        xml_string = ET.tostring(root)
-
-        pconfig = PersistentToolConfig(dict())
-        pconfig.process_xml(xml_string)
-        return pconfig
-    return PersistentToolConfig(parsed)
 
 @component.adapter(IConfiguredToolContainer)
 @interface.implementer(INameChooser)
