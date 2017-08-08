@@ -2,15 +2,15 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function, absolute_import, division
-
 __docformat__ = "restructuredtext en"
 
-logger = __import__('logging').getLogger(__name__)
+# disable: accessing protected members, too many methods
+# pylint: disable=W0212,R0904
 
-from hamcrest import assert_that
-from hamcrest import calling
 from hamcrest import is_
 from hamcrest import raises
+from hamcrest import calling
+from hamcrest import assert_that
 
 from zope import component
 from zope import interface

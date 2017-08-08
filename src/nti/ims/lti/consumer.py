@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""
+.. $Id$
+"""
 
 from __future__ import print_function, absolute_import, division
-
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -10,8 +12,6 @@ logger = __import__('logging').getLogger(__name__)
 from lti import tool_config
 
 from lti.tool_config import ToolConfig
-
-from persistent import Persistent
 
 from zope import component
 from zope import interface
@@ -25,13 +25,15 @@ from zope.container.contained import Contained
 
 from zope.container.interfaces import INameChooser
 
+from persistent import Persistent
+
 from nti.base.mixins import CreatedAndModifiedTimeMixin
 
 from nti.containers.containers import AbstractNTIIDSafeNameChooser
 
+from nti.ims.lti.interfaces import IToolConfig
 from nti.ims.lti.interfaces import IConfiguredTool
 from nti.ims.lti.interfaces import IConfiguredToolContainer
-from nti.ims.lti.interfaces import IToolConfig
 
 from nti.schema.fieldproperty import createDirectFieldProperties
 
@@ -75,8 +77,8 @@ class PersistentToolConfig(ToolConfig, Persistent, CreatedAndModifiedTimeMixin):
 
     def __init__(self, **kwargs):
         # Parse the kwargs for tool config specific values
-        kwargs = {argname: kwargs[argname] for argname in kwargs if argname in tool_config.VALID_ATTRIBUTES}
-
+        kwargs = {argname: kwargs[argname]
+                  for argname in kwargs if argname in tool_config.VALID_ATTRIBUTES}
         super(PersistentToolConfig, self).__init__(**kwargs)
         Persistent.__init__(self)
 
@@ -132,5 +134,4 @@ class ConfiguredToolContainer(BTreeContainer, CreatedAndModifiedTimeMixin):
 @component.adapter(IConfiguredToolContainer)
 @interface.implementer(INameChooser)
 class _ConfiguredToolNameChooser(AbstractNTIIDSafeNameChooser):
-
     leaf_iface = IConfiguredToolContainer

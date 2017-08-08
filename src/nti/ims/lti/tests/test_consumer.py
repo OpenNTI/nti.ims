@@ -2,16 +2,15 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function, absolute_import, division
-
 __docformat__ = "restructuredtext en"
 
-logger = __import__('logging').getLogger(__name__)
+# disable: accessing protected members, too many methods
+# pylint: disable=W0212,R0904
 
 from hamcrest import is_
-from hamcrest import assert_that
 from hamcrest import has_length
-from hamcrest import has_property
 from hamcrest import instance_of
+from hamcrest import assert_that
 
 from persistent import Persistent
 
@@ -34,7 +33,7 @@ KWARGS = {u'consumer_key': u'test_key',
           u'secure_launch_url': u'secure_test_url.com'
           }
 
-XML = """<xml>
+XML = u"""<xml>
             <title>Test Config</title>
             <description>A Test Config</description>
             <launch_url>http://testconfig.com</launch_url>
@@ -48,8 +47,9 @@ class TestConsumer(ApplicationLayerTest):
     @WithMockDSTrans
     def test_configured_tool_container(self):
 
+        transaction = mock_dataserver.current_transaction
         tools = ConfiguredToolContainer()
-        mock_dataserver.current_transaction.add(tools)
+        transaction.add(tools)
 
         tool = ConfiguredTool(**KWARGS)
 
