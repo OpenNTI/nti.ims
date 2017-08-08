@@ -5,8 +5,9 @@
 """
 
 from __future__ import print_function, absolute_import, division
-
 __docformat__ = "restructuredtext en"
+
+logger = __import__('logging').getLogger(__name__)
 
 from zope import interface
 
@@ -21,8 +22,8 @@ from nti.containers.contained import IContained
 from nti.schema.field import Dict
 from nti.schema.field import List
 from nti.schema.field import Number
-from nti.schema.field import HTTPURL
 from nti.schema.field import Object
+from nti.schema.field import HTTPURL
 from nti.schema.field import TextLine
 
 
@@ -212,12 +213,14 @@ class IToolConsumerInstanceProperties(interface.Interface):
 
 class IToolConsumerFieldExtensions(interface.Interface):
 
-    field_extensions = Dict(title=u'A dictionary of consumer specific launch message extensions')
+    field_extensions = Dict(title=u'A dictionary of consumer specific '
+                            u'launch message extensions')
 
 
 class IToolConsumerCustomValues(interface.Interface):
 
-    custom_values = Dict(title=u'A dictionary of consumer specific custom values')
+    custom_values = Dict(title=u'A dictionary of consumer specific '
+                         u'custom values')
 
 
 class IToolConsumerInstanceBuilder(interface.Interface):
