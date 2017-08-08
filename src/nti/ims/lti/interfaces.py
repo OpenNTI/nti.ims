@@ -11,11 +11,10 @@ __docformat__ = "restructuredtext en"
 from zope import interface
 
 from zope.container.constraints import contains
+from zope.container.interfaces import IContainer
 
 from nti.base.interfaces import ITitled
 from nti.base.interfaces import ITitledDescribed
-
-from nti.coremetadata.interfaces import IContainer
 
 from nti.containers.contained import IContained
 

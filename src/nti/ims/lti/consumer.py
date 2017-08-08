@@ -13,8 +13,6 @@ from lti.tool_config import ToolConfig
 
 from persistent import Persistent
 
-from slugify import Slugify
-
 from zope import component
 from zope import interface
 from zope import lifecycleevent
@@ -75,7 +73,7 @@ class PersistentToolConfig(ToolConfig, Persistent, CreatedAndModifiedTimeMixin):
 
     __external_can_create__ = True
 
-    def __init__(self, kwargs):
+    def __init__(self, **kwargs):
         # Parse the kwargs for tool config specific values
         kwargs = {argname: kwargs[argname] for argname in kwargs if argname in tool_config.VALID_ATTRIBUTES}
 
@@ -104,13 +102,18 @@ class PersistentToolConfig(ToolConfig, Persistent, CreatedAndModifiedTimeMixin):
         assert state[0] == 1
         self.process_xml(state[1])
 
+    @staticmethod
+    def create_from_xml(xml):
+        config = PersistentToolConfig()
+        config.process_xml(xml)
+        return config
 
+
+@interface.implementer(IConfiguredToolContainer)
 class ConfiguredToolContainer(BTreeContainer, CreatedAndModifiedTimeMixin):
 
     def add_tool(self, tool):
-        slugger = Slugify()
-        name = slugger(tool.title)
-        name = INameChooser(self).chooseName(name, tool)
+        name = INameChooser(self).chooseName(tool.title, tool)
         tool.__name__ = name
 
         self[name] = tool
