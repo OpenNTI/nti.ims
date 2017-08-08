@@ -113,7 +113,7 @@ class PersistentToolConfig(ToolConfig, Persistent, CreatedAndModifiedTimeMixin):
 class ConfiguredToolContainer(BTreeContainer, CreatedAndModifiedTimeMixin):
 
     def add_tool(self, tool):
-        name = INameChooser(self).chooseName(tool.__class__.__name__, tool)
+        name = INameChooser(self).chooseName(tool.title, tool)
         tool.__name__ = name
 
         self[name] = tool
