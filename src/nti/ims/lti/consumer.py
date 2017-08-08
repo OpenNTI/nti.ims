@@ -13,8 +13,6 @@ from lti.tool_config import ToolConfig
 
 from persistent import Persistent
 
-from slugify import Slugify
-
 from zope import component
 from zope import interface
 from zope import lifecycleevent
@@ -111,12 +109,11 @@ class PersistentToolConfig(ToolConfig, Persistent, CreatedAndModifiedTimeMixin):
         return config
 
 
+@interface.implementer(IConfiguredToolContainer)
 class ConfiguredToolContainer(BTreeContainer, CreatedAndModifiedTimeMixin):
 
     def add_tool(self, tool):
-        slugger = Slugify()
-        name = slugger(tool.title)
-        name = INameChooser(self).chooseName(name, tool)
+        name = INameChooser(self).chooseName(tool.__class__.__name__, tool)
         tool.__name__ = name
 
         self[name] = tool
