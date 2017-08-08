@@ -75,7 +75,7 @@ class PersistentToolConfig(ToolConfig, Persistent, CreatedAndModifiedTimeMixin):
 
     __external_can_create__ = True
 
-    def __init__(self, kwargs):
+    def __init__(self, **kwargs):
         # Parse the kwargs for tool config specific values
         kwargs = {argname: kwargs[argname] for argname in kwargs if argname in tool_config.VALID_ATTRIBUTES}
 
@@ -103,6 +103,12 @@ class PersistentToolConfig(ToolConfig, Persistent, CreatedAndModifiedTimeMixin):
     def __setstate__(self, state):
         assert state[0] == 1
         self.process_xml(state[1])
+
+    @staticmethod
+    def create_from_xml(xml):
+        config = PersistentToolConfig()
+        config.process_xml(xml)
+        return config
 
 
 class ConfiguredToolContainer(BTreeContainer, CreatedAndModifiedTimeMixin):
