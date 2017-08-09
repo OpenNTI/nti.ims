@@ -55,19 +55,23 @@ class ConfiguredTool(SchemaConfigured, Persistent, Contained, CreatedAndModified
 
     @readproperty
     def title(self):
-        return self.config.title
+        if self.config is not None:
+            return self.config.title
 
     @readproperty
     def description(self):
-        return self.config.description
+        if self.config is not None:
+            return self.config.description
 
     @readproperty
     def launch_url(self):
-        return self.config.launch_url
+        if self.config is not None:
+            return self.config.launch_url
 
     @readproperty
     def secure_launch_url(self):
-        return self.config.secure_launch_url
+        if self.config is not None:
+            return self.config.secure_launch_url
 
 
 @interface.implementer(IToolConfig)
