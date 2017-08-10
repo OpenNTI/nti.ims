@@ -240,7 +240,7 @@ class IConfiguredTool(IContained):
                       required=True)
 
     config = Object(IToolConfig,
-                    required=False)
+                    required=True)
 
 
 class IConfiguredToolContainer(IContainer):
