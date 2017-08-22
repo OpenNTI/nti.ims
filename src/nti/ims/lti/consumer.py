@@ -45,7 +45,7 @@ class ConfiguredTool(SchemaConfigured, Persistent, Contained, CreatedAndModified
 
     __external_can_create__ = True
 
-    mimeType = mime_type = u'application/vnd.nextthought.ims.consumer.configuredtool'
+    mimeType = mime_type = 'application/vnd.nextthought.ims.consumer.configuredtool'
 
     createDirectFieldProperties(IConfiguredTool)
 
@@ -135,7 +135,7 @@ class ConfiguredToolContainer(BTreeContainer, CreatedAndModifiedTimeMixin):
         return super(ConfiguredToolContainer, self).__getitem__(name)
 
 
-@component.adapter(IConfiguredToolContainer)
 @interface.implementer(INameChooser)
+@component.adapter(IConfiguredToolContainer)
 class _ConfiguredToolNameChooser(AbstractNTIIDSafeNameChooser):
     leaf_iface = IConfiguredToolContainer
