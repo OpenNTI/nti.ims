@@ -14,10 +14,10 @@ from zope import interface
 from zope.container.constraints import contains
 from zope.container.interfaces import IContainer
 
+from zope.location.interfaces import IContained
+
 from nti.base.interfaces import ITitled
 from nti.base.interfaces import ITitledDescribed
-
-from nti.containers.contained import IContained
 
 from nti.schema.field import Dict
 from nti.schema.field import List
