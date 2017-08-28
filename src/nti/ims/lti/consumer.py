@@ -104,11 +104,9 @@ class PersistentToolConfig(ToolConfig, Persistent, CreatedAndModifiedTimeMixin):
         self._p_changed = 1
         lifecycleevent.modified(self)
 
-    def __getstate__(self):
-        return 1, self.to_xml()
-
     def __setstate__(self, state):
         assert state[0] == 1
+        self.updateLastMod()
         self.process_xml(state[1])
 
     def __reduce__(self):
