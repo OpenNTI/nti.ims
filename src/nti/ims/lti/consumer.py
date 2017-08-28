@@ -84,6 +84,7 @@ class PersistentToolConfig(ToolConfig, Persistent, CreatedAndModifiedTimeMixin):
         self._kwargs = {argname: kwargs[argname]
                   for argname in kwargs if argname in tool_config.VALID_ATTRIBUTES}
         super(PersistentToolConfig, self).__init__(**self._kwargs)
+        CreatedAndModifiedTimeMixin.__init__(self, **kwargs)
         Persistent.__init__(self)
 
     def set_custom_param(self, key, val):
@@ -103,6 +104,7 @@ class PersistentToolConfig(ToolConfig, Persistent, CreatedAndModifiedTimeMixin):
 
     def __setstate__(self, state):
         assert state[0] == 1
+        self.updateLastMod()
         self.process_xml(state[1])
 
     def __reduce__(self):
