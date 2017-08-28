@@ -81,9 +81,9 @@ class PersistentToolConfig(ToolConfig, Persistent, CreatedAndModifiedTimeMixin):
 
     def __init__(self, **kwargs):
         # Parse the kwargs for tool config specific values
-        kwargs = {argname: kwargs[argname]
+        self._kwargs = {argname: kwargs[argname]
                   for argname in kwargs if argname in tool_config.VALID_ATTRIBUTES}
-        super(PersistentToolConfig, self).__init__(**kwargs)
+        super(PersistentToolConfig, self).__init__(**self._kwargs)
         Persistent.__init__(self)
 
     def set_custom_param(self, key, val):
@@ -101,12 +101,13 @@ class PersistentToolConfig(ToolConfig, Persistent, CreatedAndModifiedTimeMixin):
         self._p_changed = 1
         lifecycleevent.modified(self)
 
-    def __getstate__(self):
-        return 1, self.to_xml()
-
     def __setstate__(self, state):
         assert state[0] == 1
         self.process_xml(state[1])
+
+    def __reduce__(self):
+        # See the reduce docs for tuple value info ( https://docs.python.org/3/library/pickle.html )
+        return self.__class__, self._kwargs, {1, self.to_xml()}
 
     @staticmethod
     def create_from_xml(xml):
