@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function, absolute_import, division
+
 __docformat__ = "restructuredtext en"
 
 # disable: accessing protected members, too many methods
@@ -12,6 +13,8 @@ from hamcrest import assert_that
 from hamcrest import instance_of
 from hamcrest import has_properties
 
+import time
+
 import unittest
 
 from persistent import Persistent
@@ -20,6 +23,8 @@ from nti.ims.lti.consumer import ConfiguredTool
 from nti.ims.lti.consumer import PersistentToolConfig
 
 from nti.ims.tests import SharedConfiguringTestLayer
+
+from nti.testing.time import time_monotonically_increases
 
 
 KWARGS = {
@@ -44,6 +49,7 @@ class TestConsumer(unittest.TestCase):
 
     layer = SharedConfiguringTestLayer
 
+    @time_monotonically_increases
     def test_persistent_tool_config(self):
 
         ptc = PersistentToolConfig(**KWARGS)
@@ -53,6 +59,9 @@ class TestConsumer(unittest.TestCase):
                                    'launch_url', is_(KWARGS['launch_url']),
                                    'secure_launch_url', is_(KWARGS['secure_launch_url'])))
 
+        t = time.time()
+        assert_that(ptc.createdTime, is_(t - 1))
+
         ptc = PersistentToolConfig.create_from_xml(XML)
         assert_that(ptc, 
                     has_properties('title', is_('Test Config'),
@@ -60,6 +69,7 @@ class TestConsumer(unittest.TestCase):
                                    'launch_url', is_('http://testconfig.com'),
                                    'secure_launch_url', is_('https://testconfig.com')))
         assert_that(ptc, instance_of(Persistent))
+
 
     def test_configured_tool(self):
         tool = ConfiguredTool(**KWARGS)
