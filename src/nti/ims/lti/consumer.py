@@ -111,6 +111,10 @@ class PersistentToolConfig(ToolConfig, Persistent, CreatedAndModifiedTimeMixin):
         assert state[0] == 1
         self.process_xml(state[1])
 
+    def __reduce__(self):
+        # See the reduce docs for tuple value info ( https://docs.python.org/3/library/pickle.html )
+        return self.__class__, self._kwargs, {1, self.to_xml()}
+
     @staticmethod
     def create_from_xml(xml):
         config = PersistentToolConfig()
