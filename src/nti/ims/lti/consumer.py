@@ -82,12 +82,11 @@ class PersistentToolConfig(ToolConfig, Persistent, CreatedAndModifiedTimeMixin):
 
     def __init__(self, **kwargs):
         # Parse the kwargs for tool config specific values
-        kwargs = {
-            argname: kwargs[argname]
-            for argname in kwargs if argname in tool_config.VALID_ATTRIBUTES
-        }
+        self._kwargs = kwargs
+        kwargs = {argname: kwargs[argname]
+                  for argname in kwargs if argname in tool_config.VALID_ATTRIBUTES}
         super(PersistentToolConfig, self).__init__(**kwargs)
-        Persistent.__init__(self)
+        CreatedAndModifiedTimeMixin.__init__(self, **kwargs)
 
     def set_custom_param(self, key, val):
         super(PersistentToolConfig, self).set_custom_param(key, val)
