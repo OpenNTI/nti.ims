@@ -30,6 +30,8 @@ from nti.base.mixins import CreatedAndModifiedTimeMixin
 
 from nti.containers.containers import AbstractNTIIDSafeNameChooser
 
+from nti.dublincore.time_mixins import PersistentCreatedAndModifiedTimeObject
+
 from nti.ims.lti.interfaces import IToolConfig
 from nti.ims.lti.interfaces import IConfiguredTool
 from nti.ims.lti.interfaces import IConfiguredToolContainer
@@ -42,7 +44,7 @@ logger = __import__('logging').getLogger(__name__)
 
 
 @interface.implementer(IConfiguredTool)
-class ConfiguredTool(SchemaConfigured, Persistent, Contained, CreatedAndModifiedTimeMixin):
+class ConfiguredTool(SchemaConfigured, Contained, PersistentCreatedAndModifiedTimeObject):
 
     __external_can_create__ = True
 
@@ -52,7 +54,7 @@ class ConfiguredTool(SchemaConfigured, Persistent, Contained, CreatedAndModified
 
     def __init__(self, *args, **kwargs):
         SchemaConfigured.__init__(self, *args, **kwargs)
-        Persistent.__init__(self)
+        PersistentCreatedAndModifiedTimeObject.__init__(self)
 
     @readproperty
     def title(self):
@@ -76,7 +78,7 @@ class ConfiguredTool(SchemaConfigured, Persistent, Contained, CreatedAndModified
 
 
 @interface.implementer(IToolConfig)
-class PersistentToolConfig(ToolConfig, CreatedAndModifiedTimeMixin, Persistent):
+class PersistentToolConfig(ToolConfig, PersistentCreatedAndModifiedTimeObject):
 
     __external_can_create__ = True
 
@@ -86,7 +88,6 @@ class PersistentToolConfig(ToolConfig, CreatedAndModifiedTimeMixin, Persistent):
         kwargs = {argname: kwargs[argname]
                   for argname in kwargs if argname in tool_config.VALID_ATTRIBUTES}
         super(PersistentToolConfig, self).__init__(**kwargs)
-        CreatedAndModifiedTimeMixin.__init__(self, **kwargs)
 
     def set_custom_param(self, key, val):
         super(PersistentToolConfig, self).set_custom_param(key, val)
