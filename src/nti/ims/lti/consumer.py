@@ -76,7 +76,7 @@ class ConfiguredTool(SchemaConfigured, Persistent, Contained, CreatedAndModified
 
 
 @interface.implementer(IToolConfig)
-class PersistentToolConfig(ToolConfig, Persistent, CreatedAndModifiedTimeMixin):
+class PersistentToolConfig(ToolConfig, CreatedAndModifiedTimeMixin, Persistent):
 
     __external_can_create__ = True
 
@@ -110,7 +110,7 @@ class PersistentToolConfig(ToolConfig, Persistent, CreatedAndModifiedTimeMixin):
 
     def __reduce__(self):
         # See the reduce docs for tuple value info ( https://docs.python.org/3/library/pickle.html )
-        return self.__class__, self._kwargs, {1, self.to_xml()}
+        return self.__class__, (self._kwargs,), {1, self.to_xml()}
 
     @staticmethod
     def create_from_xml(xml):
