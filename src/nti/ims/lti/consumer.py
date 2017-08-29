@@ -105,12 +105,13 @@ class PersistentToolConfig(ToolConfig, CreatedAndModifiedTimeMixin, Persistent):
 
     def __setstate__(self, state):
         assert state[0] == 1
-        self.updateLastMod()
         self.process_xml(state[1])
+        self.createdTime = state[2]
+        self.lastModified = state[3]
 
     def __reduce__(self):
         # See the reduce docs for tuple value info ( https://docs.python.org/3/library/pickle.html )
-        return self.__class__, (self._kwargs,), {1, self.to_xml()}
+        return self.__class__, (self._kwargs,), {1, self.to_xml(), self.createdTime, self.lastModified}
 
     @staticmethod
     def create_from_xml(xml):
