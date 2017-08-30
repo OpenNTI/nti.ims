@@ -88,6 +88,7 @@ class PersistentToolConfig(ToolConfig, PersistentCreatedAndModifiedTimeObject):
         kwargs = {argname: kwargs[argname]
                   for argname in kwargs if argname in tool_config.VALID_ATTRIBUTES}
         super(PersistentToolConfig, self).__init__(**kwargs)
+        PersistentCreatedAndModifiedTimeObject.__init__(self)
 
     def set_custom_param(self, key, val):
         super(PersistentToolConfig, self).set_custom_param(key, val)
@@ -110,9 +111,12 @@ class PersistentToolConfig(ToolConfig, PersistentCreatedAndModifiedTimeObject):
         self.createdTime = state[2]
         self.lastModified = state[3]
 
-    def __reduce__(self):
-        # See the reduce docs for tuple value info ( https://docs.python.org/3/library/pickle.html )
-        return self.__class__, (self._kwargs,), {1, self.to_xml(), self.createdTime, self.lastModified}
+    def __getstate__(self):
+        return 1, self.to_xml(), self.createdTime, self.lastModified
+
+    def __getnewargs__(self):
+        # Must be a tuple
+        return self._kwargs,
 
     @staticmethod
     def create_from_xml(xml):

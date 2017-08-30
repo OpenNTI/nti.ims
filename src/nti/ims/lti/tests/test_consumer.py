@@ -13,6 +13,8 @@ from hamcrest import assert_that
 from hamcrest import instance_of
 from hamcrest import has_properties
 
+import cPickle
+
 import time
 
 import unittest
@@ -59,8 +61,17 @@ class TestConsumer(unittest.TestCase):
                                    'launch_url', is_(KWARGS['launch_url']),
                                    'secure_launch_url', is_(KWARGS['secure_launch_url'])))
 
+        ptc_dump = cPickle.dumps(ptc)
+        ptc_unpickled = cPickle.loads(ptc_dump)
+        assert_that(ptc_unpickled,
+                    has_properties('title', is_(KWARGS['title']),
+                                   'description', is_(KWARGS['description']),
+                                   'launch_url', is_(KWARGS['launch_url']),
+                                   'secure_launch_url', is_(KWARGS['secure_launch_url'])))
+
         t = time.time()
-        assert_that(ptc.createdTime, is_(t - 1))
+        assert_that(ptc.createdTime, is_(t-1))
+        assert_that(ptc_unpickled.createdTime, is_(t-1))
 
         ptc = PersistentToolConfig.create_from_xml(XML)
         assert_that(ptc, 
