@@ -19,6 +19,12 @@ import time
 
 import unittest
 
+import ZODB
+
+import ZODB.MappingStorage
+
+import transaction
+
 from persistent import Persistent
 
 from nti.ims.lti.consumer import ConfiguredTool
@@ -32,10 +38,10 @@ from nti.testing.time import time_monotonically_increases
 KWARGS = {
     'consumer_key': u'test_key',
     'secret': u'test_secret',
-    'title': u'fake_title',
-    'description': u'test_desc',
-    'launch_url': u'test_url.com',
-    'secure_launch_url': u'secure_test_url.com'
+    'title': u'Test Config',
+    'description': u'A Test Config',
+    'launch_url': u'http://testconfig.com',
+    'secure_launch_url': u'https://testconfig.com'
 }
 
 XML = u"""<xml>
@@ -54,6 +60,7 @@ class TestConsumer(unittest.TestCase):
     @time_monotonically_increases
     def test_persistent_tool_config(self):
 
+        # Test properties
         ptc = PersistentToolConfig(**KWARGS)
         assert_that(ptc, 
                     has_properties('title', is_(KWARGS['title']),
@@ -61,6 +68,7 @@ class TestConsumer(unittest.TestCase):
                                    'launch_url', is_(KWARGS['launch_url']),
                                    'secure_launch_url', is_(KWARGS['secure_launch_url'])))
 
+        # Test pickling
         ptc_dump = cPickle.dumps(ptc)
         ptc_unpickled = cPickle.loads(ptc_dump)
         assert_that(ptc_unpickled,
@@ -69,18 +77,38 @@ class TestConsumer(unittest.TestCase):
                                    'launch_url', is_(KWARGS['launch_url']),
                                    'secure_launch_url', is_(KWARGS['secure_launch_url'])))
 
+        # Test creation time
         t = time.time()
         assert_that(ptc.createdTime, is_(t-1))
         assert_that(ptc_unpickled.createdTime, is_(t-1))
 
+        # Test ZODB storage and retrieval
+        self._assert_zodb_store(ptc)
+
+        # Test XML Creation
         ptc = PersistentToolConfig.create_from_xml(XML)
-        assert_that(ptc, 
-                    has_properties('title', is_('Test Config'),
-                                   'description', is_('A Test Config'),
-                                   'launch_url', is_('http://testconfig.com'),
-                                   'secure_launch_url', is_('https://testconfig.com')))
+        assert_that(ptc,
+                    has_properties('title', is_(KWARGS['title']),
+                                   'description', is_(KWARGS['description']),
+                                   'launch_url', is_(KWARGS['launch_url']),
+                                   'secure_launch_url', is_(KWARGS['secure_launch_url'])))
         assert_that(ptc, instance_of(Persistent))
 
+        self._assert_zodb_store(ptc)
+
+    def _assert_zodb_store(self, ptc):
+        db = ZODB.DB(ZODB.MappingStorage.MappingStorage())
+        conn = db.open()
+        conn.root.config = ptc
+        transaction.commit()
+        conn.close()
+        conn = db.open()
+        stored_ptc = conn.root.config
+        assert_that(stored_ptc,
+                    has_properties('title', is_(KWARGS['title']),
+                                   'description', is_(KWARGS['description']),
+                                   'launch_url', is_(KWARGS['launch_url']),
+                                   'secure_launch_url', is_(KWARGS['secure_launch_url'])))
 
     def test_configured_tool(self):
         tool = ConfiguredTool(**KWARGS)
