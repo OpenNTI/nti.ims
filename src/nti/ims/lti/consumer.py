@@ -115,8 +115,7 @@ class PersistentToolConfig(ToolConfig, PersistentCreatedAndModifiedTimeObject):
         return 1, self.to_xml(), self.createdTime, self.lastModified
 
     def __getnewargs__(self):
-        # Must be a tuple
-        return self._kwargs,
+        return (self._kwargs,)
 
     @staticmethod
     def create_from_xml(xml):
