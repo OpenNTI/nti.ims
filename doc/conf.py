@@ -105,8 +105,8 @@ html_static_path = ['_static']
 
 # -- Options for HTMLHelp output ------------------------------------------
 
-# Output file ims name for HTML help builder.
-htmlhelp_imsname = 'ntiimsdoc'
+# Output file base name for HTML help builder.
+htmlhelp_basename = 'ntiimsdoc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
