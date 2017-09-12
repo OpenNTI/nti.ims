@@ -46,6 +46,7 @@ setup(
         'lxml',
         'lti',
         'nti.base',
+        'nti.common',
         'nti.containers',
         'nti.externalization',
         'nti.property',
