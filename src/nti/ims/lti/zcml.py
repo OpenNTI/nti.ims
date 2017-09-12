@@ -21,7 +21,7 @@ from zope.configuration import fields
 
 from nti.base._compat import text_
 
-from nti.ims.cypher import get_plaintext
+from nti.common.cypher import get_plaintext
 
 from nti.ims.lti.interfaces import IOAuthConsumer
 

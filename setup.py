@@ -8,6 +8,7 @@ entry_points = {
 
 TESTS_REQUIRE = [
     'nti.testing',
+    'zope.dottedname',
     'zope.testrunner',
 ]
 
@@ -46,6 +47,7 @@ setup(
         'lxml',
         'lti',
         'nti.base',
+        'nti.common',
         'nti.containers',
         'nti.externalization',
         'nti.property',
