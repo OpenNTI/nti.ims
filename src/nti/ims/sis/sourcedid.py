@@ -4,10 +4,9 @@
 .. $Id$
 """
 
-from __future__ import print_function, absolute_import, division
-__docformat__ = "restructuredtext en"
-
-logger = __import__('logging').getLogger(__name__)
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
 
 import re
 from functools import total_ordering
@@ -17,6 +16,7 @@ from zope import interface
 from nti.externalization.representation import WithRepr
 
 from nti.ims.sis import get_text
+
 from nti.ims.sis.interfaces import ISourcedID
 
 from nti.schema.eqhash import EqHash
@@ -27,6 +27,8 @@ from nti.schema.fieldproperty import createDirectFieldProperties
 
 DEFAULT_SOURCE = ISourcedID['source'].default
 CRN_TERM_PATTERN = re.compile(r"(.*)\.(.*)", re.UNICODE | re.IGNORECASE)
+
+logger = __import__('logging').getLogger(__name__)
 
 
 @WithRepr
@@ -41,13 +43,13 @@ class SourcedID(SchemaConfigured):
 
     @property
     def CRN(self):
-        m = CRN_TERM_PATTERN.match(self.id or u'')
+        m = CRN_TERM_PATTERN.match(self.id or '')
         groups = m.groups() if m is not None else ()
         return groups[0] if groups else None
 
     @property
     def Term(self):
-        m = CRN_TERM_PATTERN.match(self.id or u'')
+        m = CRN_TERM_PATTERN.match(self.id or '')
         groups = m.groups() if m is not None else ()
         return groups[1] if groups else None
 

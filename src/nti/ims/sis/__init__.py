@@ -4,10 +4,9 @@
 .. $Id$
 """
 
-from __future__ import print_function, absolute_import, division
-__docformat__ = "restructuredtext en"
-
-logger = __import__('logging').getLogger(__name__)
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
 
 from nti.ims.sis.interfaces import FACULTY
 from nti.ims.sis.interfaces import STUDENT
@@ -17,6 +16,8 @@ from nti.ims.sis.interfaces import INSTRUCTOR_ROLE
 
 from nti.ims.sis.utils import get_text
 from nti.ims.sis.utils import get_fileobj
+
+logger = __import__('logging').getLogger(__name__)
 
 
 def to_legacy_role(role):

@@ -4,11 +4,11 @@
 .. $Id$
 """
 
-from __future__ import print_function, absolute_import, division
-__docformat__ = "restructuredtext en"
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
 
-logger = __import__('logging').getLogger(__name__)
-
+import six
 from io import BytesIO
 
 from lxml import etree
@@ -32,6 +32,8 @@ from nti.schema.fieldproperty import createDirectFieldProperties
 
 etree_parse = getattr(etree, 'parse')
 
+logger = __import__('logging').getLogger(__name__)
+
 
 @interface.implementer(IEnterprise)
 class Enterprise(SchemaConfigured):
@@ -48,11 +50,10 @@ class Enterprise(SchemaConfigured):
             self.groups[group.sourcedid] = group
 
     def get_group(self, groupid):
-        result = self.groups.get(groupid)
-        return result
+        return self.groups.get(groupid)
 
     def get_groups(self):
-        return self.groups.itervalues()
+        return six.itervalues(self.groups)
 
     def add_membership(self, membership):
         if membership is not None:
@@ -63,8 +64,7 @@ class Enterprise(SchemaConfigured):
                 self.memberships[membership.sourcedid] = membership
 
     def get_membership(self, groupid):
-        result = self.memberships.get(groupid)
-        return result
+        return self.memberships.get(groupid)
 
     def get_all_members(self, transform=None):
         for membership in self.memberships.values():
@@ -75,7 +75,7 @@ class Enterprise(SchemaConfigured):
                     yield member
 
     def get_memberships(self):
-        return self.memberships.itervalues()
+        return six.itervalues(self.memberships)
 
     def get_person(self, sourceid):
         return self.persons.get(sourceid)
