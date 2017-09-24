@@ -4,10 +4,9 @@
 .. $Id$
 """
 
-from __future__ import print_function, absolute_import, division
-__docformat__ = "restructuredtext en"
-
-logger = __import__('logging').getLogger(__name__)
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
 
 from zope.component import getAdapter
 from zope.component import queryAdapter
@@ -23,6 +22,8 @@ DEFAULT_FIELDS = [
     'tool_consumer_info_product_family_code'
 ]
 
+logger = __import__('logging').getLogger(__name__)
+
 
 def adapt_accounting_for_consumer(request,
                                   adaptee,
@@ -37,7 +38,7 @@ def adapt_accounting_for_consumer(request,
     if isinstance(adaptee, tuple) and multi_adapter_for_tuple:
         query_type = queryMultiAdapter if query else getMultiAdapter
 
-    for field in fields:
+    for field in fields or ():
         try:
             field_value = params[field]
             adapter = query_type(adaptee, interface, name=field_value)
