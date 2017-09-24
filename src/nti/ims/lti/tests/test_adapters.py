@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function, absolute_import, division
-__docformat__ = "restructuredtext en"
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
 
 # disable: accessing protected members, too many methods
 # pylint: disable=W0212,R0904
@@ -11,6 +12,8 @@ from hamcrest import is_
 from hamcrest import raises
 from hamcrest import calling
 from hamcrest import assert_that
+
+from nti.testing.matchers import verifiably_provides
 
 from zope import component
 from zope import interface
@@ -23,31 +26,30 @@ from nti.ims.lti import adapt_accounting_for_consumer
 
 import nti.testing.base
 
-from nti.testing.matchers import verifiably_provides
-
 
 ZCML_STRING = u"""
-<configure	xmlns="http://namespaces.zope.org/zope"
-			xmlns:i18n="http://namespaces.zope.org/i18n"
-			xmlns:zcml="http://namespaces.zope.org/zcml"
-			xmlns:ims="http://nextthought.com/ntp/lti">
+<configure    xmlns="http://namespaces.zope.org/zope"
+            xmlns:i18n="http://namespaces.zope.org/i18n"
+            xmlns:zcml="http://namespaces.zope.org/zcml"
+            xmlns:ims="http://nextthought.com/ntp/lti">
 
-	<include package="zope.component" file="meta.zcml" />
-	<include package="zope.security" file="meta.zcml" />
-	<include package="zope.component" />
-	<include package="." file="meta.zcml" />
+    <include package="zope.component" file="meta.zcml" />
+    <include package="zope.security" file="meta.zcml" />
+    <include package="zope.component" />
 
-	<configure>
-		<adapter factory=".tests.test_adapt.TestAdapter"
-		            for=".tests.test_adapt.TestRequest"
-		            provides=".tests.test_adapt.ITestAdapter"
-		            name="test" />
-		            
-        <adapter factory=".tests.test_adapt.TestMultiAdapter"
-            for=".tests.test_adapt.TestRequest .tests.test_adapt.TestFactory"
-            provides=".tests.test_adapt.ITestAdapter"
+    <include package="." file="meta.zcml" />
+
+    <configure>
+        <adapter factory=".tests.test_adapters.TestAdapter"
+                    for=".tests.test_adapters.TestRequest"
+                    provides=".tests.test_adapters.ITestAdapter"
+                    name="test" />
+                    
+        <adapter factory=".tests.test_adapters.TestMultiAdapter"
+            for=".tests.test_adapters.TestRequest .tests.test_adapters.TestFactory"
+            provides=".tests.test_adapters.ITestAdapter"
             name="test2" />
-	</configure>
+    </configure>
 </configure>
 """
 
