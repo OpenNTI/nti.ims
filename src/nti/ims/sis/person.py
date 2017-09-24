@@ -4,10 +4,9 @@
 .. $Id$
 """
 
-from __future__ import print_function, absolute_import, division
-__docformat__ = "restructuredtext en"
-
-logger = __import__('logging').getLogger(__name__)
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
 
 from functools import total_ordering
 
@@ -32,6 +31,8 @@ from nti.schema.field import SchemaConfigured
 from nti.schema.fieldproperty import createDirectFieldProperties
 
 DEFAULT_ROLE = IPerson['userrole'].default
+
+logger = __import__('logging').getLogger(__name__)
 
 
 @WithRepr
@@ -76,7 +77,7 @@ class Person(SchemaConfigured):
                 given = get_text(n.find('given')) if n is not None else None
                 family = get_text(n.find('family')) if n is not None else None
                 if given and family:
-                    name = "%s %s" % (given.title(), family.title())
+                    name = u"%s %s" % (given.title(), family.title())
                 else:
                     name = u''
         if not name:
@@ -120,8 +121,7 @@ class Persons(dict):
             self.by_userid[person.userid] = person
 
     def get_by_userid(self, userid):
-        result = self.by_userid.get(userid)
-        return result
+        return self.by_userid.get(userid)
 
     def __delitem__(self, key):
         result = dict.__delitem__(self, key)

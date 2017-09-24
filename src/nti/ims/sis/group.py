@@ -4,10 +4,9 @@
 .. $Id$
 """
 
-from __future__ import print_function, absolute_import, division
-__docformat__ = "restructuredtext en"
-
-logger = __import__('logging').getLogger(__name__)
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
 
 import time
 import isodate
@@ -37,6 +36,8 @@ from nti.schema.field import SchemaConfigured
 from nti.schema.fieldproperty import createDirectFieldProperties
 
 from nti.schema.interfaces import InvalidValue
+
+logger = __import__('logging').getLogger(__name__)
 
 
 @WithRepr
@@ -109,7 +110,7 @@ class Group(SchemaConfigured):
             typevalue = grouptype.find('typevalue')
             type_ = get_text(typevalue)
             if typevalue is not None:
-                level = text_(typevalue.get('level') or u'')
+                level = text_(typevalue.get('level') or '')
             else:
                 level = None
 

@@ -4,10 +4,9 @@
 .. $Id$
 """
 
-from __future__ import print_function, absolute_import, division
-__docformat__ = "restructuredtext en"
-
-logger = __import__('logging').getLogger(__name__)
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
 
 from base64 import b64decode
 
@@ -27,8 +26,9 @@ from nti.ims.lti.interfaces import IOAuthConsumer
 
 from nti.ims.lti.oauth import OAuthConsumer
 
-
 CYPHER_PASSPHRASE = b64decode('ZWlueXlhc3JiYnd5YkYzR0xOTXIyNGhyTFFvcEx3')
+
+logger = __import__('logging').getLogger(__name__)
 
 
 class IRegisterOAuthConsumer(interface.Interface):
