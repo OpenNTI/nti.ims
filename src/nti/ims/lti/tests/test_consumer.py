@@ -98,19 +98,12 @@ class TestConsumer(unittest.TestCase):
 
     def _assert_zodb_store(self, ptc):
         db = ZODB.DB(ZODB.MappingStorage.MappingStorage())
-<<<<<<< HEAD
-=======
-        db.setCacheSize(0)
->>>>>>> 2c14ec4eabe1d840c04764f3c9cf8c124fd40b26
         conn = db.open()
         conn.root.config = ptc
         transaction.commit()
         conn.close()
-<<<<<<< HEAD
         # Minimize the cache to force retrieval from storage
         db.cacheMinimize()
-=======
->>>>>>> 2c14ec4eabe1d840c04764f3c9cf8c124fd40b26
         conn = db.open()
         stored_ptc = conn.root.config
         assert_that(stored_ptc,
