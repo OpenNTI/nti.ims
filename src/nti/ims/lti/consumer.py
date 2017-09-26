@@ -24,8 +24,6 @@ from zope.container.contained import Contained
 
 from zope.container.interfaces import INameChooser
 
-from persistent import Persistent
-
 from nti.base.mixins import CreatedAndModifiedTimeMixin
 
 from nti.containers.containers import AbstractNTIIDSafeNameChooser
