@@ -52,6 +52,7 @@ setup(
         'nti.base',
         'nti.common',
         'nti.containers',
+        'nti.dublincore',
         'nti.externalization',
         'nti.property',
         'nti.schema',
