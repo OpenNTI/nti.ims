@@ -55,7 +55,7 @@ class TestMembership(unittest.TestCase):
                      datasource=u"sis",
                      status=ACTIVE_STATUS,
                      roletype=INSTRUCTOR_ROLE)
-        
+
         assert_that(ichigo.__gt__(aizen), is_(True))
         assert_that(aizen.__lt__(ichigo), is_(True))
 
@@ -70,18 +70,18 @@ class TestMembership(unittest.TestCase):
                        role=role)
         assert_that(rukia, validly_provides(IMember))
         assert_that(rukia, verifiably_provides(IMember))
-        
+
         sid = SourcedID(source=u"SIS", id=u"kira")
         kira = Member(sourcedid=sid,
                       idtype=1,
                       role=role)
-        
+
         assert_that(rukia.__gt__(kira), is_(True))
         assert_that(kira.__lt__(rukia), is_(True))
-        
+
         e = fudge.Fake().provides('find').returns(None)
         assert_that(Member.createFromElement(e), is_(none()))
-        
+
         rukia = MemberProxy(rukia, 'kido')
         kira = MemberProxy(kira, 'kido')
         assert_that(rukia.__gt__(kira), is_(True))

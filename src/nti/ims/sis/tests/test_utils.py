@@ -27,10 +27,10 @@ class TestUtils(unittest.TestCase):
     def test_get_fileobj(self):
         source = BytesIO()
         assert_that(get_fileobj(source), is_(source))
-        
+
         source = 'a.bz2'
         with self.assertRaises(IOError):
             get_fileobj(source)
-            
+
         source = object()
         assert_that(get_fileobj(source), is_(none()))

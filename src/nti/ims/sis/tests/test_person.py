@@ -32,9 +32,9 @@ from nti.ims.tests import SharedConfiguringTestLayer
 
 
 class TestPerson(unittest.TestCase):
-    
+
     layer = SharedConfiguringTestLayer
-    
+
     def test_interface(self):
         sid = SourcedID(source=u"SIS", id=u"112133307")
         person = Person(sourcedid=sid,
@@ -44,7 +44,7 @@ class TestPerson(unittest.TestCase):
                         userrole=DEFAULT_ROLE)
         assert_that(person, validly_provides(IPerson))
         assert_that(person, verifiably_provides(IPerson))
-    
+
     def test_model(self):
         sid = SourcedID(source=u"SIS", id=u"ichigo")
         ichigo = Person(sourcedid=sid,
@@ -52,16 +52,16 @@ class TestPerson(unittest.TestCase):
                         name=u"Ichigo",
                         email=u"ichigo@bleach.org",
                         userrole=DEFAULT_ROLE)
-        
+
         sid = SourcedID(source=u"SIS", id=u"aizen")
         aizen = Person(sourcedid=sid,
-                        userid=u"aizen",
-                        name=u"Aizen",
-                        email=u"aizen@bleach.org",
-                        userrole=DEFAULT_ROLE)
+                       userid=u"aizen",
+                       name=u"Aizen",
+                       email=u"aizen@bleach.org",
+                       userrole=DEFAULT_ROLE)
         assert_that(aizen.__lt__(ichigo), is_(True))
         assert_that(ichigo.__gt__(aizen), is_(True))
-        
+
         e = fudge.Fake().provides('find').returns(None)
         assert_that(Person.createFromElement(e), is_(none()))
 

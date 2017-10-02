@@ -30,9 +30,9 @@ from nti.ims.tests import SharedConfiguringTestLayer
 
 
 class TestGroup(unittest.TestCase):
-    
+
     layer = SharedConfiguringTestLayer
-    
+
     def test_timefram(self):
         tm = TimeFrame(start=100, end=200)
         assert_that(tm, validly_provides(ITimeFrame))
@@ -41,11 +41,11 @@ class TestGroup(unittest.TestCase):
         e.provides('end').returns(None)
         e.provides('find').returns(None)
         assert_that(TimeFrame.createFromElement(e), is_(none()))
-        
+
     def test_group(self):
         sid = SourcedID(source=u"SIS", id=u"first")
         tm = TimeFrame(start=100, end=200)
-        
+
         first = Group(type=u"type",
                       level=u'level',
                       sourcedid=sid,
@@ -53,7 +53,7 @@ class TestGroup(unittest.TestCase):
                       description=u"my group")
         assert_that(first, validly_provides(IGroup))
         assert_that(first, verifiably_provides(IGroup))
-        
+
         sid = SourcedID(source=u"SIS", id=u"second")
         second = Group(type=u"type2",
                        level=u'level2',
@@ -61,7 +61,7 @@ class TestGroup(unittest.TestCase):
                        timeframe=tm,
                        description=u"my second group")
         assert_that(first.__lt__(second), is_(True))
-        
+
         e = fudge.Fake().provides('find').returns(None)
         e.provides('grouptype').returns(None)
         e.provides('description').returns(None)

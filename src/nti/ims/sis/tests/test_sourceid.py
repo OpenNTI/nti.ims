@@ -46,7 +46,7 @@ class TestSourceID(unittest.TestCase):
         c = SourcedID(source=u"SIS", id=u"112133443")
         assert_that(a, is_(b))
         assert_that(a, is_not(c))
-        
+
         assert_that(c, is_(greater_than(a)))
 
         e = fudge.Fake().provides('find').returns(None)
