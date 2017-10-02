@@ -39,6 +39,8 @@ class TestEnterprise(unittest.TestCase):
         assert_that(enterprise, validly_provides(IEnterprise))
         assert_that(enterprise, verifiably_provides(IEnterprise))
         assert_that(enterprise, has_property("persons", has_length(1)))
+        assert_that(list(enterprise.get_persons()),
+                    has_length(1))
 
         p = enterprise.persons.get_by_userid('cald3307')
         assert_that(p, is_not(none()))
@@ -100,6 +102,12 @@ class TestEnterprise(unittest.TestCase):
         assert_that(member, has_property('role',
                                          has_property('userid', is_('cald3307'))))
 
+        # coverage
+        path = os.path.join(os.path.dirname(__file__), 'ims.xml')
+        with open(path, 'r') as fp:
+            enterprise = Enterprise.parse(fp.read())
+            assert_that(enterprise, is_not(none()))
+
     def test_export(self):
         path = os.path.join(os.path.dirname(__file__), 'export.xml.gz')
         enterprise = Enterprise.parseFile(path)
@@ -110,6 +118,9 @@ class TestEnterprise(unittest.TestCase):
         assert_that(members[0], has_property('userid', is_('mcgo2121')))
         assert_that(members[-1], has_property('userid', is_('mcgu1451')))
         assert_that(members[0], has_property('course_id', is_not(none())))
+
+        members = list(enterprise.get_all_members(lambda x: x))
+        assert_that(members, has_length(360))
 
     def test_sort(self):
         path = os.path.join(os.path.dirname(__file__), 'sort.xml')
