@@ -87,12 +87,6 @@ class Group(SchemaConfigured):
         except AttributeError:  # pragma: no cover
             return NotImplemented
 
-    def __gt__(self, other):
-        try:
-            return self.sourcedid > other.sourcedid
-        except AttributeError:  # pragma: no cover
-            return NotImplemented
-
     @classmethod
     def createFromElement(cls, element):
         sid = element.find('sourcedid')
@@ -111,23 +105,18 @@ class Group(SchemaConfigured):
             type_ = get_text(typevalue)
             if typevalue is not None:
                 level = text_(typevalue.get('level') or '')
-            else:
-                level = None
 
         timeframe = element.find('timeframe')
         if timeframe is not None:
             timeframe = TimeFrame.createFromElement(timeframe)
-        else:
-            timeframe = None
 
+        result = None
         if sid is not None:
             result = Group(type=type_,
                            level=level,
                            sourcedid=sid,
                            timeframe=timeframe,
                            description=description)
-        else:
-            result = None
 
         if result is None:
             logger.debug('Skipping group node %r (%s, %s)', element, sid)
