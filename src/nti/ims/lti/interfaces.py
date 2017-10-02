@@ -247,7 +247,11 @@ class IConfiguredToolContainer(IContainer):
     contains(IConfiguredTool)
 
     def add_tool(tool):
-        pass
+        """
+        add a configuration tool
+        """
 
     def delete_tool(tool):
-        pass
+        """
+        remove the specified configuration tool
+        ""'
