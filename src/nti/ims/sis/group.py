@@ -119,5 +119,5 @@ class Group(SchemaConfigured):
                            description=description)
 
         if result is None:
-            logger.debug('Skipping group node %r (%s, %s)', element, sid)
+            logger.debug('Skipping group node (%s, %s)', element, sid)
         return result
