@@ -104,7 +104,7 @@ class TestEnterprise(unittest.TestCase):
 
         # coverage
         path = os.path.join(os.path.dirname(__file__), 'ims.xml')
-        with open(path, 'r') as fp:
+        with open(path, 'rb') as fp:
             enterprise = Enterprise.parse(fp.read())
             assert_that(enterprise, is_not(none()))
 
