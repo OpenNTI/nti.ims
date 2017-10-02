@@ -9,6 +9,7 @@ from __future__ import absolute_import
 # pylint: disable=W0212,R0904
 
 from hamcrest import is_
+from hamcrest import none
 from hamcrest import is_not
 from hamcrest import assert_that
 from hamcrest import greater_than
@@ -17,6 +18,7 @@ from hamcrest import has_property
 from nti.testing.matchers import validly_provides
 from nti.testing.matchers import verifiably_provides
 
+import fudge
 import unittest
 
 from nti.ims.sis.interfaces import ISourcedID
@@ -46,3 +48,6 @@ class TestSourceID(unittest.TestCase):
         assert_that(a, is_not(c))
         
         assert_that(c, is_(greater_than(a)))
+
+        e = fudge.Fake().provides('find').returns(None)
+        assert_that(SourcedID.createFromElement(e), is_(none()))
