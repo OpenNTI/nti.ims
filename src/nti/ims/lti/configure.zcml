@@ -16,7 +16,6 @@
 		modules=".consumer" />
 
 	<!-- Tool Provider -->
-
 	<utility factory=".oauth.UtilityBackedOAuthConsumers"
 			 provides=".interfaces.IOAuthConsumers"/>
 

@@ -83,8 +83,10 @@ class PersistentToolConfig(ToolConfig, PersistentCreatedAndModifiedTimeObject):
     def __init__(self, **kwargs):
         # Parse the kwargs for tool config specific values
         self._kwargs = kwargs
-        kwargs = {argname: kwargs[argname]
-                  for argname in kwargs if argname in tool_config.VALID_ATTRIBUTES}
+        kwargs = {
+            argname: kwargs[argname]
+            for argname in kwargs if argname in tool_config.VALID_ATTRIBUTES
+        }
         super(PersistentToolConfig, self).__init__(**kwargs)
         PersistentCreatedAndModifiedTimeObject.__init__(self)
 
@@ -128,12 +130,10 @@ class ConfiguredToolContainer(BTreeContainer, CreatedAndModifiedTimeMixin):
     def add_tool(self, tool):
         name = INameChooser(self).chooseName(tool.title, tool)
         tool.__name__ = name
-
         self[name] = tool
         return tool
 
     def delete_tool(self, tool):
-        # If the name is passed instead of the tool
         name = getattr(tool, '__name__', tool)
         del self[name]
 

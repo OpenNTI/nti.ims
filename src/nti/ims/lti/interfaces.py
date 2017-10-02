@@ -254,4 +254,4 @@ class IConfiguredToolContainer(IContainer):
     def delete_tool(tool):
         """
         remove the specified configuration tool
-        ""'
+        """

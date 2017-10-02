@@ -9,30 +9,30 @@ from __future__ import absolute_import
 # pylint: disable=W0212,R0904
 
 from hamcrest import is_
+from hamcrest import none
+from hamcrest import is_not
+from hamcrest import has_length
 from hamcrest import assert_that
 from hamcrest import instance_of
 from hamcrest import has_properties
 
-import cPickle
+from nti.testing.time import time_monotonically_increases
 
 import time
-
+import pickle
 import unittest
 
-import ZODB
+import transaction
 
 import ZODB.MappingStorage
-
-import transaction
 
 from persistent import Persistent
 
 from nti.ims.lti.consumer import ConfiguredTool
 from nti.ims.lti.consumer import PersistentToolConfig
+from nti.ims.lti.consumer import ConfiguredToolContainer
 
 from nti.ims.tests import SharedConfiguringTestLayer
-
-from nti.testing.time import time_monotonically_increases
 
 
 KWARGS = {
@@ -59,7 +59,6 @@ class TestConsumer(unittest.TestCase):
 
     @time_monotonically_increases
     def test_persistent_tool_config(self):
-
         # Test properties
         ptc = PersistentToolConfig(**KWARGS)
         assert_that(ptc,
@@ -69,8 +68,8 @@ class TestConsumer(unittest.TestCase):
                                    'secure_launch_url', is_(KWARGS['secure_launch_url'])))
 
         # Test pickling
-        ptc_dump = cPickle.dumps(ptc)
-        ptc_unpickled = cPickle.loads(ptc_dump)
+        ptc_dump = pickle.dumps(ptc)
+        ptc_unpickled = pickle.loads(ptc_dump)
         assert_that(ptc_unpickled,
                     has_properties('title', is_(KWARGS['title']),
                                    'description', is_(KWARGS['description']),
@@ -95,6 +94,11 @@ class TestConsumer(unittest.TestCase):
         assert_that(ptc, instance_of(Persistent))
 
         self._assert_zodb_store(ptc)
+        
+        ptc = PersistentToolConfig(custom_params={}, extensions={})
+        ptc.set_custom_param('key', 'val')
+        ptc.set_ext_param('ext_key', 'key', 'val')
+        ptc.set_ext_params('ext_key', {'key':'val'})
 
     def _assert_zodb_store(self, ptc):
         db = ZODB.DB(ZODB.MappingStorage.MappingStorage())
@@ -123,3 +127,13 @@ class TestConsumer(unittest.TestCase):
                                    'secure_launch_url', is_(KWARGS['secure_launch_url']),
                                    'consumer_key', is_(KWARGS['consumer_key']),
                                    'secret', is_(KWARGS['secret'])))
+        
+    def test_container(self):
+        tool = PersistentToolConfig(**KWARGS)
+        container = ConfiguredToolContainer()
+        container.add_tool(tool)
+        assert_that(container, has_length(1))
+        assert_that(tool, has_properties('__name__', is_not(none())))
+        assert_that(container[tool], is_not(none()))
+        container.delete_tool(tool)
+        assert_that(container, has_length(0))
