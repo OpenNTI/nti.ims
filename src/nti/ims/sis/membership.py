@@ -184,7 +184,7 @@ class Member(SchemaConfigured):
 
 
 @total_ordering
-class _MemberProxy(ProxyBase):
+class MemberProxy(ProxyBase):
 
     course_id = property(lambda s: s.__dict__.get('_course_id'),
                          lambda s, v: s.__dict__.__setitem__('_course_id', v))
@@ -203,12 +203,7 @@ class _MemberProxy(ProxyBase):
             return (self.course_id, self.sourcedid, self.status) < (other.course_id, other.sourcedid, other.status)
         except AttributeError:  # pragma: no cover
             return NotImplemented
-
-    def __gt__(self, other):
-        try:
-            return (self.course_id, self.sourcedid, self.status) > (other.course_id, other.sourcedid, other.status)
-        except AttributeError:  # pragma: no cover
-            return NotImplemented
+_MemberProxy = MemberProxy # BWC
 
 
 @interface.implementer(IMembership)
@@ -243,14 +238,14 @@ class Membership(SchemaConfigured):
 
     def __iter__(self):
         for member in self.members:
-            yield _MemberProxy(member, self.sourcedid)
+            yield MemberProxy(member, self.sourcedid)
 
     def __len__(self):
         return len(self.members)
 
     def __getitem__(self, index):
         result = self.members[index]
-        return _MemberProxy(result, self.sourcedid)
+        return MemberProxy(result, self.sourcedid)
 
     def __delitem__(self, index):
         member = self.members[index]

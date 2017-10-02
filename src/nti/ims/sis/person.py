@@ -67,19 +67,18 @@ class Person(SchemaConfigured):
         userid = element.find('userid')
         userid = get_text(userid)
 
-        name = element.find('name')
-        if name is not None:
-            fn = name.find('fn')
+        name = u''
+        e_name = element.find('name')
+        if e_name is not None:
+            fn = e_name.find('fn')
             if fn is not None:
                 name = get_text(fn)
             else:
-                n = name.find('n')
+                n = e_name.find('n')
                 given = get_text(n.find('given')) if n is not None else None
                 family = get_text(n.find('family')) if n is not None else None
                 if given and family:
                     name = u"%s %s" % (given.title(), family.title())
-                else:
-                    name = u''
         if not name:
             logger.warn("No name specified for person %s", sid)
 
@@ -124,7 +123,8 @@ class Persons(dict):
         return self.by_userid.get(userid)
 
     def __delitem__(self, key):
-        result = dict.__delitem__(self, key)
+        result = self[key]
+        dict.__delitem__(self, key)
         if result is not None:
             self.by_userid.pop(result.userid)
         return result
