@@ -14,13 +14,13 @@ from zope.component import getMultiAdapter
 from zope.component import queryMultiAdapter
 from zope.component import ComponentLookupError
 
-DEFAULT_FIELDS = [
+DEFAULT_FIELDS = (
     'tool_consumer_instance_guid',
     'tool_consumer_instance_url',
     'tool_consumer_instance_name',
     'oauth_consumer_key',
     'tool_consumer_info_product_family_code'
-]
+)
 
 logger = __import__('logging').getLogger(__name__)
 
