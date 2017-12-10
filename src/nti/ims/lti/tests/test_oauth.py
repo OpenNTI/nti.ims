@@ -5,8 +5,7 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import absolute_import
 
-# disable: accessing protected members, too many methods
-# pylint: disable=W0212,R0904
+# pylint: disable=protected-access,too-many-public-methods
 
 from hamcrest import raises
 from hamcrest import calling
@@ -43,6 +42,7 @@ class TestConsumerRegistration(unittest.TestCase):
                                  secret=u'secret',
                                  title=u'foobar')
         keys[consumer.key] = consumer
+        # pylint: disable=no-member
         assert_that(keys['foo'], has_property('secret', consumer.secret))
 
         consumer.key = u'bad'

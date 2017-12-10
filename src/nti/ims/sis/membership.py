@@ -186,6 +186,7 @@ class Member(SchemaConfigured):
 @total_ordering
 class MemberProxy(ProxyBase):
 
+    # pylint: disable=property-on-old-class
     course_id = property(lambda s: s.__dict__.get('_course_id'),
                          lambda s, v: s.__dict__.__setitem__('_course_id', v))
 
@@ -195,6 +196,7 @@ class MemberProxy(ProxyBase):
         return ProxyBase.__new__(cls, base)
 
     def __init__(self, base, course_id):
+        # pylint: disable=non-parent-init-called
         ProxyBase.__init__(self, base)
         self.course_id = course_id
 

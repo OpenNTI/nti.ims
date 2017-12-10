@@ -92,16 +92,19 @@ class PersistentToolConfig(ToolConfig, PersistentCreatedAndModifiedTimeObject):
 
     def set_custom_param(self, key, val):
         super(PersistentToolConfig, self).set_custom_param(key, val)
+        # pylint: disable=attribute-defined-outside-init
         self._p_changed = 1
         lifecycleevent.modified(self)
 
     def set_ext_param(self, ext_key, param_key, val):
         super(PersistentToolConfig, self).set_ext_param(ext_key, param_key, val)
+        # pylint: disable=attribute-defined-outside-init
         self._p_changed = 1
         lifecycleevent.modified(self)
 
     def set_ext_params(self, ext_key, ext_params):
         super(PersistentToolConfig, self).set_ext_params(ext_key, ext_params)
+        # pylint: disable=attribute-defined-outside-init
         self._p_changed = 1
         lifecycleevent.modified(self)
 
@@ -128,6 +131,7 @@ class PersistentToolConfig(ToolConfig, PersistentCreatedAndModifiedTimeObject):
 class ConfiguredToolContainer(BTreeContainer, CreatedAndModifiedTimeMixin):
 
     def add_tool(self, tool):
+        # pylint: disable=too-many-function-args
         name = INameChooser(self).chooseName(tool.title, tool)
         tool.__name__ = name
         self[name] = tool
