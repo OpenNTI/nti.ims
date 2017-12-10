@@ -80,7 +80,7 @@ class Person(SchemaConfigured):
                 if given and family:
                     name = u"%s %s" % (given.title(), family.title())
         if not name:
-            logger.warn("No name specified for person %s", sid)
+            logger.warning("No name specified for person %s", sid)
 
         email = element.find('email')
         email = get_text(email)

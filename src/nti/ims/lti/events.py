@@ -18,5 +18,5 @@ logger = __import__('logging').getLogger(__name__)
 
 
 @component.adapter(IToolConfig, IObjectModifiedEvent)
-def config_modified(config, _):
+def config_modified(config, unused_event):
     config.updateLastMod()
