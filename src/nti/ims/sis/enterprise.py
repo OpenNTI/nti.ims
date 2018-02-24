@@ -107,7 +107,7 @@ class Enterprise(SchemaConfigured):
                 if p is not None:
                     m.role.userid = p.userid
                 else:
-                    logger.warn("incomplete membership record %s", m)
+                    logger.warning("incomplete membership record %s", m)
         return enterprise
 
     @classmethod
