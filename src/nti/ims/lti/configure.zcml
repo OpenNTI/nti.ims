@@ -15,7 +15,7 @@
 						 .interfaces.IToolConfig"
 		modules=".consumer" />
 
-	<adapter factory=".consumer.ConfiguredToolExternalizer"
+	<adapter factory=".consumer._ConfiguredToolExternalizer"
 			 for=".interfaces.IConfiguredTool"
 			 provides="nti.externalization.interfaces.IInternalObjectExternalizer" />
 
