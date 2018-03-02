@@ -11,7 +11,6 @@ from __future__ import absolute_import
 from lti import tool_config
 
 from lti.tool_config import ToolConfig
-from nti.externalization.datastructures import InterfaceObjectIO
 
 from zope import component
 from zope import interface
@@ -30,6 +29,8 @@ from nti.base.mixins import CreatedAndModifiedTimeMixin
 from nti.containers.containers import AbstractNTIIDSafeNameChooser
 
 from nti.dublincore.time_mixins import PersistentCreatedAndModifiedTimeObject
+
+from nti.externalization.datastructures import InterfaceObjectIO
 
 from nti.ims.lti.interfaces import IToolConfig
 from nti.ims.lti.interfaces import IConfiguredTool
@@ -153,8 +154,17 @@ class _ConfiguredToolNameChooser(AbstractNTIIDSafeNameChooser):
     leaf_iface = IConfiguredToolContainer
 
 
-class ConfiguredToolExternalizer(InterfaceObjectIO):
+class _ConfiguredToolExternalizer(InterfaceObjectIO):
 
     _ext_iface_upper_bound = IConfiguredTool
 
-    _excluded_out_ivars_ = ('config',)
+    _excluded_out_ivars_ = ('config', 'secret')
+
+    def toExternalObject(self, **kwargs):
+        context = self._ext_replacement()
+
+        result = super(_ConfiguredToolExternalizer, self).toExternalObject(**kwargs)
+        result['title'] = context.title
+        result['description'] = context.description
+
+        return result
