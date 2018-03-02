@@ -11,6 +11,7 @@ from __future__ import absolute_import
 from lti import tool_config
 
 from lti.tool_config import ToolConfig
+from nti.externalization.datastructures import InterfaceObjectIO
 
 from zope import component
 from zope import interface
@@ -150,3 +151,10 @@ class ConfiguredToolContainer(BTreeContainer, CreatedAndModifiedTimeMixin):
 @component.adapter(IConfiguredToolContainer)
 class _ConfiguredToolNameChooser(AbstractNTIIDSafeNameChooser):
     leaf_iface = IConfiguredToolContainer
+
+
+class ConfiguredToolExternalizer(InterfaceObjectIO):
+
+    _ext_iface_upper_bound = IConfiguredTool
+
+    _excluded_out_ivars_ = ('config',)
