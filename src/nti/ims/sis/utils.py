@@ -11,14 +11,13 @@ from __future__ import absolute_import
 import bz2
 import six
 import gzip
-import time
 import codecs
 import mimetypes
 from datetime import datetime
 
-import isodate
+import arrow
 
-import pytz
+import isodate
 
 from zope.interface.common.idatetime import IDateTime
 
@@ -59,5 +58,5 @@ def parse_mktime(value):
         except (InvalidValue, ValueError, TypeError):
             data = isodate.parse_date(value)
             data = datetime.combine(data, datetime.min.time())
-        data = pytz.utc.localize(data)
-        return time.mktime(data.timetuple())
+        data = arrow.get(data)
+        return data.timestamp
