@@ -22,7 +22,7 @@ from nti.ims.sis.enterprise import Enterprise
 from nti.ims.tests import SharedConfiguringTestLayer
 
 
-class TestOSU(unittest.TestCase):
+class TestOC(unittest.TestCase):
 
     layer = SharedConfiguringTestLayer
 
@@ -55,9 +55,9 @@ class TestOSU(unittest.TestCase):
         assert_that(group,
                     has_property('sourcedid', has_property('id', is_('2015FA_CMSC-1313-01'))))
         assert_that(group,
-                    has_property('timeframe', has_property('end', is_(1450418400.0))))
+                    has_property('timeframe', has_property('end', is_(1450396800))))
         assert_that(group,
-                    has_property('timeframe', has_property('start', is_(1441000800.0))))
+                    has_property('timeframe', has_property('start', is_(1440979200))))
 
         memberships = list(enterprise.get_memberships())
         assert_that(memberships, has_length(1))
@@ -118,9 +118,9 @@ class TestOSU(unittest.TestCase):
         assert_that(group,
                     has_property('sourcedid', has_property('id', is_('2015FA_CMSC-1313-01'))))
         assert_that(group,
-                    has_property('timeframe', has_property('end', is_(1450418400.0))))
+                    has_property('timeframe', has_property('end', is_(1450396800))))
         assert_that(group,
-                    has_property('timeframe', has_property('start', is_(1441000800.0))))
+                    has_property('timeframe', has_property('start', is_(1440979200.0))))
 
         memberships = list(enterprise.get_memberships())
         assert_that(memberships, has_length(1))

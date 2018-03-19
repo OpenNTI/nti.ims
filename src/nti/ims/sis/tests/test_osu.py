@@ -62,9 +62,9 @@ class TestOSU(unittest.TestCase):
         assert_that(group,
 					has_property('sourcedid', has_property('id', is_('G_BIOL1311LAB_WH3_146'))))
         assert_that(group, 
-					has_property('timeframe', has_property('end', is_(1420264800.0))))
+					has_property('timeframe', has_property('end', is_(1420243200))))
         assert_that(group, 
-					has_property('timeframe', has_property('start', is_(1407736800.0))))
+					has_property('timeframe', has_property('start', is_(1407715200))))
 
         memberships = list(enterprise.get_memberships())
         assert_that(memberships, has_length(1))
