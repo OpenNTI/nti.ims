@@ -8,15 +8,11 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import absolute_import
 
-import time
-import isodate
 from functools import total_ordering
 
 from zope import interface
 
 from nti.base._compat import text_
-
-from nti.externalization.datetime import datetime_from_string
 
 from nti.externalization.representation import WithRepr
 
@@ -27,6 +23,8 @@ from nti.ims.sis.interfaces import ITimeFrame
 
 from nti.ims.sis.sourcedid import SourcedID
 
+from nti.ims.sis.utils import parse_mktime
+
 from nti.property.property import alias
 
 from nti.schema.eqhash import EqHash
@@ -34,8 +32,6 @@ from nti.schema.eqhash import EqHash
 from nti.schema.field import SchemaConfigured
 
 from nti.schema.fieldproperty import createDirectFieldProperties
-
-from nti.schema.interfaces import InvalidValue
 
 logger = __import__('logging').getLogger(__name__)
 
@@ -52,12 +48,7 @@ class TimeFrame(SchemaConfigured):
     @classmethod
     def _mktime(cls, node):
         value = get_text(node)
-        if value:
-            try:
-                datetime = datetime_from_string(value)
-            except (InvalidValue, ValueError):
-                datetime = isodate.parse_date(value)
-            return time.mktime(datetime.timetuple())
+        return parse_mktime(value)
 
     @classmethod
     def createFromElement(cls, element):

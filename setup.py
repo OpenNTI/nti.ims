@@ -59,6 +59,7 @@ setup(
         'nti.schema',
         'nti.site',
         'persistent',
+        'pytz',
         'six',
         'zope.cachedescriptors',
         'zope.component',
