@@ -128,7 +128,6 @@ class TestConsumer(unittest.TestCase):
                                    'secret', is_(KWARGS['secret'])))
 
     def test_configured_tool_externalization(self):
-        from IPython.core.debugger import Tracer;Tracer()()
         config = PersistentToolConfig(**KWARGS)
         tool = ConfiguredTool(**KWARGS)
         tool.config = config
