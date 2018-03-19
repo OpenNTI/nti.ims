@@ -48,6 +48,7 @@ setup(
     tests_require=TESTS_REQUIRE,
     install_requires=[
         'setuptools',
+        'arrow',
         'lxml',
         'lti',
         'nti.base',
@@ -59,7 +60,6 @@ setup(
         'nti.schema',
         'nti.site',
         'persistent',
-        'pytz',
         'six',
         'zope.cachedescriptors',
         'zope.component',
