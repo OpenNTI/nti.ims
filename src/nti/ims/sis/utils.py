@@ -11,10 +11,20 @@ from __future__ import absolute_import
 import bz2
 import six
 import gzip
+import time
 import codecs
 import mimetypes
+from datetime import datetime
+
+import isodate
+
+import pytz
+
+from zope.interface.common.idatetime import IDateTime
 
 from nti.base._compat import text_
+
+from nti.schema.interfaces import InvalidValue
 
 logger = __import__('logging').getLogger(__name__)
 
@@ -40,3 +50,14 @@ def get_fileobj(source):
             fileobj = codecs.open(source, "r", "utf-8")
         return fileobj
     return None
+
+
+def parse_mktime(value):
+    if value:
+        try:
+            data = IDateTime(value)
+        except (InvalidValue, ValueError, TypeError):
+            data = isodate.parse_date(value)
+            data = datetime.combine(data, datetime.min.time())
+        data = pytz.utc.localize(data)
+        return time.mktime(data.timetuple())
