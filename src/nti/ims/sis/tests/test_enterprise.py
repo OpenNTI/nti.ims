@@ -64,7 +64,7 @@ class TestEnterprise(unittest.TestCase):
         assert_that(group, has_property('sourcedid',
                                         has_property('id', is_('18161.201120'))))
         assert_that(group, has_property('timeframe',
-                                        has_property('end', is_(1338184800.0))))
+                                        has_property('end', is_(1338163200))))
         assert_that(group, has_property('timeframe',
                                         has_property('start', is_(none()))))
 
