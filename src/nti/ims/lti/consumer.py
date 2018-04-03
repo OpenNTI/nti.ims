@@ -160,11 +160,9 @@ class _ConfiguredToolExternalizer(InterfaceObjectIO):
 
     _excluded_out_ivars_ = ('config', 'secret')
 
-    def toExternalObject(self, **kwargs):
+    def toExternalObject(self, **kwargs):  # pylint: disable=arguments-differ
         context = self._ext_replacement()
-
         result = super(_ConfiguredToolExternalizer, self).toExternalObject(**kwargs)
         result['title'] = context.title
         result['description'] = context.description
-
         return result
