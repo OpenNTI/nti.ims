@@ -30,6 +30,8 @@ from nti.containers.containers import AbstractNTIIDSafeNameChooser
 
 from nti.dublincore.time_mixins import PersistentCreatedAndModifiedTimeObject
 
+from nti.externalization.datastructures import InterfaceObjectIO
+
 from nti.ims.lti.interfaces import IToolConfig
 from nti.ims.lti.interfaces import IConfiguredTool
 from nti.ims.lti.interfaces import IConfiguredToolContainer
@@ -150,3 +152,19 @@ class ConfiguredToolContainer(BTreeContainer, CreatedAndModifiedTimeMixin):
 @component.adapter(IConfiguredToolContainer)
 class _ConfiguredToolNameChooser(AbstractNTIIDSafeNameChooser):
     leaf_iface = IConfiguredToolContainer
+
+
+class _ConfiguredToolExternalizer(InterfaceObjectIO):
+
+    _ext_iface_upper_bound = IConfiguredTool
+
+    _excluded_out_ivars_ = ('config', 'secret')
+
+    def toExternalObject(self, **kwargs):
+        context = self._ext_replacement()
+
+        result = super(_ConfiguredToolExternalizer, self).toExternalObject(**kwargs)
+        result['title'] = context.title
+        result['description'] = context.description
+
+        return result

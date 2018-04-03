@@ -15,6 +15,10 @@
 						 .interfaces.IToolConfig"
 		modules=".consumer" />
 
+	<adapter factory=".consumer._ConfiguredToolExternalizer"
+			 for=".interfaces.IConfiguredTool"
+			 provides="nti.externalization.interfaces.IInternalObjectExternalizer" />
+
 	<!-- Tool Provider -->
 	<utility factory=".oauth.UtilityBackedOAuthConsumers"
 			 provides=".interfaces.IOAuthConsumers"/>

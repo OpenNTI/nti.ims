@@ -27,12 +27,12 @@ import ZODB.MappingStorage
 
 from persistent import Persistent
 
+from nti.ims.lti.consumer import _ConfiguredToolExternalizer
 from nti.ims.lti.consumer import ConfiguredTool
 from nti.ims.lti.consumer import PersistentToolConfig
 from nti.ims.lti.consumer import ConfiguredToolContainer
 
 from nti.ims.tests import SharedConfiguringTestLayer
-
 
 KWARGS = {
     'consumer_key': u'test_key',
@@ -126,6 +126,23 @@ class TestConsumer(unittest.TestCase):
                                    'secure_launch_url', is_(KWARGS['secure_launch_url']),
                                    'consumer_key', is_(KWARGS['consumer_key']),
                                    'secret', is_(KWARGS['secret'])))
+
+    def test_configured_tool_externalization(self):
+        config = PersistentToolConfig(**KWARGS)
+        tool = ConfiguredTool(**KWARGS)
+        tool.config = config
+        externalizer = _ConfiguredToolExternalizer(tool)
+        ext_tool = externalizer.toExternalObject()
+        assert_that(ext_tool['title'], is_(KWARGS['title']))
+        assert_that(ext_tool['description'], is_(KWARGS['description']))
+        assert_that(ext_tool['consumer_key'], is_(KWARGS['consumer_key']))
+        # Check that config and secret do not exist
+        with self.assertRaises(KeyError) as context:
+            ext_tool['config']
+        assert_that("'config'", is_(str(context.exception)))
+        with self.assertRaises(KeyError) as context:
+            ext_tool['secret']
+        assert_that("'secret'", is_(str(context.exception)))
         
     def test_container(self):
         tool = PersistentToolConfig(**KWARGS)
