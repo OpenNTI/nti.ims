@@ -77,8 +77,8 @@ class TestConsumer(unittest.TestCase):
 
         # Test creation time
         t = time.time()
-        assert_that(ptc.createdTime, is_(t-1))
-        assert_that(ptc_unpickled.createdTime, is_(t-1))
+        assert_that(ptc.createdTime, is_(t - 1))
+        assert_that(ptc_unpickled.createdTime, is_(t - 1))
 
         # Test ZODB storage and retrieval
         self._assert_zodb_store(ptc)
@@ -93,11 +93,11 @@ class TestConsumer(unittest.TestCase):
         assert_that(ptc, instance_of(Persistent))
 
         self._assert_zodb_store(ptc)
-        
+
         ptc = PersistentToolConfig(custom_params={}, extensions={})
         ptc.set_custom_param('key', 'val')
         ptc.set_ext_param('ext_key', 'key', 'val')
-        ptc.set_ext_params('ext_key', {'key':'val'})
+        ptc.set_ext_params('ext_key', {'key': 'val'})
 
     def _assert_zodb_store(self, ptc):
         db = ZODB.DB(ZODB.MappingStorage.MappingStorage())
@@ -119,7 +119,7 @@ class TestConsumer(unittest.TestCase):
         tool = ConfiguredTool(**KWARGS)
         config = PersistentToolConfig(**KWARGS)
         tool.config = config
-        assert_that(tool, 
+        assert_that(tool,
                     has_properties('title', is_(KWARGS['title']),
                                    'description', is_(KWARGS['description']),
                                    'launch_url', is_(KWARGS['launch_url']),
@@ -137,13 +137,14 @@ class TestConsumer(unittest.TestCase):
         assert_that(ext_tool['description'], is_(KWARGS['description']))
         assert_that(ext_tool['consumer_key'], is_(KWARGS['consumer_key']))
         # Check that config and secret do not exist
+        # pylint: disable=pointless-statement
         with self.assertRaises(KeyError) as context:
             ext_tool['config']
         assert_that("'config'", is_(str(context.exception)))
         with self.assertRaises(KeyError) as context:
             ext_tool['secret']
         assert_that("'secret'", is_(str(context.exception)))
-        
+
     def test_container(self):
         tool = PersistentToolConfig(**KWARGS)
         container = ConfiguredToolContainer()
