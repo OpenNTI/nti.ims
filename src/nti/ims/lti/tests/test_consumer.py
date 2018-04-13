@@ -136,6 +136,8 @@ class TestConsumer(unittest.TestCase):
         assert_that(ext_tool['title'], is_(KWARGS['title']))
         assert_that(ext_tool['description'], is_(KWARGS['description']))
         assert_that(ext_tool['consumer_key'], is_(KWARGS['consumer_key']))
+        assert_that(ext_tool['launch_url'], is_(KWARGS['launch_url']))
+        assert_that(ext_tool['secure_launch_url'], is_(KWARGS['secure_launch_url']))
         # Check that config and secret do not exist
         # pylint: disable=pointless-statement
         with self.assertRaises(KeyError) as context:

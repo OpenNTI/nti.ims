@@ -165,4 +165,6 @@ class _ConfiguredToolExternalizer(InterfaceObjectIO):
         result = super(_ConfiguredToolExternalizer, self).toExternalObject(**kwargs)
         result['title'] = context.title
         result['description'] = context.description
+        result['launch_url'] = context.launch_url
+        result['secure_launch_url'] = context.secure_launch_url
         return result
