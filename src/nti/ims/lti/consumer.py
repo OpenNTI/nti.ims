@@ -36,9 +36,13 @@ from nti.ims.lti.interfaces import IToolConfig
 from nti.ims.lti.interfaces import IConfiguredTool
 from nti.ims.lti.interfaces import IConfiguredToolContainer
 
+from nti.ntiids.ntiids import make_ntiid
+
 from nti.schema.fieldproperty import createDirectFieldProperties
 
 from nti.schema.schema import PermissiveSchemaConfigured as SchemaConfigured
+
+from nti.wref import IWeakRef
 
 logger = __import__('logging').getLogger(__name__)
 
@@ -46,7 +50,9 @@ logger = __import__('logging').getLogger(__name__)
 @interface.implementer(IConfiguredTool)
 class ConfiguredTool(SchemaConfigured, Contained, PersistentCreatedAndModifiedTimeObject):
 
-    __external_can_create__ = True
+    __external_can_create__ = False
+
+    nttype = 'ConfiguredTool'
 
     mimeType = mime_type = 'application/vnd.nextthought.ims.consumer.configuredtool'
 
@@ -55,6 +61,11 @@ class ConfiguredTool(SchemaConfigured, Contained, PersistentCreatedAndModifiedTi
     def __init__(self, *args, **kwargs):
         SchemaConfigured.__init__(self, *args, **kwargs)
         PersistentCreatedAndModifiedTimeObject.__init__(self)
+
+    @readproperty
+    def ntiid(self):
+        self.ntiid = make_ntiid(nttype=self.nttype)
+        return self.ntiid
 
     @readproperty
     def title(self):
@@ -134,18 +145,14 @@ class ConfiguredToolContainer(BTreeContainer, CreatedAndModifiedTimeMixin):
 
     def add_tool(self, tool):
         # pylint: disable=too-many-function-args
-        name = INameChooser(self).chooseName(tool.title, tool)
-        tool.__name__ = name
-        self[name] = tool
+        self[tool.ntiid] = IWeakRef(tool)
         return tool
 
     def delete_tool(self, tool):
-        name = getattr(tool, '__name__', tool)
-        del self[name]
-
-    def __getitem__(self, tool):
-        name = getattr(tool, '__name__', tool)
-        return super(ConfiguredToolContainer, self).__getitem__(name)
+        del self[tool.ntiid]
+        
+    def __getitem__(self, item):
+        return super(ConfiguredToolContainer, self).__getitem__(item.ntiid)
 
 
 @interface.implementer(INameChooser)

@@ -148,11 +148,12 @@ class TestConsumer(unittest.TestCase):
         assert_that("'secret'", is_(str(context.exception)))
 
     def test_container(self):
-        tool = PersistentToolConfig(**KWARGS)
+        config = PersistentToolConfig(**KWARGS)
+        tool = ConfiguredTool(**KWARGS)
+        tool.config = config
         container = ConfiguredToolContainer()
         container.add_tool(tool)
         assert_that(container, has_length(1))
-        assert_that(tool, has_properties('__name__', is_not(none())))
         assert_that(container[tool], is_not(none()))
         container.delete_tool(tool)
         assert_that(container, has_length(0))
