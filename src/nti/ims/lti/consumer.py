@@ -28,6 +28,8 @@ from nti.base.mixins import CreatedAndModifiedTimeMixin
 
 from nti.containers.containers import AbstractNTIIDSafeNameChooser
 
+from nti.contenttypes.presentation.common import generate_ntiid
+
 from nti.dublincore.time_mixins import PersistentCreatedAndModifiedTimeObject
 
 from nti.externalization.datastructures import InterfaceObjectIO
@@ -35,8 +37,6 @@ from nti.externalization.datastructures import InterfaceObjectIO
 from nti.ims.lti.interfaces import IToolConfig
 from nti.ims.lti.interfaces import IConfiguredTool
 from nti.ims.lti.interfaces import IConfiguredToolContainer
-
-from nti.ntiids.ntiids import make_ntiid
 
 from nti.schema.fieldproperty import createDirectFieldProperties
 
@@ -64,7 +64,7 @@ class ConfiguredTool(SchemaConfigured, Contained, PersistentCreatedAndModifiedTi
 
     @readproperty
     def ntiid(self):
-        self.ntiid = make_ntiid(nttype=self.nttype)
+        self.ntiid = generate_ntiid(nttype=self.nttype)
         return self.ntiid
 
     @readproperty
