@@ -28,7 +28,7 @@ from nti.base.mixins import CreatedAndModifiedTimeMixin
 
 from nti.containers.containers import AbstractNTIIDSafeNameChooser
 
-from nti.contenttypes.presentation.common import generate_ntiid
+from nti.ntiids.common import generate_ntiid
 
 from nti.dublincore.time_mixins import PersistentCreatedAndModifiedTimeObject
 
