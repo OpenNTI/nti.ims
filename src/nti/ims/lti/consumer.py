@@ -42,8 +42,6 @@ from nti.schema.fieldproperty import createDirectFieldProperties
 
 from nti.schema.schema import PermissiveSchemaConfigured as SchemaConfigured
 
-from nti.wref import IWeakRef
-
 logger = __import__('logging').getLogger(__name__)
 
 
@@ -152,7 +150,7 @@ class ConfiguredToolContainer(BTreeContainer, CreatedAndModifiedTimeMixin):
 
     def add_tool(self, tool):
         # pylint: disable=too-many-function-args
-        self[tool.ntiid] = IWeakRef(tool)
+        self[tool.ntiid] = tool
         return tool
 
     def delete_tool(self, tool):
