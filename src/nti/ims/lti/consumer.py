@@ -143,16 +143,30 @@ class PersistentToolConfig(ToolConfig, PersistentCreatedAndModifiedTimeObject):
 @interface.implementer(IConfiguredToolContainer)
 class ConfiguredToolContainer(BTreeContainer, CreatedAndModifiedTimeMixin):
 
+    def _get_tool_key(self, tool):
+        try:
+            key = tool.ntiid
+        except AttributeError:
+            key = tool
+        return key
+
     def add_tool(self, tool):
         # pylint: disable=too-many-function-args
         self[tool.ntiid] = IWeakRef(tool)
         return tool
 
     def delete_tool(self, tool):
-        del self[tool.ntiid]
+        key = self._get_tool_key(tool)
+        try:
+            del self[key]
+            result = True
+        except KeyError:
+            result = False
+        return result
         
     def __getitem__(self, item):
-        return super(ConfiguredToolContainer, self).__getitem__(item.ntiid)
+        key = self._get_tool_key(item)
+        return super(ConfiguredToolContainer, self).__getitem__(key)
 
 
 @interface.implementer(INameChooser)
