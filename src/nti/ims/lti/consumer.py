@@ -50,7 +50,7 @@ logger = __import__('logging').getLogger(__name__)
 @interface.implementer(IConfiguredTool)
 class ConfiguredTool(SchemaConfigured, Contained, PersistentCreatedAndModifiedTimeObject):
 
-    __external_can_create__ = False
+    __external_can_create__ = True
 
     nttype = 'ConfiguredTool'
 
