@@ -42,15 +42,13 @@ from nti.schema.fieldproperty import createDirectFieldProperties
 
 from nti.schema.schema import PermissiveSchemaConfigured as SchemaConfigured
 
-from nti.wref import IWeakRef
-
 logger = __import__('logging').getLogger(__name__)
 
 
 @interface.implementer(IConfiguredTool)
 class ConfiguredTool(SchemaConfigured, Contained, PersistentCreatedAndModifiedTimeObject):
 
-    __external_can_create__ = False
+    __external_can_create__ = True
 
     nttype = 'ConfiguredTool'
 
@@ -143,16 +141,30 @@ class PersistentToolConfig(ToolConfig, PersistentCreatedAndModifiedTimeObject):
 @interface.implementer(IConfiguredToolContainer)
 class ConfiguredToolContainer(BTreeContainer, CreatedAndModifiedTimeMixin):
 
+    def _get_tool_key(self, tool):
+        try:
+            key = tool.ntiid
+        except AttributeError:
+            key = tool
+        return key
+
     def add_tool(self, tool):
         # pylint: disable=too-many-function-args
-        self[tool.ntiid] = IWeakRef(tool)
+        self[tool.ntiid] = tool
         return tool
 
     def delete_tool(self, tool):
-        del self[tool.ntiid]
+        key = self._get_tool_key(tool)
+        try:
+            del self[key]
+            result = True
+        except KeyError:
+            result = False
+        return result
         
     def __getitem__(self, item):
-        return super(ConfiguredToolContainer, self).__getitem__(item.ntiid)
+        key = self._get_tool_key(item)
+        return super(ConfiguredToolContainer, self).__getitem__(key)
 
 
 @interface.implementer(INameChooser)
