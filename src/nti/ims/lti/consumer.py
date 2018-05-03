@@ -61,7 +61,7 @@ class ConfiguredTool(SchemaConfigured, Contained, PersistentCreatedAndModifiedTi
         PersistentCreatedAndModifiedTimeObject.__init__(self)
 
     @readproperty
-    def ntiid(self):
+    def ntiid(self):  # pylint: disable=method-hidden
         self.ntiid = generate_ntiid(nttype=self.nttype)
         return self.ntiid
 
@@ -142,14 +142,9 @@ class PersistentToolConfig(ToolConfig, PersistentCreatedAndModifiedTimeObject):
 class ConfiguredToolContainer(BTreeContainer, CreatedAndModifiedTimeMixin):
 
     def _get_tool_key(self, tool):
-        try:
-            key = tool.ntiid
-        except AttributeError:
-            key = tool
-        return key
+        return getattr(tool, 'ntiid', tool)
 
     def add_tool(self, tool):
-        # pylint: disable=too-many-function-args
         self[tool.ntiid] = tool
         return tool
 
@@ -158,10 +153,10 @@ class ConfiguredToolContainer(BTreeContainer, CreatedAndModifiedTimeMixin):
         try:
             del self[key]
             result = True
-        except KeyError:
+        except KeyError:  # pragma: no cover
             result = False
         return result
-        
+
     def __getitem__(self, item):
         key = self._get_tool_key(item)
         return super(ConfiguredToolContainer, self).__getitem__(key)
