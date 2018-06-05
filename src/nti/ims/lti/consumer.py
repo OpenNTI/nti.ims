@@ -11,6 +11,7 @@ from __future__ import absolute_import
 from lti import tool_config
 
 from lti.tool_config import ToolConfig
+from nti.externalization.externalization import to_external_object
 
 from zope import component
 from zope import interface
@@ -167,6 +168,7 @@ class PersistentToolConfig(ToolConfig, PersistentCreatedAndModifiedTimeObject):
     @staticmethod
     def create_from_xml(xml):
         config = PersistentToolConfig()
+        xml = str(xml)  # This must be a string, unicode will not work
         config.process_xml(xml)
         return config
 
@@ -214,4 +216,28 @@ class _ConfiguredToolExternalizer(InterfaceObjectIO):
         result['description'] = context.description
         result['launch_url'] = context.launch_url
         result['secure_launch_url'] = context.secure_launch_url
+        return result
+
+
+class _ConfiguredToolExportExternalizer(InterfaceObjectIO):
+
+    _ext_iface_upper_bound = IConfiguredTool
+
+    def toExternalObject(self, **kwargs): # pylint: disable=arguments-differ
+        context = self._ext_replacement()
+        result = super(_ConfiguredToolExportExternalizer, self).toExternalObject(**kwargs)
+        result['config'] = context.config.to_xml()  # Externalize the config as XML for parity with how it pickles
+        return result
+
+
+class _ConfiguredToolImportUpdater(InterfaceObjectIO):
+
+    _ext_iface_upper_bound = IConfiguredTool
+    _excluded_in_ivars_ = 'config'
+
+    def updateFromExternalObject(self, parsed, *args, **kwargs):
+        config = PersistentToolConfig.create_from_xml(parsed['config'])
+        ext_self = self._ext_replacement()
+        self._ext_setattr(ext_self, 'config', config)
+        result = super(_ConfiguredToolImportUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
         return result

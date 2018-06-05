@@ -21,6 +21,16 @@
 			 for=".interfaces.IConfiguredTool"
 			 provides="nti.externalization.interfaces.IInternalObjectExternalizer" />
 
+	<adapter factory=".consumer._ConfiguredToolExportExternalizer"
+			 for=".interfaces.IConfiguredTool"
+			 provides="nti.externalization.interfaces.IInternalObjectExternalizer"
+			 name="exporter" />
+
+	<!-- Internalization -->
+	<adapter factory=".consumer._ConfiguredToolImportUpdater"
+			 provides="nti.externalization.interfaces.IInternalObjectUpdater"
+			 for=".interfaces.IConfiguredTool" />
+
 	<!-- Tool Provider -->
 	<utility factory=".oauth.UtilityBackedOAuthConsumers"
 			 provides=".interfaces.IOAuthConsumers"/>
