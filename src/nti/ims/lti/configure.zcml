@@ -17,17 +17,17 @@
 						 .interfaces.IToolConfig"
 		modules=".consumer" />
 
-	<adapter factory=".consumer._ConfiguredToolExternalizer"
+	<adapter factory=".externalization._ConfiguredToolExternalizer"
 			 for=".interfaces.IConfiguredTool"
 			 provides="nti.externalization.interfaces.IInternalObjectExternalizer" />
 
-	<adapter factory=".consumer._ConfiguredToolExportExternalizer"
+	<adapter factory=".externalization._ConfiguredToolExportExternalizer"
 			 for=".interfaces.IConfiguredTool"
 			 provides="nti.externalization.interfaces.IInternalObjectExternalizer"
 			 name="exporter" />
 
 	<!-- Internalization -->
-	<adapter factory=".consumer._ConfiguredToolImportUpdater"
+	<adapter factory=".internalization._ConfiguredToolImportUpdater"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater"
 			 for=".interfaces.IConfiguredTool" />
 
