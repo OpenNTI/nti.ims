@@ -75,6 +75,18 @@ class IToolConfig(interface.Interface):
     for configuring the tool inside a consumer.
     """
 
+    title = TextLine(title=u'The title for the Tool Config',
+                     required=True)
+
+    description = TextLine(title=u'The description for the Tool Config',
+                           required=True)
+
+    launch_url = HTTPURL(title=u'A URL for launching an LTI Tool',
+                         required=True)
+
+    secure_launch_url = HTTPURL(title=u'A secure URL for launching an LTI Tool',
+                                required=True)
+
 
 class IToolConfigFactory(interface.Interface):
     """
