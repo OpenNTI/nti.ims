@@ -29,7 +29,8 @@
 	<!-- Internalization -->
 	<adapter factory=".internalization._ConfiguredToolImportUpdater"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater"
-			 for=".interfaces.IConfiguredTool" />
+			 for=".interfaces.IConfiguredTool"
+			 name="importer"/>
 
 	<!-- Tool Provider -->
 	<utility factory=".oauth.UtilityBackedOAuthConsumers"
