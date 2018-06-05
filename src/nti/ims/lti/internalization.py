@@ -19,7 +19,6 @@ class _ConfiguredToolImportUpdater(InterfaceObjectIO):
     _ext_iface_upper_bound = IConfiguredTool
 
     def updateFromExternalObject(self, parsed, *args, **kwargs):
-        from IPython.core.debugger import Tracer;Tracer()()
         if 'config_xml' in parsed:  # This is the import case
             config = PersistentToolConfig.create_from_xml(parsed['config_xml'])
             ext_self = self._ext_replacement()
