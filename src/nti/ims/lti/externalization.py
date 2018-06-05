@@ -35,5 +35,5 @@ class _ConfiguredToolExportExternalizer(InterfaceObjectIO):
     def toExternalObject(self, **kwargs): # pylint: disable=arguments-differ
         context = self._ext_replacement()
         result = super(_ConfiguredToolExportExternalizer, self).toExternalObject(**kwargs)
-        result['config'] = context.config.to_xml()  # Externalize the config as XML for parity with how it pickles
+        result['config_xml'] = context.config.to_xml()  # Externalize the config as XML for parity with how it pickles
         return result
