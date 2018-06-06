@@ -91,21 +91,21 @@ class PersistentToolConfig(ToolConfig, PersistentCreatedAndModifiedTimeObject):
 
     __external_can_create__ = True
 
-    @readproperty
+    @property
     def title(self):
-        return self.title
+        return unicode(self.title)
 
-    @readproperty
+    @property
     def description(self):
-        return self.description
+        return unicode(self.description)
 
-    @readproperty
+    @property
     def launch_url(self):
-        return self.launch_url
+        return str(self.launch_url)
 
-    @readproperty
+    @property
     def secure_launch_url(self):
-        return self.secure_launch_url
+        return str(self.secure_launch_url)
 
     def __init__(self, **kwargs):
         # Parse the kwargs for tool config specific values
