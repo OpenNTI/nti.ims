@@ -24,6 +24,8 @@ from zope.container.contained import Contained
 
 from zope.container.interfaces import INameChooser
 
+from nti.base._compat import text_
+
 from nti.base.mixins import CreatedAndModifiedTimeMixin
 
 from nti.containers.containers import AbstractNTIIDSafeNameChooser
@@ -93,19 +95,19 @@ class PersistentToolConfig(ToolConfig, PersistentCreatedAndModifiedTimeObject):
 
     @property
     def title(self):
-        return unicode(self._title)
+        return text_(self._title)
 
     @title.setter
     def title(self, value):
-        self._title = unicode(value)
+        self._title = text_(value)
 
     @property
     def description(self):
-        return unicode(self._description)
+        return text_(self._description)
 
     @description.setter
     def description(self, value):
-        self._description =  unicode(value)
+        self._description = text_(value)
 
     @property
     def launch_url(self):
