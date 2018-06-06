@@ -109,11 +109,16 @@ class PersistentToolConfig(ToolConfig, PersistentCreatedAndModifiedTimeObject):
 
     def __init__(self, **kwargs):
         # Parse the kwargs for tool config specific values
+        # HTTPURL requires input to be of string type so we cast it here for validation
         self._kwargs = kwargs
-        kwargs = {
-            argname: kwargs[argname]
-            for argname in kwargs if argname in tool_config.VALID_ATTRIBUTES
-        }
+        new_kwargs = dict()
+        for argname in kwargs:
+            if argname in tool_config.VALID_ATTRIBUTES:
+                if argname in ('launch_url', 'secure_launch_url'):
+                    new_kwargs[argname] = str(kwargs[argname])
+                else:
+                    new_kwargs[argname] = kwargs[argname]
+        kwargs = new_kwargs
         super(PersistentToolConfig, self).__init__(**kwargs)
         PersistentCreatedAndModifiedTimeObject.__init__(self)
 
