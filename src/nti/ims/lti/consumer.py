@@ -93,19 +93,35 @@ class PersistentToolConfig(ToolConfig, PersistentCreatedAndModifiedTimeObject):
 
     @property
     def title(self):
-        return unicode(self.title)
+        return unicode(self._title)
+
+    @title.setter
+    def title(self, value):
+        self._title = unicode(value)
 
     @property
     def description(self):
-        return unicode(self.description)
+        return unicode(self._description)
+
+    @description.setter
+    def description(self, value):
+        self._description =  unicode(value)
 
     @property
     def launch_url(self):
-        return str(self.launch_url)
+        return str(self._launch_url)
+
+    @launch_url.setter
+    def launch_url(self, value):
+        self._launch_url = str(value)
 
     @property
     def secure_launch_url(self):
-        return str(self.secure_launch_url)
+        return str(self._secure_launch_url)
+
+    @secure_launch_url.setter
+    def secure_launch_url(self, value):
+        self._secure_launch_url = str(value)
 
     def __init__(self, **kwargs):
         # Parse the kwargs for tool config specific values
