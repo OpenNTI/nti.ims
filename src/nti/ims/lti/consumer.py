@@ -11,7 +11,6 @@ from __future__ import absolute_import
 from lti import tool_config
 
 from lti.tool_config import ToolConfig
-from nti.zodb.persistentproperty import PersistentPropertyHolder
 
 from zope import component
 from zope import interface
@@ -44,7 +43,6 @@ from nti.ims.lti.interfaces import IConfiguredToolContainer
 from nti.schema.fieldproperty import createDirectFieldProperties
 
 from nti.schema.schema import PermissiveSchemaConfigured as SchemaConfigured
-from zope.schema.fieldproperty import FieldPropertyStoredThroughField
 
 logger = __import__('logging').getLogger(__name__)
 
@@ -92,9 +90,13 @@ class ConfiguredTool(SchemaConfigured, Contained, PersistentCreatedAndModifiedTi
 
 class UnicodePersistentCreatedAndModifiedTimeObject(PersistentCreatedAndModifiedTimeObject):
 
+    # Override the __setattr__ method of PersistentPropertyHolder to cast title and description
+    # to unicode to pass validation
     def __setattr__(self, name, value):
         if name in ('title', 'description'):
             value = text_(value)
+        if name in ('launch_url', 'secure_launch_url'):
+            value = str(name)
         super(UnicodePersistentCreatedAndModifiedTimeObject, self).__setattr__(name, value)
 
 
@@ -104,17 +106,12 @@ class PersistentToolConfig(ToolConfig, UnicodePersistentCreatedAndModifiedTimeOb
     __external_can_create__ = True
 
     def __init__(self, **kwargs):
-        # Parse the kwargs for tool config specific values
-        # HTTPURL requires input to be of string type so we cast it here for validation
+        #        # Parse the kwargs for tool config specific values
         self._kwargs = kwargs
-        new_kwargs = dict()
-        for argname in kwargs:
-            if argname in tool_config.VALID_ATTRIBUTES:
-                if argname in ('launch_url', 'secure_launch_url'):
-                    new_kwargs[argname] = str(kwargs[argname])
-                else:
-                    new_kwargs[argname] = kwargs[argname]
-        kwargs = new_kwargs
+        kwargs = {
+            argname: kwargs[argname]
+            for argname in kwargs if argname in tool_config.VALID_ATTRIBUTES
+        }
         super(PersistentToolConfig, self).__init__(**kwargs)
         UnicodePersistentCreatedAndModifiedTimeObject.__init__(self)
 
