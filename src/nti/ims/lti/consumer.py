@@ -24,6 +24,8 @@ from zope.container.contained import Contained
 
 from zope.container.interfaces import INameChooser
 
+from nti.base._compat import text_
+
 from nti.base.mixins import CreatedAndModifiedTimeMixin
 
 from nti.containers.containers import AbstractNTIIDSafeNameChooser
@@ -86,36 +88,32 @@ class ConfiguredTool(SchemaConfigured, Contained, PersistentCreatedAndModifiedTi
             return self.config.secure_launch_url
 
 
+class UnicodePersistentCreatedAndModifiedTimeObject(PersistentCreatedAndModifiedTimeObject):
+
+    # Override the __setattr__ method of PersistentPropertyHolder to cast title and description
+    # to unicode to pass validation
+    def __setattr__(self, name, value):
+        if name in ('title', 'description'):
+            value = text_(value)
+        if name in ('launch_url', 'secure_launch_url'):
+            value = str(value)
+        super(UnicodePersistentCreatedAndModifiedTimeObject, self).__setattr__(name, value)
+
+
 @interface.implementer(IToolConfig)
-class PersistentToolConfig(ToolConfig, PersistentCreatedAndModifiedTimeObject):
+class PersistentToolConfig(ToolConfig, UnicodePersistentCreatedAndModifiedTimeObject):
 
     __external_can_create__ = True
 
-    @readproperty
-    def title(self):
-        return self.title
-
-    @readproperty
-    def description(self):
-        return self.description
-
-    @readproperty
-    def launch_url(self):
-        return self.launch_url
-
-    @readproperty
-    def secure_launch_url(self):
-        return self.secure_launch_url
-
     def __init__(self, **kwargs):
-        # Parse the kwargs for tool config specific values
+        #        # Parse the kwargs for tool config specific values
         self._kwargs = kwargs
         kwargs = {
             argname: kwargs[argname]
             for argname in kwargs if argname in tool_config.VALID_ATTRIBUTES
         }
         super(PersistentToolConfig, self).__init__(**kwargs)
-        PersistentCreatedAndModifiedTimeObject.__init__(self)
+        UnicodePersistentCreatedAndModifiedTimeObject.__init__(self)
 
     def set_custom_param(self, key, val):
         super(PersistentToolConfig, self).set_custom_param(key, val)

@@ -15,9 +15,6 @@ from hamcrest import assert_that
 from hamcrest import instance_of
 from hamcrest import has_properties
 
-from nti.testing.time import time_monotonically_increases
-
-import time
 import pickle
 import unittest
 
@@ -56,7 +53,6 @@ class TestConsumer(unittest.TestCase):
 
     layer = SharedConfiguringTestLayer
 
-    @time_monotonically_increases
     def test_persistent_tool_config(self):
         # Test properties
         ptc = PersistentToolConfig(**KWARGS)
@@ -76,9 +72,7 @@ class TestConsumer(unittest.TestCase):
                                    'secure_launch_url', is_(KWARGS['secure_launch_url'])))
 
         # Test creation time
-        t = time.time()
-        assert_that(ptc.createdTime, is_(t - 1))
-        assert_that(ptc_unpickled.createdTime, is_(t - 1))
+        assert_that(ptc.createdTime, is_(ptc_unpickled.createdTime))
 
         # Test ZODB storage and retrieval
         self._assert_zodb_store(ptc)
