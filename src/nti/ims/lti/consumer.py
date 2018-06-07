@@ -43,6 +43,7 @@ from nti.ims.lti.interfaces import IConfiguredToolContainer
 from nti.schema.fieldproperty import createDirectFieldProperties
 
 from nti.schema.schema import PermissiveSchemaConfigured as SchemaConfigured
+from zope.schema.fieldproperty import FieldPropertyStoredThroughField
 
 logger = __import__('logging').getLogger(__name__)
 
@@ -88,42 +89,25 @@ class ConfiguredTool(SchemaConfigured, Contained, PersistentCreatedAndModifiedTi
             return self.config.secure_launch_url
 
 
+class UnicodeForcingFieldProperty(FieldPropertyStoredThroughField):
+
+    def getValue(self, inst, field):
+        from IPython.core.debugger import Tracer;Tracer()()
+
+        return text_(super(UnicodeForcingFieldProperty, self).getValue(inst, field))
+
+    def queryValue(self, inst, field, default):
+        from IPython.core.debugger import Tracer;Tracer()()
+
+        return text_(super(UnicodeForcingFieldProperty, self).queryValue(inst, field, default))
+
+
 @interface.implementer(IToolConfig)
-class PersistentToolConfig(ToolConfig, PersistentCreatedAndModifiedTimeObject):
+class PersistentToolConfig(ToolConfig, SchemaConfigured, PersistentCreatedAndModifiedTimeObject):
 
     __external_can_create__ = True
 
-    @property
-    def title(self):
-        return text_(self._title)
-
-    @title.setter
-    def title(self, value):
-        self._title = text_(value)
-
-    @property
-    def description(self):
-        return text_(self._description)
-
-    @description.setter
-    def description(self, value):
-        self._description = text_(value)
-
-    @property
-    def launch_url(self):
-        return str(self._launch_url)
-
-    @launch_url.setter
-    def launch_url(self, value):
-        self._launch_url = str(value)
-
-    @property
-    def secure_launch_url(self):
-        return str(self._secure_launch_url)
-
-    @secure_launch_url.setter
-    def secure_launch_url(self, value):
-        self._secure_launch_url = str(value)
+    title = UnicodeForcingFieldProperty(IToolConfig['title'])
 
     def __init__(self, **kwargs):
         # Parse the kwargs for tool config specific values
@@ -137,6 +121,7 @@ class PersistentToolConfig(ToolConfig, PersistentCreatedAndModifiedTimeObject):
                 else:
                     new_kwargs[argname] = kwargs[argname]
         kwargs = new_kwargs
+        from IPython.core.debugger import Tracer;Tracer()()
         super(PersistentToolConfig, self).__init__(**kwargs)
         PersistentCreatedAndModifiedTimeObject.__init__(self)
 
