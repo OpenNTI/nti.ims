@@ -11,6 +11,7 @@ from __future__ import absolute_import
 from lti import tool_config
 
 from lti.tool_config import ToolConfig
+from nti.externalization.externalization import to_external_object
 
 from zope import component
 from zope import interface
@@ -167,6 +168,7 @@ class PersistentToolConfig(ToolConfig, PersistentCreatedAndModifiedTimeObject):
     @staticmethod
     def create_from_xml(xml):
         config = PersistentToolConfig()
+        xml = str(xml)  # This must be a string, unicode will not work
         config.process_xml(xml)
         return config
 
@@ -199,19 +201,3 @@ class ConfiguredToolContainer(BTreeContainer, CreatedAndModifiedTimeMixin):
 @component.adapter(IConfiguredToolContainer)
 class _ConfiguredToolNameChooser(AbstractNTIIDSafeNameChooser):
     leaf_iface = IConfiguredToolContainer
-
-
-class _ConfiguredToolExternalizer(InterfaceObjectIO):
-
-    _ext_iface_upper_bound = IConfiguredTool
-
-    _excluded_out_ivars_ = ('config', 'secret')
-
-    def toExternalObject(self, **kwargs):  # pylint: disable=arguments-differ
-        context = self._ext_replacement()
-        result = super(_ConfiguredToolExternalizer, self).toExternalObject(**kwargs)
-        result['title'] = context.title
-        result['description'] = context.description
-        result['launch_url'] = context.launch_url
-        result['secure_launch_url'] = context.secure_launch_url
-        return result
