@@ -88,25 +88,14 @@ class ConfiguredTool(SchemaConfigured, Contained, PersistentCreatedAndModifiedTi
             return self.config.secure_launch_url
 
 
-class UnicodePersistentCreatedAndModifiedTimeObject(PersistentCreatedAndModifiedTimeObject):
-
-    # Override the __setattr__ method of PersistentPropertyHolder to cast title and description
-    # to unicode to pass validation
-    def __setattr__(self, name, value):
-        if name in ('title', 'description'):
-            value = text_(value)
-        if name in ('launch_url', 'secure_launch_url'):
-            value = str(value)
-        super(UnicodePersistentCreatedAndModifiedTimeObject, self).__setattr__(name, value)
-
-
 class UnicodeForcingProperty(object):
 
     def __init__(self, value=None):
         self._value = value
 
     def __get__(self, instance, owner):
-        return text_(self._value)
+        if self._value is not None:
+            return text_(self._value)
 
     def __set__(self, instance, value):
         self._value = value
@@ -118,10 +107,12 @@ class StringForcingProperty(object):
         self._value = value
 
     def __get__(self, instance, owner):
-        return str(self._value)
+        if self._value is not None:
+            return str(self._value)
 
     def __set__(self, instance, value):
         self._value = value
+
 
 @interface.implementer(IToolConfig)
 class PersistentToolConfig(ToolConfig, PersistentCreatedAndModifiedTimeObject):
