@@ -24,10 +24,11 @@ import ZODB.MappingStorage
 
 from persistent import Persistent
 
-from nti.ims.lti.consumer import _ConfiguredToolExternalizer
 from nti.ims.lti.consumer import ConfiguredTool
 from nti.ims.lti.consumer import PersistentToolConfig
 from nti.ims.lti.consumer import ConfiguredToolContainer
+
+from nti.ims.lti.externalization import _ConfiguredToolExternalizer
 
 from nti.ims.tests import SharedConfiguringTestLayer
 
