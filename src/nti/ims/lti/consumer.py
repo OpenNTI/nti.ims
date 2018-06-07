@@ -11,6 +11,7 @@ from __future__ import absolute_import
 from lti import tool_config
 
 from lti.tool_config import ToolConfig
+from nti.zodb.persistentproperty import PersistentPropertyHolder
 
 from zope import component
 from zope import interface
@@ -89,25 +90,18 @@ class ConfiguredTool(SchemaConfigured, Contained, PersistentCreatedAndModifiedTi
             return self.config.secure_launch_url
 
 
-class UnicodeForcingFieldProperty(FieldPropertyStoredThroughField):
+class UnicodePersistentCreatedAndModifiedTimeObject(PersistentCreatedAndModifiedTimeObject):
 
-    def getValue(self, inst, field):
-        from IPython.core.debugger import Tracer;Tracer()()
-
-        return text_(super(UnicodeForcingFieldProperty, self).getValue(inst, field))
-
-    def queryValue(self, inst, field, default):
-        from IPython.core.debugger import Tracer;Tracer()()
-
-        return text_(super(UnicodeForcingFieldProperty, self).queryValue(inst, field, default))
+    def __setattr__(self, name, value):
+        if name in ('title', 'description'):
+            value = text_(value)
+        super(UnicodePersistentCreatedAndModifiedTimeObject, self).__setattr__(name, value)
 
 
 @interface.implementer(IToolConfig)
-class PersistentToolConfig(ToolConfig, SchemaConfigured, PersistentCreatedAndModifiedTimeObject):
+class PersistentToolConfig(ToolConfig, UnicodePersistentCreatedAndModifiedTimeObject):
 
     __external_can_create__ = True
-
-    title = UnicodeForcingFieldProperty(IToolConfig['title'])
 
     def __init__(self, **kwargs):
         # Parse the kwargs for tool config specific values
@@ -121,9 +115,8 @@ class PersistentToolConfig(ToolConfig, SchemaConfigured, PersistentCreatedAndMod
                 else:
                     new_kwargs[argname] = kwargs[argname]
         kwargs = new_kwargs
-        from IPython.core.debugger import Tracer;Tracer()()
         super(PersistentToolConfig, self).__init__(**kwargs)
-        PersistentCreatedAndModifiedTimeObject.__init__(self)
+        UnicodePersistentCreatedAndModifiedTimeObject.__init__(self)
 
     def set_custom_param(self, key, val):
         super(PersistentToolConfig, self).set_custom_param(key, val)
@@ -144,6 +137,8 @@ class PersistentToolConfig(ToolConfig, SchemaConfigured, PersistentCreatedAndMod
         lifecycleevent.modified(self)
 
     def __setstate__(self, state):
+        from IPython.core.debugger import Tracer;Tracer()()
+
         assert state[0] == 1
         self.process_xml(state[1])
         self.createdTime = state[2]

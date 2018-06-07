@@ -59,6 +59,8 @@ class TestConsumer(unittest.TestCase):
     @time_monotonically_increases
     def test_persistent_tool_config(self):
         # Test properties
+        from IPython.core.debugger import Tracer;Tracer()()
+
         ptc = PersistentToolConfig(**KWARGS)
         assert_that(ptc,
                     has_properties('title', is_(KWARGS['title']),
