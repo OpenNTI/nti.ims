@@ -11,6 +11,7 @@ from __future__ import absolute_import
 from lti import tool_config
 
 from lti.tool_config import ToolConfig
+from nti.zodb.persistentproperty import PersistentPropertyHolder
 
 from zope import component
 from zope import interface
@@ -43,6 +44,7 @@ from nti.ims.lti.interfaces import IConfiguredToolContainer
 from nti.schema.fieldproperty import createDirectFieldProperties
 
 from nti.schema.schema import PermissiveSchemaConfigured as SchemaConfigured
+from zope.schema.fieldproperty import FieldPropertyStoredThroughField
 
 logger = __import__('logging').getLogger(__name__)
 
@@ -88,42 +90,18 @@ class ConfiguredTool(SchemaConfigured, Contained, PersistentCreatedAndModifiedTi
             return self.config.secure_launch_url
 
 
+class UnicodePersistentCreatedAndModifiedTimeObject(PersistentCreatedAndModifiedTimeObject):
+
+    def __setattr__(self, name, value):
+        if name in ('title', 'description'):
+            value = text_(value)
+        super(UnicodePersistentCreatedAndModifiedTimeObject, self).__setattr__(name, value)
+
+
 @interface.implementer(IToolConfig)
-class PersistentToolConfig(ToolConfig, PersistentCreatedAndModifiedTimeObject):
+class PersistentToolConfig(ToolConfig, UnicodePersistentCreatedAndModifiedTimeObject):
 
     __external_can_create__ = True
-
-    @property
-    def title(self):
-        return text_(self._title)
-
-    @title.setter
-    def title(self, value):
-        self._title = text_(value)
-
-    @property
-    def description(self):
-        return text_(self._description)
-
-    @description.setter
-    def description(self, value):
-        self._description = text_(value)
-
-    @property
-    def launch_url(self):
-        return str(self._launch_url)
-
-    @launch_url.setter
-    def launch_url(self, value):
-        self._launch_url = str(value)
-
-    @property
-    def secure_launch_url(self):
-        return str(self._secure_launch_url)
-
-    @secure_launch_url.setter
-    def secure_launch_url(self, value):
-        self._secure_launch_url = str(value)
 
     def __init__(self, **kwargs):
         # Parse the kwargs for tool config specific values
@@ -138,7 +116,7 @@ class PersistentToolConfig(ToolConfig, PersistentCreatedAndModifiedTimeObject):
                     new_kwargs[argname] = kwargs[argname]
         kwargs = new_kwargs
         super(PersistentToolConfig, self).__init__(**kwargs)
-        PersistentCreatedAndModifiedTimeObject.__init__(self)
+        UnicodePersistentCreatedAndModifiedTimeObject.__init__(self)
 
     def set_custom_param(self, key, val):
         super(PersistentToolConfig, self).set_custom_param(key, val)
