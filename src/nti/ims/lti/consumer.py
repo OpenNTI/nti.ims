@@ -96,7 +96,7 @@ class UnicodePersistentCreatedAndModifiedTimeObject(PersistentCreatedAndModified
         if name in ('title', 'description'):
             value = text_(value)
         if name in ('launch_url', 'secure_launch_url'):
-            value = str(name)
+            value = str(value)
         super(UnicodePersistentCreatedAndModifiedTimeObject, self).__setattr__(name, value)
 
 

@@ -76,16 +76,16 @@ class IToolConfig(interface.Interface):
     """
 
     title = TextLine(title=u'The title for the Tool Config',
-                     required=False)
+                     required=True)
 
     description = TextLine(title=u'The description for the Tool Config',
-                           required=False)
+                           required=True)
 
     launch_url = HTTPURL(title=u'A URL for launching an LTI Tool',
-                         required=False)
+                         required=True)
 
     secure_launch_url = HTTPURL(title=u'A secure URL for launching an LTI Tool',
-                                required=False)
+                                required=True)
 
 
 class IToolConfigFactory(interface.Interface):
