@@ -269,3 +269,11 @@ class IConfiguredToolContainer(IContainer):
         """
         remove the specified configuration tool
         """
+
+
+class IExternalToolLinkSelector(interface.Interface):
+    """
+    A marker interface for IConfiguredTool indicating that the tool is using the External Tool Link
+    Selector extension to create the tool asset
+    https://canvas.instructure.com/doc/api/file.link_selection_tools.html
+    """
