@@ -274,4 +274,12 @@ class IConfiguredToolContainer(IContainer):
 class IDeepLinking(interface.Interface):
     """
     A marker interface for IConfiguredTool indicating that the tool is using Deep Linking
+    https://www.imsglobal.org/specs/lticiv1p0-intro
+    """
+
+
+class IExternalToolLinkSelection(interface.Interface):
+    """
+    A marker interface for IConfiguredTool indicating that the tool is using Canvas ExternalToolLinkSelection
+    https://canvas.instructure.com/doc/api/file.link_selection_tools.html
     """
