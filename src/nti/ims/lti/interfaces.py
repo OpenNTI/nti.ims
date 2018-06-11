@@ -271,9 +271,7 @@ class IConfiguredToolContainer(IContainer):
         """
 
 
-class IExternalToolLinkSelector(interface.Interface):
+class IDeepLinking(interface.Interface):
     """
-    A marker interface for IConfiguredTool indicating that the tool is using the External Tool Link
-    Selector extension to create the tool asset
-    https://canvas.instructure.com/doc/api/file.link_selection_tools.html
+    A marker interface for IConfiguredTool indicating that the tool is using Deep Linking
     """
