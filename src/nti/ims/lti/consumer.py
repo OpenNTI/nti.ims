@@ -155,6 +155,7 @@ class PersistentToolConfig(ToolConfig, PersistentCreatedAndModifiedTimeObject):
 
     def __setstate__(self, state):
         assert state[0] == 1
+        super(PersistentToolConfig, self).__init__()
         self.process_xml(state[1])
         self.createdTime = state[2]
         self.lastModified = state[3]
@@ -164,6 +165,15 @@ class PersistentToolConfig(ToolConfig, PersistentCreatedAndModifiedTimeObject):
 
     def __getnewargs__(self):
         return (self._kwargs,)
+
+    def to_xml(self):
+        launch_url = getattr(self, 'launch_url', None)
+        secure_launch_url = getattr(self, 'secure_launch_url', None)
+        if launch_url and not secure_launch_url:
+            self.secure_launch_url = launch_url
+        elif secure_launch_url and not launch_url:
+            self.launch_url = secure_launch_url
+        return super(PersistentToolConfig, self).to_xml()
 
     @staticmethod
     def create_from_xml(xml):

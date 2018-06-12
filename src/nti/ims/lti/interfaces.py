@@ -85,7 +85,7 @@ class IToolConfig(interface.Interface):
                          required=True)
 
     secure_launch_url = HTTPURL(title=u'A secure URL for launching an LTI Tool',
-                                required=True)
+                                required=False)
 
 
 class IToolConfigFactory(interface.Interface):
