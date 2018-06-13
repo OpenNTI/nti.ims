@@ -8,10 +8,10 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import absolute_import
 
+from collections import defaultdict
 from lti import tool_config
 
 from lti.tool_config import ToolConfig
-from nti.externalization.externalization import to_external_object
 
 from zope import component
 from zope import interface
@@ -31,15 +31,13 @@ from nti.base.mixins import CreatedAndModifiedTimeMixin
 
 from nti.containers.containers import AbstractNTIIDSafeNameChooser
 
-from nti.ntiids.common import generate_ntiid
-
 from nti.dublincore.time_mixins import PersistentCreatedAndModifiedTimeObject
-
-from nti.externalization.datastructures import InterfaceObjectIO
 
 from nti.ims.lti.interfaces import IToolConfig
 from nti.ims.lti.interfaces import IConfiguredTool
 from nti.ims.lti.interfaces import IConfiguredToolContainer
+
+from nti.ntiids.oids import to_external_ntiid_oid
 
 from nti.schema.fieldproperty import createDirectFieldProperties
 
@@ -65,7 +63,7 @@ class ConfiguredTool(SchemaConfigured, Contained, PersistentCreatedAndModifiedTi
 
     @readproperty
     def ntiid(self):  # pylint: disable=method-hidden
-        self.ntiid = generate_ntiid(nttype=self.nttype)
+        self.ntiid = to_external_ntiid_oid(self)
         return self.ntiid
 
     @readproperty
@@ -155,7 +153,8 @@ class PersistentToolConfig(ToolConfig, PersistentCreatedAndModifiedTimeObject):
 
     def __setstate__(self, state):
         assert state[0] == 1
-        super(PersistentToolConfig, self).__init__()
+        self.extensions = defaultdict(lambda: None)
+        self.custom_params = defaultdict(lambda: None)
         self.process_xml(state[1])
         self.createdTime = state[2]
         self.lastModified = state[3]

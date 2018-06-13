@@ -146,6 +146,7 @@ class TestConsumer(unittest.TestCase):
         config = PersistentToolConfig(**KWARGS)
         tool = ConfiguredTool(**KWARGS)
         tool.config = config
+        tool.ntiid = 'test'
         container = ConfiguredToolContainer()
         container.add_tool(tool)
         assert_that(container, has_length(1))
