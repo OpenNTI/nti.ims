@@ -9,6 +9,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 
 from collections import defaultdict
+
 from lti import tool_config
 
 from lti.tool_config import ToolConfig
@@ -37,7 +38,7 @@ from nti.ims.lti.interfaces import IToolConfig
 from nti.ims.lti.interfaces import IConfiguredTool
 from nti.ims.lti.interfaces import IConfiguredToolContainer
 
-from nti.ntiids.oids import to_external_ntiid_oid
+from nti.ntiids.common import generate_ntiid
 
 from nti.schema.fieldproperty import createDirectFieldProperties
 
@@ -63,7 +64,7 @@ class ConfiguredTool(SchemaConfigured, Contained, PersistentCreatedAndModifiedTi
 
     @readproperty
     def ntiid(self):  # pylint: disable=method-hidden
-        self.ntiid = to_external_ntiid_oid(self)
+        self.ntiid = generate_ntiid(nttype=self.nttype)
         return self.ntiid
 
     @readproperty
