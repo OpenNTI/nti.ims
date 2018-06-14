@@ -133,6 +133,32 @@ class PersistentToolConfig(ToolConfig, PersistentCreatedAndModifiedTimeObject):
         super(PersistentToolConfig, self).__init__(**kwargs)
         PersistentCreatedAndModifiedTimeObject.__init__(self)
 
+    # LTI egg adds keys with value of None for keys that aren't present
+    # to preserve the to_xml function we first check that the key is there
+    # to circumvent this behavior
+    def _check_dict(self, key, default_dict):
+        """
+        LTI egg adds keys with value of None for keys that aren't present
+        to preserve the to_xml function we first check that the key is there
+        to circumvent this behavior
+        """
+        return key in getattr(self, default_dict, {})
+
+    def get_ext_param(self, ext_key, param_key):
+        if self._check_dict(ext_key, 'extensions'):
+            return super(PersistentToolConfig, self).get_ext_param(ext_key, param_key)
+        return None
+
+    def get_ext_params(self, ext_key):
+        if self._check_dict(ext_key, 'extensions'):
+            return super(PersistentToolConfig, self).get_ext_params(ext_key)
+        return None
+
+    def get_custom_param(self, key):
+        if self._check_dict(key, 'custom_params'):
+            return super(PersistentToolConfig, self).get_custom_param(key)
+        return None
+
     def set_custom_param(self, key, val):
         super(PersistentToolConfig, self).set_custom_param(key, val)
         # pylint: disable=attribute-defined-outside-init
@@ -153,6 +179,7 @@ class PersistentToolConfig(ToolConfig, PersistentCreatedAndModifiedTimeObject):
 
     def __setstate__(self, state):
         assert state[0] == 1
+        # These attributes must be set for process_xml to work
         self.extensions = defaultdict(lambda: None)
         self.custom_params = defaultdict(lambda: None)
         self.process_xml(state[1])
