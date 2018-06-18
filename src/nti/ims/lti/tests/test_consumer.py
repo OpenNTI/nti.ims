@@ -6,6 +6,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 
 # pylint: disable=protected-access,too-many-public-methods
+from collections import defaultdict
 
 from hamcrest import is_
 from hamcrest import none
@@ -146,9 +147,38 @@ class TestConsumer(unittest.TestCase):
         config = PersistentToolConfig(**KWARGS)
         tool = ConfiguredTool(**KWARGS)
         tool.config = config
+        tool.ntiid = 'test'
         container = ConfiguredToolContainer()
         container.add_tool(tool)
         assert_that(container, has_length(1))
         assert_that(container[tool], is_not(none()))
         container.delete_tool(tool)
         assert_that(container, has_length(0))
+
+    def test_internal_access(self):
+        config = PersistentToolConfig(**KWARGS)
+        base_dict = defaultdict(lambda: None)
+
+        assert_that(config.extensions, is_(base_dict))
+        assert_that(config.custom_params, is_(base_dict))
+        assert_that(config.get_ext_params('test'), is_(None))
+        assert_that(config.get_ext_param('test_ext_key', 'test_param_key'), is_(None))
+        assert_that(config.get_custom_param('test'), is_(None))
+        assert_that(config.extensions, is_(base_dict))
+        assert_that(config.custom_params, is_(base_dict))
+
+        config.set_ext_params('test_key', {})
+        assert_that(config.get_ext_params('test_key'), is_({}))
+        config.set_ext_param('test_key', 'test_param', 'test')
+        config.set_custom_param('test_key', 'test_param')
+        assert_that(config.get_ext_params('test_key'), is_({'test_param': 'test'}))
+        assert_that(config.get_ext_param('test_key', 'test_param'), is_('test'))
+        assert_that(config.get_custom_param('test_key'), is_('test_param'))
+
+        config.set_ext_params('test_key', {})
+        assert_that(config.get_ext_params('test_key'), is_({}))
+        config.set_custom_param('test_key', 'new_test_param')
+        config.set_ext_param('test_key', 'test_param', 'new_test')
+        assert_that(config.get_ext_params('test_key'), is_({'test_param': 'new_test'}))
+        assert_that(config.get_ext_param('test_key', 'test_param'), is_('new_test'))
+        assert_that(config.get_custom_param('test_key'), is_('new_test_param'))

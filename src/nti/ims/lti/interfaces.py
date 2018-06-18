@@ -85,7 +85,7 @@ class IToolConfig(interface.Interface):
                          required=True)
 
     secure_launch_url = HTTPURL(title=u'A secure URL for launching an LTI Tool',
-                                required=True)
+                                required=False)
 
 
 class IToolConfigFactory(interface.Interface):
@@ -269,3 +269,17 @@ class IConfiguredToolContainer(IContainer):
         """
         remove the specified configuration tool
         """
+
+
+class IDeepLinking(interface.Interface):
+    """
+    A marker interface for IConfiguredTool indicating that the tool is using Deep Linking
+    https://www.imsglobal.org/specs/lticiv1p0-intro
+    """
+
+
+class IExternalToolLinkSelection(interface.Interface):
+    """
+    A marker interface for IConfiguredTool indicating that the tool is using Canvas ExternalToolLinkSelection
+    https://canvas.instructure.com/doc/api/file.link_selection_tools.html
+    """

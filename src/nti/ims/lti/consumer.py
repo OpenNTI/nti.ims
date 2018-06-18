@@ -8,10 +8,11 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import absolute_import
 
+from collections import defaultdict
+
 from lti import tool_config
 
 from lti.tool_config import ToolConfig
-from nti.externalization.externalization import to_external_object
 
 from zope import component
 from zope import interface
@@ -31,15 +32,13 @@ from nti.base.mixins import CreatedAndModifiedTimeMixin
 
 from nti.containers.containers import AbstractNTIIDSafeNameChooser
 
-from nti.ntiids.common import generate_ntiid
-
 from nti.dublincore.time_mixins import PersistentCreatedAndModifiedTimeObject
-
-from nti.externalization.datastructures import InterfaceObjectIO
 
 from nti.ims.lti.interfaces import IToolConfig
 from nti.ims.lti.interfaces import IConfiguredTool
 from nti.ims.lti.interfaces import IConfiguredToolContainer
+
+from nti.ntiids.common import generate_ntiid
 
 from nti.schema.fieldproperty import createDirectFieldProperties
 
@@ -135,6 +134,32 @@ class PersistentToolConfig(ToolConfig, PersistentCreatedAndModifiedTimeObject):
         super(PersistentToolConfig, self).__init__(**kwargs)
         PersistentCreatedAndModifiedTimeObject.__init__(self)
 
+    # LTI egg adds keys with value of None for keys that aren't present
+    # to preserve the to_xml function we first check that the key is there
+    # to circumvent this behavior
+    def _check_dict(self, key, default_dict):
+        """
+        LTI egg adds keys with value of None for keys that aren't present
+        to preserve the to_xml function we first check that the key is there
+        to circumvent this behavior
+        """
+        return key in getattr(self, default_dict, {})
+
+    def get_ext_param(self, ext_key, param_key):
+        if self._check_dict(ext_key, 'extensions'):
+            return super(PersistentToolConfig, self).get_ext_param(ext_key, param_key)
+        return None
+
+    def get_ext_params(self, ext_key):
+        if self._check_dict(ext_key, 'extensions'):
+            return super(PersistentToolConfig, self).get_ext_params(ext_key)
+        return None
+
+    def get_custom_param(self, key):
+        if self._check_dict(key, 'custom_params'):
+            return super(PersistentToolConfig, self).get_custom_param(key)
+        return None
+
     def set_custom_param(self, key, val):
         super(PersistentToolConfig, self).set_custom_param(key, val)
         # pylint: disable=attribute-defined-outside-init
@@ -155,6 +180,9 @@ class PersistentToolConfig(ToolConfig, PersistentCreatedAndModifiedTimeObject):
 
     def __setstate__(self, state):
         assert state[0] == 1
+        # These attributes must be set for process_xml to work
+        self.extensions = defaultdict(lambda: None)
+        self.custom_params = defaultdict(lambda: None)
         self.process_xml(state[1])
         self.createdTime = state[2]
         self.lastModified = state[3]
@@ -164,6 +192,15 @@ class PersistentToolConfig(ToolConfig, PersistentCreatedAndModifiedTimeObject):
 
     def __getnewargs__(self):
         return (self._kwargs,)
+
+    def to_xml(self):
+        launch_url = getattr(self, 'launch_url', None)
+        secure_launch_url = getattr(self, 'secure_launch_url', None)
+        if launch_url and not secure_launch_url:
+            self.secure_launch_url = launch_url
+        elif secure_launch_url and not launch_url:
+            self.launch_url = secure_launch_url
+        return super(PersistentToolConfig, self).to_xml()
 
     @staticmethod
     def create_from_xml(xml):
