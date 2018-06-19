@@ -90,28 +90,32 @@ class ConfiguredTool(SchemaConfigured, Contained, PersistentCreatedAndModifiedTi
 
 class UnicodeForcingProperty(object):
 
-    def __init__(self, value=None):
-        self._value = value
+    def __init__(self, field):
+        self._name = getattr(field, '__name__', field)
 
     def __get__(self, instance, owner):
-        if self._value is not None:
-            return text_(self._value)
+        instance._p_activate()
+        val = instance.__dict__.get(self._name, None)
+        return text_(val) if val is not None else None
 
     def __set__(self, instance, value):
-        self._value = value
+        instance.__dict__[self._name] = value
+        instance._p_changed = True
 
 
 class StringForcingProperty(object):
 
-    def __init__(self, value=None):
-        self._value = value
+    def __init__(self, field):
+        self._name = getattr(field, '__name__', field)
 
     def __get__(self, instance, owner):
-        if self._value is not None:
-            return str(self._value)
+        instance._p_activate()
+        val = instance.__dict__.get(self._name, None)
+        return str(val) if val is not None else None
 
     def __set__(self, instance, value):
-        self._value = value
+        instance.__dict__[self._name] = value
+        instance._p_changed = True
 
 
 @interface.implementer(IToolConfig)
@@ -119,10 +123,10 @@ class PersistentToolConfig(ToolConfig, PersistentCreatedAndModifiedTimeObject):
 
     __external_can_create__ = True
 
-    title = UnicodeForcingProperty()
-    description = UnicodeForcingProperty()
-    launch_url = StringForcingProperty()
-    secure_launch_url = StringForcingProperty()
+    title = UnicodeForcingProperty(IToolConfig['title'])
+    description = UnicodeForcingProperty(IToolConfig['description'])
+    launch_url = StringForcingProperty(IToolConfig['launch_url'])
+    secure_launch_url = StringForcingProperty(IToolConfig['secure_launch_url'])
 
     def __init__(self, **kwargs):
         #        # Parse the kwargs for tool config specific values
@@ -181,8 +185,7 @@ class PersistentToolConfig(ToolConfig, PersistentCreatedAndModifiedTimeObject):
     def __setstate__(self, state):
         assert state[0] == 1
         # These attributes must be set for process_xml to work
-        self.extensions = defaultdict(lambda: None)
-        self.custom_params = defaultdict(lambda: None)
+        ToolConfig.__init__(self)
         self.process_xml(state[1])
         self.createdTime = state[2]
         self.lastModified = state[3]
