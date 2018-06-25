@@ -87,6 +87,11 @@ class ConfiguredTool(SchemaConfigured, Contained, PersistentCreatedAndModifiedTi
         if self.config is not None:
             return self.config.secure_launch_url
 
+    @readproperty
+    def icon_url(self):
+        if self.config is not None:
+            return self.config.icon
+
 
 class UnicodeForcingProperty(object):
 
@@ -127,6 +132,7 @@ class PersistentToolConfig(ToolConfig, PersistentCreatedAndModifiedTimeObject):
     description = UnicodeForcingProperty(IToolConfig['description'])
     launch_url = StringForcingProperty(IToolConfig['launch_url'])
     secure_launch_url = StringForcingProperty(IToolConfig['secure_launch_url'])
+    icon = StringForcingProperty(IToolConfig['icon'])
 
     def __init__(self, **kwargs):
         #        # Parse the kwargs for tool config specific values

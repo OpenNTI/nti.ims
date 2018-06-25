@@ -87,6 +87,9 @@ class IToolConfig(interface.Interface):
     secure_launch_url = HTTPURL(title=u'A secure URL for launching an LTI Tool',
                                 required=False)
 
+    icon = HTTPURL(title=u'The icon for the lti tool',
+                   required=False)
+
 
 class IToolConfigFactory(interface.Interface):
     """

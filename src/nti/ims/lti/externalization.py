@@ -25,6 +25,7 @@ class _ConfiguredToolExternalizer(InterfaceObjectIO):
         result['description'] = context.description
         result['launch_url'] = context.launch_url
         result['secure_launch_url'] = context.secure_launch_url
+        result['icon_url'] = context.icon_url
         return result
 
 
