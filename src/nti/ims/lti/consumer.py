@@ -39,6 +39,7 @@ from nti.ims.lti.interfaces import IConfiguredTool
 from nti.ims.lti.interfaces import IConfiguredToolContainer
 
 from nti.ntiids.common import generate_ntiid
+from nti.ntiids.oids import to_external_ntiid_oid
 
 from nti.schema.fieldproperty import createDirectFieldProperties
 
@@ -62,10 +63,13 @@ class ConfiguredTool(SchemaConfigured, Contained, PersistentCreatedAndModifiedTi
         SchemaConfigured.__init__(self, *args, **kwargs)
         PersistentCreatedAndModifiedTimeObject.__init__(self)
 
-    @readproperty
-    def ntiid(self):  # pylint: disable=method-hidden
-        self.ntiid = generate_ntiid(nttype=self.nttype)
-        return self.ntiid
+    @property
+    def id(self):
+        return self.__name__
+
+    @property
+    def containerId(self):
+        return to_external_ntiid_oid(self.__parent__)
 
     @readproperty
     def title(self):
@@ -222,15 +226,13 @@ class PersistentToolConfig(ToolConfig, PersistentCreatedAndModifiedTimeObject):
 @interface.implementer(IConfiguredToolContainer)
 class ConfiguredToolContainer(BTreeContainer, CreatedAndModifiedTimeMixin):
 
-    def _get_tool_key(self, tool):
-        return getattr(tool, 'ntiid', tool)
-
     def add_tool(self, tool):
-        self[tool.ntiid] = tool
+        name = INameChooser(self).chooseName(tool.title, tool)
+        self[name] = tool
         return tool
 
     def delete_tool(self, tool):
-        key = self._get_tool_key(tool)
+        key = getattr(tool, '__name__', tool)
         try:
             del self[key]
             result = True
@@ -238,8 +240,8 @@ class ConfiguredToolContainer(BTreeContainer, CreatedAndModifiedTimeMixin):
             result = False
         return result
 
-    def __getitem__(self, item):
-        key = self._get_tool_key(item)
+    def __getitem__(self, tool):
+        key = getattr(tool, '__name__', tool)
         return super(ConfiguredToolContainer, self).__getitem__(key)
 
 
