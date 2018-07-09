@@ -258,6 +258,12 @@ class IConfiguredTool(IContained):
     config = Object(IToolConfig,
                     required=True)
 
+    selection_width = Number(title=u'The iframe width for resource selection',
+                             required=False)
+
+    selection_height = Number(title=u'The iframe height for resource selection',
+                              required=False)
+
 
 class IConfiguredToolContainer(IContainer):
 
