@@ -79,7 +79,7 @@ class IToolConfig(interface.Interface):
                      required=True)
 
     description = TextLine(title=u'The description for the Tool Config',
-                           required=True)
+                           required=False)
 
     launch_url = HTTPURL(title=u'A URL for launching an LTI Tool',
                          required=True)
