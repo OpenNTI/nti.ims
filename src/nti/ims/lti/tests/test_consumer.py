@@ -42,12 +42,27 @@ KWARGS = {
     'secure_launch_url': u'https://testconfig.com'
 }
 
-XML = u"""<xml>
-            <title>Test Config</title>
-            <description>A Test Config</description>
-            <launch_url>http://testconfig.com</launch_url>
-            <secure_launch_url>https://testconfig.com</secure_launch_url>
-         </xml>
+XML = u"""<cartridge_basiclti_link xmlns="http://www.imsglobal.org/xsd/imslticc_v1p0" xmlns:blti="http://www.imsglobal.org/xsd/imsbasiclti_v1p0" xmlns:lticm="http://www.imsglobal.org/xsd/imslticm_v1p0" xmlns:lticp="http://www.imsglobal.org/xsd/imslticp_v1p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imslticc_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imslticc_v1p0.xsd http://www.imsglobal.org/xsd/imsbasiclti_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imsbasiclti_v1p0p1.xsd http://www.imsglobal.org/xsd/imslticm_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imslticm_v1p0.xsd http://www.imsglobal.org/xsd/imslticp_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imslticp_v1p0.xsd">
+<blti:title>Test Config</blti:title>
+<blti:description>A Test Config</blti:description>
+<blti:launch_url>http://testconfig.com</blti:launch_url>
+<blti:secure_launch_url>https://testconfig.com</blti:secure_launch_url>
+<blti:icon>https://www.edu-apps.org/assets/lti_public_resources/vimeo_icon.png</blti:icon>
+<blti:extensions platform="canvas.instructure.com">
+<lticm:property name="domain">test.org</lticm:property>
+<lticm:options name="editor_button">
+<lticm:property name="enabled">true</lticm:property>
+</lticm:options>
+<lticm:property name="icon_url">https://www.edu-apps.org/assets/lti_public_resources/vimeo_icon.png</lticm:property>
+<lticm:property name="privacy_level">anonymous</lticm:property>
+<lticm:options name="resource_selection">
+<lticm:property name="enabled">true</lticm:property>
+</lticm:options>
+<lticm:property name="selection_height">600</lticm:property>
+<lticm:property name="selection_width">560</lticm:property>
+<lticm:property name="tool_id">test</lticm:property>
+</blti:extensions>
+</cartridge_basiclti_link>
       """
 
 
@@ -113,7 +128,7 @@ class TestConsumer(unittest.TestCase):
 
     def test_configured_tool(self):
         tool = ConfiguredTool(**KWARGS)
-        config = PersistentToolConfig(**KWARGS)
+        config = PersistentToolConfig.create_from_xml(XML)
         tool.config = config
         assert_that(tool,
                     has_properties('title', is_(KWARGS['title']),
@@ -121,7 +136,9 @@ class TestConsumer(unittest.TestCase):
                                    'launch_url', is_(KWARGS['launch_url']),
                                    'secure_launch_url', is_(KWARGS['secure_launch_url']),
                                    'consumer_key', is_(KWARGS['consumer_key']),
-                                   'secret', is_(KWARGS['secret'])))
+                                   'secret', is_(KWARGS['secret']),
+                                   'selection_height', is_(600),
+                                   'selection_width', is_(560)))
 
     def test_configured_tool_externalization(self):
         config = PersistentToolConfig(**KWARGS)

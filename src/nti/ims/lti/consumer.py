@@ -96,12 +96,14 @@ class ConfiguredTool(SchemaConfigured, Contained, PersistentCreatedAndModifiedTi
     @readproperty
     def selection_height(self):
         if self.config is not None:
-            return int(self.config.get_ext_param('canvas.instructure.com', 'selection_height'))
+            height = self.config.get_ext_param('canvas.instructure.com', 'selection_height')
+            return int(height) if height is not None else None
 
     @readproperty
     def selection_width(self):
         if self.config is not None:
-            return int(self.config.get_ext_param('canvas.instructure.com', 'selection_width'))
+            width = self.config.get_ext_param('canvas.instructure.com', 'selection_width')
+            return int(width) if width is not None else None
 
 
 class UnicodeForcingProperty(object):
