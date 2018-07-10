@@ -60,11 +60,11 @@ class ConfiguredTool(SchemaConfigured, Contained, PersistentCreatedAndModifiedTi
         SchemaConfigured.__init__(self, *args, **kwargs)
         PersistentCreatedAndModifiedTimeObject.__init__(self)
 
-    @property
+    @readproperty
     def id(self):
         return self.__name__
 
-    @property
+    @readproperty
     def containerId(self):
         return to_external_ntiid_oid(self.__parent__)
 
