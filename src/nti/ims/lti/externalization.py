@@ -3,6 +3,8 @@
 
 from __future__ import print_function, absolute_import, division
 
+from zope import interface
+
 from nti.externalization.datastructures import InterfaceObjectIO
 
 from nti.ims.lti.interfaces import IConfiguredTool
@@ -33,8 +35,9 @@ class _ConfiguredToolExportExternalizer(InterfaceObjectIO):
 
     _ext_iface_upper_bound = IConfiguredTool
 
-    def toExternalObject(self, **kwargs): # pylint: disable=arguments-differ
+    def toExternalObject(self, **kwargs):  # pylint: disable=arguments-differ
         context = self._ext_replacement()
         result = super(_ConfiguredToolExportExternalizer, self).toExternalObject(**kwargs)
         result['config_xml'] = context.config.to_xml()  # Externalize the config as XML for parity with how it pickles
+        result['deleted'] = IConfiguredTool.providedBy(context)
         return result

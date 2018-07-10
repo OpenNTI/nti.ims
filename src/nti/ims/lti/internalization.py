@@ -28,7 +28,7 @@ class _ConfiguredToolImportUpdater(InterfaceObjectIO):
             ext_self = self._ext_replacement()
             self._ext_setattr(ext_self, 'config', config)
             self._excluded_in_ivars_ = 'config'
-            if parsed['deleted']:
+            if parsed.get('deleted') is True:
                 ext_self.alsoProvides(IDeletedObjectPlaceholder)
         result = super(_ConfiguredToolImportUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
         return result
