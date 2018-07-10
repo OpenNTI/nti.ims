@@ -8,8 +8,6 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import absolute_import
 
-from collections import defaultdict
-
 from lti import tool_config
 
 from lti.tool_config import ToolConfig
@@ -38,7 +36,6 @@ from nti.ims.lti.interfaces import IToolConfig
 from nti.ims.lti.interfaces import IConfiguredTool
 from nti.ims.lti.interfaces import IConfiguredToolContainer
 
-from nti.ntiids.common import generate_ntiid
 from nti.ntiids.oids import to_external_ntiid_oid
 
 from nti.schema.fieldproperty import createDirectFieldProperties
@@ -95,6 +92,18 @@ class ConfiguredTool(SchemaConfigured, Contained, PersistentCreatedAndModifiedTi
     def icon_url(self):
         if self.config is not None:
             return self.config.icon
+
+    @readproperty
+    def selection_height(self):
+        if self.config is not None:
+            height = self.config.get_ext_param('canvas.instructure.com', 'selection_height')
+            return int(height) if height is not None else None
+
+    @readproperty
+    def selection_width(self):
+        if self.config is not None:
+            width = self.config.get_ext_param('canvas.instructure.com', 'selection_width')
+            return int(width) if width is not None else None
 
 
 class UnicodeForcingProperty(object):

@@ -21,6 +21,7 @@ from nti.base.interfaces import ITitled
 from nti.base.interfaces import ITitledDescribed
 
 from nti.schema.field import Dict
+from nti.schema.field import Int
 from nti.schema.field import List
 from nti.schema.field import Number
 from nti.schema.field import Object
@@ -257,6 +258,12 @@ class IConfiguredTool(IContained):
 
     config = Object(IToolConfig,
                     required=True)
+
+    selection_width = Int(title=u'The iframe width for resource selection',
+                             required=False)
+
+    selection_height = Int(title=u'The iframe height for resource selection',
+                              required=False)
 
 
 class IConfiguredToolContainer(IContainer):
