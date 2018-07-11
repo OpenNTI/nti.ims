@@ -3,7 +3,7 @@
 
 from __future__ import print_function, absolute_import, division
 
-from zope import interface
+from nti.dataserver.interfaces import IDeletedObjectPlaceholder
 
 from nti.externalization.datastructures import InterfaceObjectIO
 
@@ -39,5 +39,5 @@ class _ConfiguredToolExportExternalizer(InterfaceObjectIO):
         context = self._ext_replacement()
         result = super(_ConfiguredToolExportExternalizer, self).toExternalObject(**kwargs)
         result['config_xml'] = context.config.to_xml()  # Externalize the config as XML for parity with how it pickles
-        result['deleted'] = IConfiguredTool.providedBy(context)
+        result['deleted'] = IDeletedObjectPlaceholder.providedBy(context)
         return result
