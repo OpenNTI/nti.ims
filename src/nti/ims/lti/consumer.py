@@ -129,7 +129,7 @@ class StringForcingProperty(object):
     def __get__(self, instance, owner):
         instance._p_activate()
         val = instance.__dict__.get(self._name, None)
-        return str(val) if val is not None else None
+        return val.encode('utf-8') if val is not None else None
 
     def __set__(self, instance, value):
         instance.__dict__[self._name] = value
@@ -227,7 +227,7 @@ class PersistentToolConfig(ToolConfig, PersistentCreatedAndModifiedTimeObject):
     @staticmethod
     def create_from_xml(xml):
         config = PersistentToolConfig()
-        xml = str(xml)  # This must be a string, unicode will not work
+        xml = xml.encode('utf-8')  # This must be a string, unicode will not work
         config.process_xml(xml)
         return config
 
