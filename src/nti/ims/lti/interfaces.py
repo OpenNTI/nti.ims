@@ -26,6 +26,7 @@ from nti.schema.field import List
 from nti.schema.field import Number
 from nti.schema.field import Object
 from nti.schema.field import HTTPURL
+from nti.schema.field import Text
 from nti.schema.field import TextLine
 
 
@@ -79,8 +80,8 @@ class IToolConfig(interface.Interface):
     title = TextLine(title=u'The title for the Tool Config',
                      required=True)
 
-    description = TextLine(title=u'The description for the Tool Config',
-                           required=False)
+    description = Text(title=u'The description for the Tool Config',
+                       required=False)
 
     launch_url = HTTPURL(title=u'A URL for launching an LTI Tool',
                          required=True)
