@@ -231,8 +231,6 @@ class PersistentToolConfig(ToolConfig, PersistentCreatedAndModifiedTimeObject):
     @staticmethod
     def create_from_xml(xml):
         config = PersistentToolConfig()
-        xml = xml.encode('utf-8')  # This must be a string, unicode will not work
-        xml = xml[xml.find('<'):] # Make sure we start with the opening tag
         config.process_xml(xml)
         return config
 
