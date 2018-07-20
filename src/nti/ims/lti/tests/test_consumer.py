@@ -136,9 +136,7 @@ class TestConsumer(unittest.TestCase):
                                    'launch_url', is_(KWARGS['launch_url']),
                                    'secure_launch_url', is_(KWARGS['secure_launch_url']),
                                    'consumer_key', is_(KWARGS['consumer_key']),
-                                   'secret', is_(KWARGS['secret']),
-                                   'selection_height', is_(600),
-                                   'selection_width', is_(560)))
+                                   'secret', is_(KWARGS['secret'])))
 
     def test_configured_tool_externalization(self):
         config = PersistentToolConfig(**KWARGS)
