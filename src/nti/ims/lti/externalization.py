@@ -18,7 +18,7 @@ class _ConfiguredToolExternalizer(InterfaceObjectIO):
 
     _ext_iface_upper_bound = IConfiguredTool
 
-    _excluded_out_ivars_ = ('config', 'secret')
+    _excluded_out_ivars_ = frozenset(('config', 'secret'))
 
     def toExternalObject(self, **kwargs):  # pylint: disable=arguments-differ
         context = self._ext_replacement()
