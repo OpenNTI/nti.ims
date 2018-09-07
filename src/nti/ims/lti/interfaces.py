@@ -260,12 +260,6 @@ class IConfiguredTool(IContained):
     config = Object(IToolConfig,
                     required=True)
 
-    selection_width = Int(title=u'The iframe width for resource selection',
-                             required=False)
-
-    selection_height = Int(title=u'The iframe height for resource selection',
-                              required=False)
-
 
 class IConfiguredToolContainer(IContainer):
 
@@ -282,15 +276,44 @@ class IConfiguredToolContainer(IContainer):
         """
 
 
-class IDeepLinking(interface.Interface):
+class IResourceSelectionTool(IConfiguredTool):
     """
-    A marker interface for IConfiguredTool indicating that the tool is using Deep Linking
-    https://www.imsglobal.org/specs/lticiv1p0-intro
-    """
-
-
-class IExternalToolLinkSelection(interface.Interface):
-    """
-    A marker interface for IConfiguredTool indicating that the tool is using Canvas ExternalToolLinkSelection
+    An IConfiguredTool that configures an External Resource using Canvas ExternalToolLinkSelection
     https://canvas.instructure.com/doc/api/file.link_selection_tools.html
     """
+
+
+class ILinkSelectionTool(IConfiguredTool):
+    """
+    An IConfiguredTool that configures an External Link using IMS Deep Linking
+    http://www.imsglobal.org/specs/lticiv1p0
+    """
+
+
+class IEditorButtonTool(IConfiguredTool):
+    """
+    An IConfiguredTool that configures an Editor Button using IMS Deep Linking
+    http://www.imsglobal.org/specs/lticiv1p0
+    """
+
+
+class IHomeworkSubmissionTool(IConfiguredTool):
+    """
+    An IConfiguredTool that configures a Homework Submission using IMS Deep Linking
+    http://www.imsglobal.org/specs/lticiv1p0
+    """
+
+
+class IMigrationSelectionTool(IConfiguredTool):
+    """
+    An IConfiguredTool that configures migration using IMS Deep Linking
+    http://www.imsglobal.org/specs/lticiv1p0
+    """
+
+
+class IAssignmentSelectionTool(IConfiguredTool):
+    """
+    An IConfiguredTool that configures an Assignment placement using IMS Deep Linking
+    http://www.imsglobal.org/specs/lticiv1p0
+    """
+
