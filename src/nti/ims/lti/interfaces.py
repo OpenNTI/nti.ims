@@ -276,19 +276,26 @@ class IConfiguredToolContainer(IContainer):
         """
 
 
-class ILinkSelection(interface.Interface):
+class ISelectionRequiredConfiguredTool(interface.Interface):
+    """
+    A superclass for marker interfaces that indicate a Configured Tool requires
+    some type of content selection flow
+    """
+
+
+class ILinkSelection(ISelectionRequiredConfiguredTool):
     """
     A marker interface for IConfiguredTool indicating that the tool's extensions contain link selection
     """
 
 
-class IResourceSelection(interface.Interface):
+class IResourceSelection(ISelectionRequiredConfiguredTool):
     """
     A marker interface for IConfiguredTool indicating that the tool's extensions contain resource selection
     """
 
 
-class IAssignmentSelection(interface.Interface):
+class IAssignmentSelection(ISelectionRequiredConfiguredTool):
     """
     A marker interface for IConfiguredTool indicating that the tool's extensions contain assignment selection
     """
