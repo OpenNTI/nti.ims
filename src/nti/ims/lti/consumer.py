@@ -133,7 +133,7 @@ class StringForcingProperty(object):
     def __get__(self, instance, owner):
         instance._p_activate()
         val = instance.__dict__.get(self._name, None)
-        return val.encode('utf-8') if val is not None else None
+        return val.strip().encode('utf-8') if val is not None else None
 
     def __set__(self, instance, value):
         instance.__dict__[self._name] = value
