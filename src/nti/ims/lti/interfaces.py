@@ -301,3 +301,15 @@ class IAssignmentSelection(ISelectionRequiredConfiguredTool):
     """
 
 
+# Deprecations
+
+from zope.deprecation import deprecated
+
+deprecated('IDeepLinking', 'Replaced by ILinkSelection')
+class IDeepLinking(interface.Interface):
+    pass
+
+
+deprecated('IExternalToolLinkSelection', 'Replaced by IExternalToolLinkSelection')
+class IExternalToolLinkSelection(interface.Interface):
+    pass
