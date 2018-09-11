@@ -283,33 +283,46 @@ class ISelectionRequiredConfiguredTool(interface.Interface):
     """
 
 
-class ILinkSelection(ISelectionRequiredConfiguredTool):
+class IExternalToolLinkSelection(ISelectionRequiredConfiguredTool):
+    """
+    A marker interface for IConfiguredTool indicating that the tool's extensions
+    specify Canvas's External Tool Link Selection
+    """
+
+
+class IDeepLinking(ISelectionRequiredConfiguredTool):
+    """
+    A marker interface for an IConfiguredTool that will use make a Deep Linking request
+    """
+
+
+class ILinkSelection(IDeepLinking):
     """
     A marker interface for IConfiguredTool indicating that the tool's extensions contain link selection
     """
 
 
-class IResourceSelection(ISelectionRequiredConfiguredTool):
-    """
-    A marker interface for IConfiguredTool indicating that the tool's extensions contain resource selection
-    """
+# These markers are here for future development
 
-
-class IAssignmentSelection(ISelectionRequiredConfiguredTool):
+class IAssignmentSelection(IDeepLinking):
     """
     A marker interface for IConfiguredTool indicating that the tool's extensions contain assignment selection
     """
 
 
-# Deprecations
-
-from zope.deprecation import deprecated
-
-deprecated('IDeepLinking', 'Replaced by ILinkSelection')
-class IDeepLinking(interface.Interface):
-    pass
+class IEditorButton(IDeepLinking):
+    """
+    A marker interface for IConfiguredTool indicating that the tool's extensions contain editor button
+    """
 
 
-deprecated('IExternalToolLinkSelection', 'Replaced by IExternalToolLinkSelection')
-class IExternalToolLinkSelection(interface.Interface):
-    pass
+class IHomeworkSubmission(IDeepLinking):
+    """
+    A marker interface for IConfiguredTool indicating that the tool's extensions contain homework submission
+    """
+
+
+class IMigrationSelection(IDeepLinking):
+    """
+    A marker interface for IConfiguredTool indicating that the tool's extensions contain migration selection
+    """
