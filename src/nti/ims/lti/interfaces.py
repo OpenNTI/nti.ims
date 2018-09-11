@@ -260,12 +260,6 @@ class IConfiguredTool(IContained):
     config = Object(IToolConfig,
                     required=True)
 
-    selection_width = Int(title=u'The iframe width for resource selection',
-                             required=False)
-
-    selection_height = Int(title=u'The iframe height for resource selection',
-                              required=False)
-
 
 class IConfiguredToolContainer(IContainer):
 
@@ -282,15 +276,53 @@ class IConfiguredToolContainer(IContainer):
         """
 
 
-class IDeepLinking(interface.Interface):
+class ISelectionRequiredConfiguredTool(interface.Interface):
     """
-    A marker interface for IConfiguredTool indicating that the tool is using Deep Linking
-    https://www.imsglobal.org/specs/lticiv1p0-intro
+    A superclass for marker interfaces that indicate a Configured Tool requires
+    some type of content selection flow
     """
 
 
-class IExternalToolLinkSelection(interface.Interface):
+class IExternalToolLinkSelection(ISelectionRequiredConfiguredTool):
     """
-    A marker interface for IConfiguredTool indicating that the tool is using Canvas ExternalToolLinkSelection
-    https://canvas.instructure.com/doc/api/file.link_selection_tools.html
+    A marker interface for IConfiguredTool indicating that the tool's extensions
+    specify Canvas's External Tool Link Selection
+    """
+
+
+class IDeepLinking(ISelectionRequiredConfiguredTool):
+    """
+    A marker interface for an IConfiguredTool that will use make a Deep Linking request
+    """
+
+
+class ILinkSelection(IDeepLinking):
+    """
+    A marker interface for IConfiguredTool indicating that the tool's extensions contain link selection
+    """
+
+
+# These markers are here for future development
+
+class IAssignmentSelection(IDeepLinking):
+    """
+    A marker interface for IConfiguredTool indicating that the tool's extensions contain assignment selection
+    """
+
+
+class IEditorButton(IDeepLinking):
+    """
+    A marker interface for IConfiguredTool indicating that the tool's extensions contain editor button
+    """
+
+
+class IHomeworkSubmission(IDeepLinking):
+    """
+    A marker interface for IConfiguredTool indicating that the tool's extensions contain homework submission
+    """
+
+
+class IMigrationSelection(IDeepLinking):
+    """
+    A marker interface for IConfiguredTool indicating that the tool's extensions contain migration selection
     """
