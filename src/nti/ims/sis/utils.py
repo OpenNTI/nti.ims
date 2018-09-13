@@ -23,8 +23,6 @@ from zope.interface.common.idatetime import IDateTime
 
 from nti.base._compat import text_
 
-from nti.schema.interfaces import InvalidValue
-
 logger = __import__('logging').getLogger(__name__)
 
 
@@ -55,7 +53,7 @@ def parse_mktime(value):
     if value:
         try:
             data = IDateTime(value)
-        except (InvalidValue, ValueError, TypeError):
+        except Exception:  # pylint: disable=broad-except
             data = isodate.parse_date(value)
             data = datetime.combine(data, datetime.min.time())
         data = arrow.get(data)
