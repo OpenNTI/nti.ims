@@ -35,6 +35,7 @@ from nti.dublincore.time_mixins import PersistentCreatedAndModifiedTimeObject
 from nti.ims.lti.interfaces import IToolConfig
 from nti.ims.lti.interfaces import IConfiguredTool
 from nti.ims.lti.interfaces import IConfiguredToolContainer
+from nti.ims.lti.interfaces import ILTIExtension
 
 from nti.ntiids.oids import to_external_ntiid_oid
 
@@ -261,3 +262,8 @@ class ConfiguredToolContainer(BTreeContainer, CreatedAndModifiedTimeMixin):
 @component.adapter(IConfiguredToolContainer)
 class _ConfiguredToolNameChooser(AbstractNTIIDSafeNameChooser):
     leaf_iface = IConfiguredToolContainer
+
+
+@interface.implementer(ILTIExtension)
+class LTIExtension(SchemaConfigured):
+    pass

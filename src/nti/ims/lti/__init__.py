@@ -22,6 +22,15 @@ DEFAULT_FIELDS = (
     'tool_consumer_info_product_family_code'
 )
 
+# XXX: Make sure these strings are unicode type as they later are used in schema validation
+SUPPORTED_LTI_EXTENSIONS = {u'canvas.instructure.com': [u'link_selection',
+                                                        u'resource_selection',
+                                                        u'assignment_selection',
+                                                        u'editor_button',
+                                                        u'homework_submission',
+                                                        u'migration_selection'],
+                            u'nextthought.com': []}
+
 logger = __import__('logging').getLogger(__name__)
 
 
