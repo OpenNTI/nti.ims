@@ -8,10 +8,11 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import absolute_import
 
-import six
 from io import BytesIO
 
 from lxml import etree
+
+import six
 
 from zope import interface
 
@@ -26,9 +27,9 @@ from nti.ims.sis.person import Persons
 
 from nti.ims.sis import get_fileobj
 
-from nti.schema.field import SchemaConfigured
-
 from nti.schema.fieldproperty import createDirectFieldProperties
+
+from nti.schema.schema import SchemaConfigured
 
 etree_parse = getattr(etree, 'parse')
 

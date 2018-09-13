@@ -17,8 +17,9 @@ from hamcrest import has_property
 from nti.testing.matchers import validly_provides
 from nti.testing.matchers import verifiably_provides
 
-import fudge
 import unittest
+
+import fudge
 
 from nti.ims.sis.membership import STUDENT_ROLE
 from nti.ims.sis.membership import ACTIVE_STATUS

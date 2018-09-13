@@ -15,8 +15,9 @@ from hamcrest import assert_that
 from nti.testing.matchers import validly_provides
 from nti.testing.matchers import verifiably_provides
 
-import fudge
 import unittest
+
+import fudge
 
 from nti.ims.sis.person import DEFAULT_ROLE
 
