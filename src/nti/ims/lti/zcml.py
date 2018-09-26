@@ -18,7 +18,7 @@ from zope import interface
 
 from zope.component.zcml import utility
 
-from zope.configuration import fields
+from zope.schema import TextLine
 
 from nti.base._compat import text_
 
@@ -35,13 +35,13 @@ logger = __import__('logging').getLogger(__name__)
 
 class IRegisterOAuthConsumer(interface.Interface):
 
-    key = fields.TextLine(title=u"The consumer key", required=True)
+    key = TextLine(title=u"The consumer key", required=True)
 
-    secret = fields.TextLine(title=u"The consumer secret as cypher",
-                             required=True)
+    secret = TextLine(title=u"The consumer secret as cypher",
+                      required=True)
 
-    title = fields.TextLine(title=u"A descriptive title for the consumer",
-                            required=True)
+    title = TextLine(title=u"A descriptive title for the consumer",
+                     required=True)
 
 
 def registerConsumer(_context, key, secret, title):
