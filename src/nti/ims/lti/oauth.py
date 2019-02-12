@@ -14,7 +14,7 @@ from zope import interface
 from nti.ims.lti.interfaces import IOAuthConsumer
 from nti.ims.lti.interfaces import IOAuthConsumers
 
-from nti.schema.field import SchemaConfigured
+from nti.schema.schema import SchemaConfigured
 
 from nti.schema.fieldproperty import createDirectFieldProperties
 
