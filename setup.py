@@ -54,6 +54,7 @@ setup(
         'nti.base',
         'nti.common',
         'nti.containers',
+	'nti.dataserver',
         'nti.dublincore',
         'nti.externalization',
         'nti.ntiids',
