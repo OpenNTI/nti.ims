@@ -3,7 +3,7 @@
 
 from __future__ import print_function, absolute_import, division
 
-from nti.dataserver.interfaces import IDeletedObjectPlaceholder
+from nti.coremetadata.interfaces import IDeletedObjectPlaceholder
 
 from nti.externalization.datastructures import InterfaceObjectIO
 
