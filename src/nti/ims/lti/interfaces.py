@@ -294,3 +294,84 @@ class IExternalToolLinkSelection(interface.Interface):
     A marker interface for IConfiguredTool indicating that the tool is using Canvas ExternalToolLinkSelection
     https://canvas.instructure.com/doc/api/file.link_selection_tools.html
     """
+
+class IOutcomeService(interface.Interface):
+    """
+    Provides a mechanism for recording, fetching, and removing lti
+    launch outcomes for a user. This is based on LTI `Basic Outcome Service`.
+
+    https://www.imsglobal.org/spec/lti-bo/v1p1#basic-outcome-service
+    """
+
+    def __setitem__(principal, score):
+        """
+        Set the score for the provided principal. Principal should be
+        adaptable to IPrincipal. Score must be a numeric float in the
+        range [0.0, 1,0].
+
+        https://www.imsglobal.org/spec/lti-bo/v1p1#replaceresult
+        """
+
+    def __getitem__(principal):
+        """
+        Get the score for the provided principal. Principal should be
+        adapatable to IPrincipal.
+
+        If a score has not been set for this principal None is returned.
+        """
+
+    def __delitem__(principal):
+        """
+        Delete the score for the provided principal. Principal should
+        be adaptable to IPrincipal.
+        """
+
+class IResultSourcedId(interface.Interface):
+    """
+    An identifier that uniquely represents a user and lti resource for
+    the LTI Basic Outcome Service.
+
+    https://www.imsglobal.org/spec/lti-bo/v1p1#replaceresult
+
+    When processing an outcome service action, this can be adapted to
+    an IOutcomeService and something adapting to IPrincipal.
+    """
+
+    lis_result_sourcedid = TextLine(title=u'LIS Result Identifier',
+                                    required=True)
+
+class IOutcomeResponse(interface.Interface):
+    """
+    An outcome service response to be returned to users of the service
+    """
+
+class IOutcomeRequest(interface.Interface):
+    """
+    Represents a request to be made to the outcome service.
+    """
+    result_id = Object(IResultSourcedId,
+                       title=u'The result id this request is for',
+                       required=True)
+
+    def __call__():
+        """
+        Invoke the request returning an IOutcomeResponse.
+        Subinterfaces may choose to return more specific interfaces
+        """
+
+
+class IOutcomeReadRequest(IOutcomeRequest):
+    """
+    A request to read a value from the outcome service.
+    """
+
+class IOutcomeReplaceRequest(IOutcomeRequest):
+    """
+    A request to replace a value in the outcome service.
+    """
+
+class IOutcomeDeleteRequest(IOutcomeRequest):
+    """
+    A request to delete a value from the outcome service.
+    """
+
