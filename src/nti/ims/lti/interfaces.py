@@ -388,5 +388,5 @@ class ILTIUserLaunchStats(interface.Interface):
                       default=0,
                       required=True)
 
-    LastLaunchDate = DateTime(title=u'The last launch date,
+    LastLaunchDate = DateTime(title=u'The last launch date',
                               required=False)
