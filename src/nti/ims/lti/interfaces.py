@@ -28,6 +28,7 @@ from nti.schema.field import Object
 from nti.schema.field import HTTPURL
 from nti.schema.field import Text
 from nti.schema.field import TextLine
+from nti.schema.field import DateTime
 
 
 class IOAuthConsumer(ITitled):
@@ -365,13 +366,27 @@ class IOutcomeReadRequest(IOutcomeRequest):
     A request to read a value from the outcome service.
     """
 
+
 class IOutcomeReplaceRequest(IOutcomeRequest):
     """
     A request to replace a value in the outcome service.
     """
+
 
 class IOutcomeDeleteRequest(IOutcomeRequest):
     """
     A request to delete a value from the outcome service.
     """
 
+
+class ILTIUserLaunchStats(interface.Interface):
+    """
+    An adapter interface providing LTI launch statistics.
+    """
+
+    LaunchCount = Int(title=u'The number of LTI launches',
+                      default=0,
+                      required=True)
+
+    LastLaunchDate = DateTime(title=u'The last launch date,
+                              required=False)
