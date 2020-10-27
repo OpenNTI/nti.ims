@@ -29,6 +29,7 @@ from nti.schema.field import HTTPURL
 from nti.schema.field import Text
 from nti.schema.field import TextLine
 from nti.schema.field import DateTime
+from nti.schema.field import Float
 
 
 class IOAuthConsumer(ITitled):
@@ -296,6 +297,7 @@ class IExternalToolLinkSelection(interface.Interface):
     https://canvas.instructure.com/doc/api/file.link_selection_tools.html
     """
 
+
 class IOutcomeService(interface.Interface):
     """
     Provides a mechanism for recording, fetching, and removing lti
@@ -327,6 +329,7 @@ class IOutcomeService(interface.Interface):
         be adaptable to IPrincipal.
         """
 
+
 class IResultSourcedId(interface.Interface):
     """
     An identifier that uniquely represents a user and lti resource for
@@ -341,10 +344,12 @@ class IResultSourcedId(interface.Interface):
     lis_result_sourcedid = TextLine(title=u'LIS Result Identifier',
                                     required=True)
 
+
 class IOutcomeResponse(interface.Interface):
     """
     An outcome service response to be returned to users of the service
     """
+
 
 class IOutcomeRequest(interface.Interface):
     """
@@ -371,6 +376,11 @@ class IOutcomeReplaceRequest(IOutcomeRequest):
     """
     A request to replace a value in the outcome service.
     """
+
+    score = Float(title=u'The score',
+                  required=True,
+                  min=0.0,
+                  max=1.0)
 
 
 class IOutcomeDeleteRequest(IOutcomeRequest):
