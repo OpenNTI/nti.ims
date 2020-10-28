@@ -302,31 +302,28 @@ class IOutcomeService(interface.Interface):
     """
     Provides a mechanism for recording, fetching, and removing lti
     launch outcomes for a user. This is based on LTI `Basic Outcome Service`.
+    Adaptable from a `IResultSourcedId`.
 
     https://www.imsglobal.org/spec/lti-bo/v1p1#basic-outcome-service
     """
 
-    def __setitem__(principal, score):
+    def set_score(score):
         """
-        Set the score for the provided principal. Principal should be
-        adaptable to IPrincipal. Score must be a numeric float in the
+        Set the score. Score must be a numeric float in the
         range [0.0, 1,0].
 
         https://www.imsglobal.org/spec/lti-bo/v1p1#replaceresult
         """
 
-    def __getitem__(principal):
+    def get_score():
         """
-        Get the score for the provided principal. Principal should be
-        adapatable to IPrincipal.
-
-        If a score has not been set for this principal None is returned.
+        Get the score for the provided principal.
+        If a score has not been set, None is returned.
         """
 
-    def __delitem__(principal):
+    def remove_score():
         """
-        Delete the score for the provided principal. Principal should
-        be adaptable to IPrincipal.
+        Delete the score.
         """
 
 
@@ -376,11 +373,10 @@ class IOutcomeReplaceRequest(IOutcomeRequest):
     """
     A request to replace a value in the outcome service.
     """
-
-    score = Float(title=u'The score',
-                  required=True,
-                  min=0.0,
-                  max=1.0)
+    score_val = Float(title=u'The score',
+                      required=False,
+                      min=0.0,
+                      max=1.0)
 
 
 class IOutcomeDeleteRequest(IOutcomeRequest):
