@@ -20,6 +20,7 @@ from zope.location.interfaces import IContained
 from nti.base.interfaces import ITitled
 from nti.base.interfaces import ITitledDescribed
 
+from nti.schema.field import Bool
 from nti.schema.field import Dict
 from nti.schema.field import Int
 from nti.schema.field import List
@@ -251,6 +252,38 @@ class IToolConsumerInstanceBuilder(interface.Interface):
         """
 
 
+class ILTIExtension(interface.Interface):
+    """
+    An LTI extension defined in the Tool Config of a Configured Tool
+    """
+
+    platform_key = TextLine(title=u'The platform key where this extension is found.',
+                            required=True)
+
+    param_key = TextLine(title=u'The parameter key for this extension.',
+                         required=True)
+
+    enabled = Bool(title=u'A boolean indicating if this extension is enabled.',
+                   required=True,
+                   default=True)
+
+    url = HTTPURL(title=u"The url for this extension's functionality.",
+                  required=False)
+
+    selection_height = Int(title=u'The iframe height dimension for this extension.',
+                           required=True,
+                           default=400)
+
+    selection_width = Int(title=u'The iframe width dimension for this extension.',
+                          required=True,
+                          default=500)
+    icon_url = HTTPURL(title=u'The url for the icon specified for this extension.',
+                       required=False)
+
+    text = TextLine(title=u'A textline describing this extension.',
+                    required=False)
+
+
 class IConfiguredTool(IContained):
 
     consumer_key = TextLine(title=u'The provider key',
@@ -262,11 +295,8 @@ class IConfiguredTool(IContained):
     config = Object(IToolConfig,
                     required=True)
 
-    selection_width = Int(title=u'The iframe width for resource selection',
-                             required=False)
-
-    selection_height = Int(title=u'The iframe height for resource selection',
-                              required=False)
+    extensions = List(title=u'A list of the extensions defined on this tool.',
+                      value_type=Object(ILTIExtension))
 
 
 class IConfiguredToolContainer(IContainer):
@@ -284,17 +314,16 @@ class IConfiguredToolContainer(IContainer):
         """
 
 
-class IDeepLinking(interface.Interface):
-    """
-    A marker interface for IConfiguredTool indicating that the tool is using Deep Linking
-    https://www.imsglobal.org/specs/lticiv1p0-intro
-    """
-
-
 class IExternalToolLinkSelection(interface.Interface):
     """
-    A marker interface for IConfiguredTool indicating that the tool is using Canvas ExternalToolLinkSelection
-    https://canvas.instructure.com/doc/api/file.link_selection_tools.html
+    Indicates that the Configured Tool's extensions
+    specify Canvas's External Tool Link Selection
+    """
+
+
+class IDeepLinking(interface.Interface):
+    """
+    Indicates that the Configured Tool's extension will make a Deep Linking request
     """
 
 

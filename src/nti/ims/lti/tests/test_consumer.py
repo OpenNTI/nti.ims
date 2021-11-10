@@ -25,13 +25,22 @@ import ZODB.MappingStorage
 
 from persistent import Persistent
 
+from nti.externalization.internalization import update_from_external_object
+
 from nti.ims.lti.consumer import ConfiguredTool
 from nti.ims.lti.consumer import PersistentToolConfig
 from nti.ims.lti.consumer import ConfiguredToolContainer
 
 from nti.ims.lti.externalization import _ConfiguredToolExternalizer
 
+from nti.ims.lti.interfaces import IDeepLinking
+from nti.ims.lti.interfaces import IExternalToolLinkSelection
+
 from nti.ims.tests import SharedConfiguringTestLayer
+
+from nti.testing.matchers import validly_provides
+from nti.testing.matchers import verifiably_provides
+
 
 KWARGS = {
     'consumer_key': u'test_key',
@@ -42,7 +51,7 @@ KWARGS = {
     'secure_launch_url': u'https://testconfig.com'
 }
 
-XML = u"""<cartridge_basiclti_link xmlns="http://www.imsglobal.org/xsd/imslticc_v1p0" xmlns:blti="http://www.imsglobal.org/xsd/imsbasiclti_v1p0" xmlns:lticm="http://www.imsglobal.org/xsd/imslticm_v1p0" xmlns:lticp="http://www.imsglobal.org/xsd/imslticp_v1p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imslticc_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imslticc_v1p0.xsd http://www.imsglobal.org/xsd/imsbasiclti_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imsbasiclti_v1p0p1.xsd http://www.imsglobal.org/xsd/imslticm_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imslticm_v1p0.xsd http://www.imsglobal.org/xsd/imslticp_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imslticp_v1p0.xsd">
+EXTERNAL_TOOL_LINK_SELECTION_XML = u"""<cartridge_basiclti_link xmlns="http://www.imsglobal.org/xsd/imslticc_v1p0" xmlns:blti="http://www.imsglobal.org/xsd/imsbasiclti_v1p0" xmlns:lticm="http://www.imsglobal.org/xsd/imslticm_v1p0" xmlns:lticp="http://www.imsglobal.org/xsd/imslticp_v1p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imslticc_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imslticc_v1p0.xsd http://www.imsglobal.org/xsd/imsbasiclti_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imsbasiclti_v1p0p1.xsd http://www.imsglobal.org/xsd/imslticm_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imslticm_v1p0.xsd http://www.imsglobal.org/xsd/imslticp_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imslticp_v1p0.xsd">
 <blti:title>Test Config</blti:title>
 <blti:description>A Test Config</blti:description>
 <blti:launch_url>http://testconfig.com</blti:launch_url>
@@ -62,8 +71,49 @@ XML = u"""<cartridge_basiclti_link xmlns="http://www.imsglobal.org/xsd/imslticc_
 <lticm:property name="selection_width">560</lticm:property>
 <lticm:property name="tool_id">test</lticm:property>
 </blti:extensions>
-</cartridge_basiclti_link>
-      """
+</cartridge_basiclti_link>"""
+
+DEEP_LINKING_XML = u"""
+<cartridge_basiclti_link xmlns="https://www.imsglobal.org/xsd/imslticc_v1p0" xmlns:blti="https://www.imsglobal.org/xsd/imsbasiclti_v1p0" xmlns:lticm="https://www.imsglobal.org/xsd/imslticm_v1p0" xmlns:lticp="https://www.imsglobal.org/xsd/imslticp_v1p0" xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance" xsi:schemalocation="https://www.imsglobal.org/xsd/imslticc_v1p0 https://www.imsglobal.org/xsd/lti/ltiv1p0/imslticc_v1p0.xsd https://www.imsglobal.org/xsd/imsbasiclti_v1p0 https://www.imsglobal.org/xsd/lti/ltiv1p0/imsbasiclti_v1p0p1.xsd https://www.imsglobal.org/xsd/imslticm_v1p0 https://www.imsglobal.org/xsd/lti/ltiv1p0/imslticm_v1p0.xsd https://www.imsglobal.org/xsd/imslticp_v1p0 https://www.imsglobal.org/xsd/lti/ltiv1p0/imslticp_v1p0.xsd">
+<blti:title>Codio</blti:title>
+<blti:description>Platform for teaching computer science and Math</blti:description>
+<blti:launch_url> https://apollo.codio.com/lti </blti:launch_url>
+<blti:icon>https://codio.com/favicon-16x16-e0ed56f7.png</blti:icon>
+<blti:custom/>
+<blti:extensions platform="canvas.instructure.com">
+<lticm:property name="tool_id">codio</lticm:property>
+<lticm:property name="icon_url">https://codio.com/favicon-16x16-e0ed56f7.png</lticm:property>
+<lticm:property name="domain">codio.com</lticm:property>
+<lticm:property name="privacy_level">public</lticm:property>
+<lticm:property name="selection_width">800</lticm:property>
+<lticm:property name="selection_height">600</lticm:property>
+<lticm:property name="text">Codio</lticm:property>
+<lticm:options name="editor_button">
+<lticm:property name="message_type">ContentItemSelectionRequest</lticm:property>
+<lticm:property name="enabled">true</lticm:property>
+<lticm:property name="url">https://apollo.codio.com/lti/editor_button</lticm:property>
+<lticm:property name="text">Codio</lticm:property>
+<lticm:property name="icon_url">https://codio.com/favicon-16x16-e0ed56f7.png</lticm:property>
+<lticm:property name="selection_width">900</lticm:property>
+<lticm:property name="selection_height">600</lticm:property>
+</lticm:options>
+<lticm:options name="resource_selection">
+<lticm:property name="message_type">ContentItemSelectionRequest</lticm:property>
+<lticm:property name="enabled">true</lticm:property>
+<lticm:property name="url">https://apollo.codio.com/lti/resource_selection</lticm:property>
+<lticm:property name="text">Codio</lticm:property>
+<lticm:property name="icon_url">https://codio.com/favicon-16x16-e0ed56f7.png</lticm:property>
+<lticm:property name="selection_width">900</lticm:property>
+<lticm:property name="selection_height">600</lticm:property>
+</lticm:options>
+<lticm:options name="course_navigation">
+<lticm:property name="enabled"/>
+<lticm:property name="url">https://apollo.codio.com/lti/course_navigation</lticm:property>
+<lticm:property name="text">Codio</lticm:property>
+<lticm:property name="visibility">public</lticm:property>
+</lticm:options>
+</blti:extensions>
+</cartridge_basiclti_link>"""
 
 
 class TestConsumer(unittest.TestCase):
@@ -95,7 +145,7 @@ class TestConsumer(unittest.TestCase):
         self._assert_zodb_store(ptc)
 
         # Test XML Creation
-        ptc = PersistentToolConfig.create_from_xml(XML)
+        ptc = PersistentToolConfig.create_from_xml(EXTERNAL_TOOL_LINK_SELECTION_XML)
         assert_that(ptc,
                     has_properties('title', is_(KWARGS['title']),
                                    'description', is_(KWARGS['description']),
@@ -128,7 +178,7 @@ class TestConsumer(unittest.TestCase):
 
     def test_configured_tool(self):
         tool = ConfiguredTool(**KWARGS)
-        config = PersistentToolConfig.create_from_xml(XML)
+        config = PersistentToolConfig.create_from_xml(EXTERNAL_TOOL_LINK_SELECTION_XML)
         tool.config = config
         assert_that(tool,
                     has_properties('title', is_(KWARGS['title']),
@@ -137,6 +187,80 @@ class TestConsumer(unittest.TestCase):
                                    'secure_launch_url', is_(KWARGS['secure_launch_url']),
                                    'consumer_key', is_(KWARGS['consumer_key']),
                                    'secret', is_(KWARGS['secret'])))
+
+    def test_configured_tool_internalization(self):
+        # Test normal case with no extensions
+        config = PersistentToolConfig(**KWARGS)
+        parsed = {'consumer_key': u'Test_Consumer_Key',
+                  'secret': u'Test_Secret',
+                  'config': config}
+        tool = ConfiguredTool()
+        update_from_external_object(tool, parsed)
+        assert_that(tool.extensions, has_length(0))
+
+        # Test normal case with External Tool Link Selection extensions
+        config = PersistentToolConfig.create_from_xml(EXTERNAL_TOOL_LINK_SELECTION_XML)
+        parsed = {'consumer_key': u'Test_Consumer_Key',
+                  'secret': u'Test_Secret',
+                  'config': config}
+        tool = ConfiguredTool()
+        update_from_external_object(tool, parsed)
+        assert_that(tool.extensions, has_length(2))
+        for extension in tool.extensions:
+            assert_that(extension.enabled, is_(True))
+            assert_that(extension.selection_height, is_(400))
+            assert_that(extension.selection_width, is_(500))
+            assert_that(extension, verifiably_provides(IExternalToolLinkSelection))
+            assert_that(extension, validly_provides(IExternalToolLinkSelection))
+
+        # Test normal case with Deep Linking
+        config = PersistentToolConfig.create_from_xml(DEEP_LINKING_XML)
+        parsed = {'consumer_key': u'Test_Consumer_Key',
+                  'secret': u'Test_Secret',
+                  'config': config}
+        tool = ConfiguredTool()
+        update_from_external_object(tool, parsed)
+        assert_that(tool.extensions, has_length(2))
+        for extension in tool.extensions:
+            assert_that(extension.enabled, is_(True))
+            assert_that(extension.selection_height, is_(600))
+            assert_that(extension.selection_width, is_(900))
+            assert_that(extension, verifiably_provides(IDeepLinking))
+            assert_that(extension, validly_provides(IDeepLinking))
+            assert_that(extension.text, is_(u'Codio'))
+            assert_that(extension.icon_url, is_(u'https://codio.com/favicon-16x16-e0ed56f7.png'))
+
+        # Test import case with External Tool Link Selection extensions
+        parsed = {'consumer_key': u'Test_Consumer_Key',
+                  'secret': u'Test_Secret',
+                  'config_xml': EXTERNAL_TOOL_LINK_SELECTION_XML
+                  }
+        tool = ConfiguredTool()
+        update_from_external_object(tool, parsed)
+        assert_that(tool.extensions, has_length(2))
+        for extension in tool.extensions:
+            assert_that(extension.enabled, is_(True))
+            assert_that(extension.selection_height, is_(400))
+            assert_that(extension.selection_width, is_(500))
+            assert_that(extension, verifiably_provides(IExternalToolLinkSelection))
+            assert_that(extension, validly_provides(IExternalToolLinkSelection))
+
+        # Test import case with Deep Linking
+        config = PersistentToolConfig.create_from_xml(DEEP_LINKING_XML)
+        parsed = {'consumer_key': u'Test_Consumer_Key',
+                  'secret': u'Test_Secret',
+                  'config': config}
+        tool = ConfiguredTool()
+        update_from_external_object(tool, parsed)
+        assert_that(tool.extensions, has_length(2))
+        for extension in tool.extensions:
+            assert_that(extension.enabled, is_(True))
+            assert_that(extension.selection_height, is_(600))
+            assert_that(extension.selection_width, is_(900))
+            assert_that(extension, verifiably_provides(IDeepLinking))
+            assert_that(extension, validly_provides(IDeepLinking))
+            assert_that(extension.text, is_(u'Codio'))
+            assert_that(extension.icon_url, is_(u'https://codio.com/favicon-16x16-e0ed56f7.png'))
 
     def test_configured_tool_externalization(self):
         config = PersistentToolConfig(**KWARGS)

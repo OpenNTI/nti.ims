@@ -14,7 +14,8 @@
 	<include package="nti.externalization" />
 	<ext:registerAutoPackageIO
 		root_interfaces=".interfaces.IConfiguredTool
-						 .interfaces.IToolConfig"
+						 .interfaces.IToolConfig
+						 .interfaces.ILTIExtension"
 		modules=".consumer" />
 
 	<adapter factory=".externalization._ConfiguredToolExternalizer"
